@@ -1,5 +1,6 @@
 #include <QCoreApplication>
 #include <iostream>
+#include <unistd.h>
 #include "foo.h"
 
 void foo()

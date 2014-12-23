@@ -33,8 +33,26 @@
      <height>22</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionLoad_Target"/>
+    <addaction name="actionRecent_Targets"/>
+   </widget>
+   <addaction name="menuFile"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionLoad_Target">
+   <property name="text">
+    <string>Load Target</string>
+   </property>
+  </action>
+  <action name="actionRecent_Targets">
+   <property name="text">
+    <string>Recent Targets</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

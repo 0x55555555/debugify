@@ -1,13 +1,13 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
-
+#pragma once
+#include "UiGlobal.h"
 #include "QMainWindow"
 #include "QToolBar"
 #include "QTimer"
-#include "lldb/API/SBDebugger.h"
-#include "lldb/API/SBTarget.h"
-#include "lldb/API/SBProcess.h"
-#include "lldb/API/SBListener.h"
+#include "TargetToolbar.h"
+#include "ProcessToolbar.h"
+#include "Debugger.h"
+#include "Target.h"
+#include "Process.h"
 
 namespace Ui {
 class MainWindow;
@@ -18,32 +18,32 @@ class MainWindow : public QMainWindow
   Q_OBJECT
 
 public:
+  enum
+    {
+    MaxRecentFiles = 10
+    };
+
   explicit MainWindow(QWidget *parent = 0);
   ~MainWindow();
 
 private slots:
-  void togglePause();
+  void onError(const QString &str);
+  void setStatusText(const QString &str);
+
+  void onProcessStarted(const Process::Pointer &);
+  void onProcessEnded(const Process::Pointer &);
 
 private:
-  void syncState(lldb::StateType type);
-  void handleError(const lldb::SBError &err);
+  void checkError(const Error &err);
+
+  void setTarget(const Target::Pointer &tar);
+  void setProcess(const Process::Pointer &tar);
 
   Ui::MainWindow *ui;
-  QToolBar *toolbar;
 
-  struct DebugData
-    {
-    lldb::SBDebugger debugger;
-    lldb::SBTarget currentTarget;
-    lldb::SBProcess currentProcess;
-    lldb::StateType currentState;
+  Debugger::Pointer _debugger;
 
-    lldb::SBListener listen;
-    };
-
-  std::unique_ptr<DebugData> _debugData;
-  QTimer _timer;
-  QAction *_stop;
+  TargetToolbar *_targetToolbar;
+  ProcessToolbar *_processToolbar;
   };
 
-#endif // MAINWINDOW_H

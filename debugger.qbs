@@ -6,7 +6,7 @@ Eks.SubModule {
 
   references: [
     "Eks/EksAll.qbs",
-    "plugins/lldb/lldb.qbs",
+    "plugins/LldbDriver/LldbDriver.qbs",
     "debugger/debugger.qbs",
     "test/test.qbs",
   ]

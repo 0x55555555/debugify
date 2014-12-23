@@ -1,85 +1,66 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "lldb/API/SBEvent.h"
-#include "lldb/API/SBStream.h"
+#include "TargetToolbar.h"
+#include "ProcessToolbar.h"
+#include "Error.h"
 #include "QDebug"
-#include <array>
-#include <iostream>
-
-void log(const char *msg, void *)
-  {
-  std::cout << msg << std::endl;
-  }
+#include "QSettings"
+#include "QFileDialog"
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
-  ui(new Ui::MainWindow)
+  ui(new Ui::MainWindow),
+  _targetToolbar(nullptr),
+  _processToolbar(nullptr)
   {
   ui->setupUi(this);
 
-  lldb::SBDebugger::Initialize();
+  _debugger = Debugger::create();
 
-  _debugData.reset(new DebugData);
-  _debugData->listen = lldb::SBListener("Listener Thing");
-  _debugData->debugger = lldb::SBDebugger::Create(true, log, nullptr);
-
-  toolbar = addToolBar("Debug Controls");
-  auto load = toolbar->addAction("Load");
-  connect(load, &QAction::triggered, [this]()
+  connect(ui->actionLoad_Target, &QAction::triggered, [this]()
     {
-    _debugData->currentTarget = _debugData->debugger.CreateTarget("../build-test-Desktop_Qt_5_3_clang_64bit-Debug/test");
-    });
-
-
-  auto act = toolbar->addAction("Run");
-  connect(act, &QAction::triggered, [this]()
-    {
-    if (!_debugData->currentTarget.IsValid())
+    QString fileName = QFileDialog::getOpenFileName(this, "Load Executable Target");
+    if (fileName.isEmpty())
       {
-      qWarning() << "Invalid target, cannot start";
+      return;
       }
 
-    const char *argp[] = { 0 };
-    const char *envp[] = { 0 };
-
-    lldb::SBError error;
-
-    assert(_debugData->listen.IsValid());
-
-    _debugData->currentProcess = _debugData->currentTarget.Launch(
-      _debugData->listen,
-      argp,
-      envp,
-      nullptr,
-      nullptr,
-      nullptr,
-      nullptr,
-      lldb::eLaunchFlagNone,
-      false,
-      error);
-
-    if (error.Fail())
+    QSettings settings;
+    QStringList files = settings.value("recentTargets").toStringList();
+    files.removeAll(fileName);
+    files.prepend(fileName);
+    while (files.size() > MaxRecentFiles)
       {
-      std::cerr << error.GetCString() << std::endl;
+      files.removeLast();
+      }
+    settings.setValue("recentTargets", files);
+
+    setTarget(_debugger->loadTarget(fileName.toUtf8().data()));
+    });
+
+  QMenu *recentMenu = new QMenu;
+  ui->actionRecent_Targets->setMenu(recentMenu);
+
+  connect(recentMenu, &QMenu::aboutToShow, [this, recentMenu]()
+    {
+    QSettings settings;
+    QStringList files = settings.value("recentTargets").toStringList();
+
+    recentMenu->setEnabled(!files.isEmpty());
+    recentMenu->clear();
+
+    QFontMetrics metric(font());
+    xForeach(auto recent, files)
+      {
+      auto act = recentMenu->addAction(metric.elidedText(recent, Qt::ElideLeft, 250));
+      connect(act, &QAction::triggered, [this, recent]
+        {
+        setTarget(_debugger->loadTarget(recent.toUtf8().data()));
+        });
       }
     });
 
-  auto kill = toolbar->addAction("Kill");
-  connect(kill, &QAction::triggered, [this]()
-    {
-    auto err = _debugData->currentProcess.Kill();
-    if (err.Fail())
-      {
-      std::cout << err.GetCString() << std::endl;
-      }
-    });
-
-  _stop = toolbar->addAction("");
-  syncState(_debugData->currentProcess.GetState());
-  _stop->setCheckable(true);
-  connect(_stop, SIGNAL(triggered()), this, SLOT(togglePause()));
-
-  auto mod = toolbar->addAction("List Modules");
+  /*auto mod = ->addAction("List Modules");
   connect(mod, &QAction::triggered,
     [this]()
     {
@@ -115,91 +96,82 @@ MainWindow::MainWindow(QWidget *parent) :
           }
         }
       }
-    });
-
-  connect(&_timer, &QTimer::timeout, [this]
-    {
-    auto newState = _debugData->currentProcess.GetState();
-    if (_debugData->currentState != _debugData->currentProcess.GetState())
-      {
-      syncState(newState);
-      }
-
-    lldb::SBEvent ev;
-    while (_debugData->listen.GetNextEvent(ev))
-      {
-      lldb::SBStream desc;
-      ev.GetDescription(desc);
-
-      std::cout << "Event: ";
-      if (desc.GetData())
-        {
-        std::cout << desc.GetData();
-        }
-      std::cout << std::endl;
-      }
-
-    std::array<char, 256> output;
-
-    while (size_t read = _debugData->currentProcess.GetSTDERR(output.data(), output.size()))
-      {
-      std::cout << output.data();
-      }
-
-    while (size_t read = _debugData->currentProcess.GetSTDOUT(output.data(), output.size()))
-      {
-      std::cout << output.data();
-      }
-    });
-  _timer.start(100);
+    });*/
   }
 
 MainWindow::~MainWindow()
   {
   delete ui;
-
-  lldb::SBDebugger::Terminate();
   }
 
-void MainWindow::syncState(lldb::StateType type)
+void MainWindow::setTarget(const Target::Pointer &tar)
   {
-  ui->statusbar->showMessage(
-    QString("Process %1/%2 [%3 %4]")
-      .arg(_debugData->currentTarget.GetExecutable().GetDirectory())
-      .arg(_debugData->currentTarget.GetExecutable().GetFilename())
-      .arg(_debugData->currentProcess.GetProcessID())
-      .arg(lldb::SBDebugger::StateAsCString(type))
-    );
-
-  _debugData->currentState = type;
-
-  _stop->setText(type == lldb::eStateStopped ? "Continue" : "Break");
-  _stop->setChecked(type == lldb::eStateStopped);
-  }
-
-void MainWindow::togglePause()
-  {
-  if (_debugData->currentState == lldb::eStateStopped)
+  if (_targetToolbar)
     {
-    handleError(_debugData->currentProcess.Continue());
+    delete _targetToolbar;
     }
-  else
+
+  if (tar)
     {
-    handleError(_debugData->currentProcess.Stop());
+    _targetToolbar = new TargetToolbar(tar);
+    connect(_targetToolbar, SIGNAL(error(QString)), this, SLOT(onError(QString)));
+    connect(_targetToolbar, SIGNAL(processStarted(Process::Pointer)), this, SLOT(onProcessStarted(Process::Pointer)));
+
+    addToolBar(_targetToolbar);
     }
   }
 
-void MainWindow::handleError(const lldb::SBError &err)
+void MainWindow::setProcess(const Process::Pointer &ptr)
   {
-  if (err.Fail())
+  if (_processToolbar)
     {
-    std::cout << err.GetCString() << std::endl;
+    delete _processToolbar;
+    }
+
+  if (ptr)
+    {
+    _processToolbar = new ProcessToolbar(ptr);
+    connect(_processToolbar, SIGNAL(error(QString)), this, SLOT(onError(QString)));
+    connect(_processToolbar, SIGNAL(statusUpdate(QString)), this, SLOT(setStatusText(QString)));
+
+    addToolBar(_processToolbar);
+    }
+  }
+
+void MainWindow::onError(const QString &str)
+  {
+  qWarning() << str;
+  }
+
+void MainWindow::setStatusText(const QString &str)
+  {
+  ui->statusbar->showMessage(str);
+  }
+
+void MainWindow::onProcessStarted(const Process::Pointer &process)
+  {
+  setProcess(process);
+  }
+
+void MainWindow::onProcessEnded(const Process::Pointer &)
+  {
+  setProcess(nullptr);
+  }
+
+void MainWindow::checkError(const Error &err)
+  {
+  if (err.hasError())
+    {
+    onError(err.error().data());
     }
   }
 
 int main(int argc, char *argv[])
   {
+  Eks::Core core;
   QApplication app(argc, argv);
+  app.setOrganizationName("JSoft");
+  app.setApplicationName("Debugger");
 
   MainWindow w;
 
