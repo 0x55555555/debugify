@@ -5,8 +5,7 @@
 #include <array>
 #include <iostream>
 
-ProcessToolbar::ProcessToolbar(const Process::Pointer &process)
-    : _process(process)
+ProcessToolbar::ProcessToolbar()
   {
   auto kill = addAction("Kill");
   connect(kill, &QAction::triggered, [this]()
@@ -16,47 +15,67 @@ ProcessToolbar::ProcessToolbar(const Process::Pointer &process)
     });
 
   _stop = addAction("");
-  syncState(_process ? _process->currentState() : Process::State::Invalid);
   _stop->setCheckable(true);
   connect(_stop, SIGNAL(triggered()), this, SLOT(togglePause()));
 
   connect(&_timer, &QTimer::timeout, [this]
     {
     auto newState = _process ? _process->currentState() : Process::State::Invalid;
-    if (_processState != newState)
+    syncState(newState);
+
+    if (!_process)
       {
-      syncState(newState);
+      return;
       }
 
     _process->processEvents();
 
-    std::array<char, 256> output;
-    while (_process->getOutput(Process::OutputType::Output, output) > 0)
+    auto forwardOutput = [this](auto type)
       {
-      std::cout << output.data();
-      }
+      std::array<char, 256> output;
+      while (size_t read = _process->getOutput(type, output.data(), output.size()-1))
+        {
+        xAssert(read < (output.size()-1));
+        output[read] = '\0';
+        std::cout << output.data();
+        }
+      };
 
-    while (_process->getOutput(Process::OutputType::Error, output) > 0)
-      {
-      std::cout << output.data();
-      }
+    forwardOutput(Process::OutputType::Output);
+    forwardOutput(Process::OutputType::Error);
     });
   _timer.start(100);
   }
 
+void ProcessToolbar::setProcess(const Process::Pointer &process)
+  {
+  _process = process;
+  syncState(_process ? _process->currentState() : Process::State::Invalid);
+  }
+
 void ProcessToolbar::syncState(Process::State type)
   {
-  emit statusUpdate(
-    QString("Process %1 [%2 %3]")
-      .arg(_process->target()->path().data())
-      .arg(_process ? _process->processID() : 0)
-      .arg(Process::getStateString(type).data())
-    );
+  if (_processState == type)
+    {
+    return;
+    }
+
+  if (_process)
+    {
+    emit statusUpdate(
+      QString("Process %1 [%2 %3]")
+        .arg(_process->target()->path().data())
+        .arg(_process ? _process->processID() : 0)
+        .arg(Process::getStateString(type).data())
+      );
+    }
 
   _processState = type;
 
   _stop->setText(type == Process::State::Stopped ? "Continue" : "Break");
   _stop->setChecked(type == Process::State::Stopped);
+
+  emit stateChanged(type);
   }
 
 void ProcessToolbar::checkError(const Error &err)

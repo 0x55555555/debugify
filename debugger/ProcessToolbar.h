@@ -9,11 +9,14 @@ class ProcessToolbar : public QToolBar
   Q_OBJECT
 
 public:
-  ProcessToolbar(const Process::Pointer &process);
+  ProcessToolbar();
+
+  void setProcess(const Process::Pointer &process);
 
 signals:
   void error(const QString &);
   void statusUpdate(const QString &);
+  void stateChanged(Process::State newState);
 
 private slots:
   void togglePause();

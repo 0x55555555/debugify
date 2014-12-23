@@ -2,10 +2,12 @@
 #include "ui_mainwindow.h"
 #include "TargetToolbar.h"
 #include "ProcessToolbar.h"
+#include "ModuleExplorer.h"
 #include "Error.h"
 #include "QDebug"
 #include "QSettings"
 #include "QFileDialog"
+#include "QDockWidget"
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
@@ -16,6 +18,26 @@ MainWindow::MainWindow(QWidget *parent) :
   ui->setupUi(this);
 
   _debugger = Debugger::create();
+
+  _targetToolbar = new TargetToolbar();
+  _targetToolbar->setVisible(false);
+  connect(_targetToolbar, SIGNAL(error(QString)), this, SLOT(onError(QString)));
+  connect(_targetToolbar, SIGNAL(processStarted(Process::Pointer)), this, SLOT(onProcessStarted(Process::Pointer)));
+  addToolBar(_targetToolbar);
+
+  _processToolbar = new ProcessToolbar();
+  _processToolbar->setVisible(false);
+  connect(_processToolbar, SIGNAL(error(QString)), this, SLOT(onError(QString)));
+  connect(_processToolbar, SIGNAL(statusUpdate(QString)), this, SLOT(setStatusText(QString)));
+  connect(_processToolbar, SIGNAL(stateChanged(Process::State)), this, SLOT(processStateChanged(Process::State)));
+  addToolBar(_processToolbar);
+
+  auto dock = new QDockWidget();
+  dock->setObjectName("ModuleExplorer");
+  dock->setWindowTitle("Modules");
+  _moduleExplorer = new ModuleExplorer;
+  dock->setWidget(_moduleExplorer);
+  addDockWidget(Qt::LeftDockWidgetArea, dock);
 
   connect(ui->actionLoad_Target, &QAction::triggered, [this]()
     {
@@ -106,35 +128,25 @@ MainWindow::~MainWindow()
 
 void MainWindow::setTarget(const Target::Pointer &tar)
   {
-  if (_targetToolbar)
-    {
-    delete _targetToolbar;
-    }
+  _targetToolbar->setVisible(false);
+
+  _moduleExplorer->setTarget(tar);
 
   if (tar)
     {
-    _targetToolbar = new TargetToolbar(tar);
-    connect(_targetToolbar, SIGNAL(error(QString)), this, SLOT(onError(QString)));
-    connect(_targetToolbar, SIGNAL(processStarted(Process::Pointer)), this, SLOT(onProcessStarted(Process::Pointer)));
-
-    addToolBar(_targetToolbar);
+    _targetToolbar->setTarget(tar);
+    _targetToolbar->setVisible(true);
     }
   }
 
 void MainWindow::setProcess(const Process::Pointer &ptr)
   {
-  if (_processToolbar)
-    {
-    delete _processToolbar;
-    }
+  _processToolbar->setVisible(false);
 
   if (ptr)
     {
-    _processToolbar = new ProcessToolbar(ptr);
-    connect(_processToolbar, SIGNAL(error(QString)), this, SLOT(onError(QString)));
-    connect(_processToolbar, SIGNAL(statusUpdate(QString)), this, SLOT(setStatusText(QString)));
-
-    addToolBar(_processToolbar);
+    _processToolbar->setProcess(ptr);
+    _processToolbar->setVisible(true);
     }
   }
 
@@ -146,6 +158,14 @@ void MainWindow::onError(const QString &str)
 void MainWindow::setStatusText(const QString &str)
   {
   ui->statusbar->showMessage(str);
+  }
+
+void MainWindow::processStateChanged(Process::State state)
+  {
+  if (state == Process::State::Invalid)
+    {
+    _processToolbar->setVisible(false);
+    }
   }
 
 void MainWindow::onProcessStarted(const Process::Pointer &process)

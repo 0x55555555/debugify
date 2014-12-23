@@ -9,7 +9,9 @@ class TargetToolbar : public QToolBar
   Q_OBJECT
 
 public:
-  TargetToolbar(const Target::Pointer &target);
+  TargetToolbar();
+
+  void setTarget(const Target::Pointer &target);
 
 signals:
   void processStarted(const Process::Pointer &ptr);

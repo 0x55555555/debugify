@@ -3,8 +3,6 @@
 #include "QMainWindow"
 #include "QToolBar"
 #include "QTimer"
-#include "TargetToolbar.h"
-#include "ProcessToolbar.h"
 #include "Debugger.h"
 #include "Target.h"
 #include "Process.h"
@@ -12,6 +10,10 @@
 namespace Ui {
 class MainWindow;
 }
+
+class TargetToolbar;
+class ProcessToolbar;
+class ModuleExplorer;
 
 class MainWindow : public QMainWindow
   {
@@ -29,6 +31,7 @@ public:
 private slots:
   void onError(const QString &str);
   void setStatusText(const QString &str);
+  void processStateChanged(Process::State );
 
   void onProcessStarted(const Process::Pointer &);
   void onProcessEnded(const Process::Pointer &);
@@ -45,5 +48,6 @@ private:
 
   TargetToolbar *_targetToolbar;
   ProcessToolbar *_processToolbar;
+  ModuleExplorer *_moduleExplorer;
   };
 

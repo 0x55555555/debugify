@@ -585,6 +585,8 @@
 		08D13C3A1A49E38300436C54 /* XSignatureSpecialisations.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XSignatureSpecialisations.h; sourceTree = "<group>"; };
 		08D13C3B1A49E38300436C54 /* XTemplateMetaHelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XTemplateMetaHelpers.h; sourceTree = "<group>"; };
 		08D13C3C1A49E38300436C54 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		08D13C3F1A4A0D2600436C54 /* ModuleExplorer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ModuleExplorer.cpp; path = debugger/ModuleExplorer.cpp; sourceTree = "<group>"; };
+		08D13C401A4A0D2600436C54 /* ModuleExplorer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ModuleExplorer.h; path = debugger/ModuleExplorer.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -1909,6 +1911,8 @@
 		08F3B0D11A42D83600FD8694 = {
 			isa = PBXGroup;
 			children = (
+				08D13C3F1A4A0D2600436C54 /* ModuleExplorer.cpp */,
+				08D13C401A4A0D2600436C54 /* ModuleExplorer.h */,
 				08D139991A49E30900436C54 /* mainwindow.cpp */,
 				08D139A11A49E38200436C54 /* Eks */,
 				08D1399A1A49E30900436C54 /* mainwindow.h */,

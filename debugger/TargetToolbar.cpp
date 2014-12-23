@@ -2,8 +2,7 @@
 #include "Error.h"
 #include "QtWidgets/QAction"
 
-TargetToolbar::TargetToolbar(const Target::Pointer &target)
-    : _target(target)
+TargetToolbar::TargetToolbar()
   {
   setObjectName("Target Controls");
 
@@ -16,11 +15,15 @@ TargetToolbar::TargetToolbar(const Target::Pointer &target)
       }
 
     Error err;
-    emit processStarted(_target->Launch(Eks::Vector<Eks::StringRef>(), Eks::Vector<Eks::StringRef>(), err));
+    emit processStarted(_target->launch(Eks::Vector<Eks::StringRef>(), Eks::Vector<Eks::StringRef>(), err));
     checkError(err);
     });
   }
 
+void TargetToolbar::setTarget(const Target::Pointer &target)
+  {
+  _target = target;
+  }
 
 void TargetToolbar::checkError(const Error &err)
   {
