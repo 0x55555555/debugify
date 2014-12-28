@@ -9,5 +9,5 @@ namespace Debugify
 EXPORT_DEBUGIFY const bondage::Library &bindings();
 }
 
-BONDAGE_EXPOSED_CLASS_COPYABLE(EXPORT_DEBUGIFY, ::Debugify::Test)
+BONDAGE_EXPOSED_CLASS_MANAGED(EXPORT_DEBUGIFY, ::Debugify::Test)
 

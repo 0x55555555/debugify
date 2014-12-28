@@ -10,7 +10,7 @@ using namespace Debugify;
 
 
 struct Debugify_bar_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< float(*)(int, long) >, &::Debugify::bar, bondage::FunctionCaller> { };
-struct Debugify_foo_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Debugify::Test(*)(int, float) >, &::Debugify::foo, bondage::FunctionCaller> { };
+struct Debugify_foo_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Debugify::Test *(*)(int, float) >, &::Debugify::foo, bondage::FunctionCaller> { };
 
 const bondage::Function g_bondage_library_Debugify_methods[] = {
   bondage::FunctionBuilder::build<
@@ -36,9 +36,23 @@ const bondage::Library &bindings()
 
 
 // Exposing class ::Debugify::Test
+::Debugify::Test * Debugify_Test_Test_overload0(int inputArg0)
+{
+  auto result = bondage::WrappedClassHelper< ::Debugify::Test >::create(std::forward<int>(inputArg0));
+  return result;
+}
+
+struct Debugify_Test_Test_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< ::Debugify::Test *(*)(int) >, &Debugify_Test_Test_overload0, bondage::FunctionCaller> { };
+struct Debugify_Test_boink_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Debugify::Test *(::Debugify::Test::*)() >, &::Debugify::Test::boink, bondage::FunctionCaller> { };
 struct Debugify_Test_foo_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::Debugify::Test::*)(Debugify::Test *) >, &::Debugify::Test::foo, bondage::FunctionCaller> { };
 
 const bondage::Function Debugify_Test_methods[] = {
+  bondage::FunctionBuilder::build<
+    Debugify_Test_Test_overload0_t
+    >("Test"),
+  bondage::FunctionBuilder::build<
+    Debugify_Test_boink_overload0_t
+    >("boink"),
   bondage::FunctionBuilder::build<
     Debugify_Test_foo_overload0_t
     >("foo")
@@ -52,7 +66,7 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
   Test,
   void,
   Debugify_Test_methods,
-  1);
+  3);
 
 
 

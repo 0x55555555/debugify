@@ -6,6 +6,7 @@ require_relative 'bondage/parser/Library.rb'
 require_relative 'bondage/exposer/ParsedLibrary.rb'
 require_relative 'bondage/exposer/ClassExposer.rb'
 require_relative 'bondage/generators/CPP/LibraryGenerator.rb'
+require_relative 'bondage/generators/Ruby/LibraryGenerator.rb'
 require 'fileutils'
 
 library = Parser::Library.new("Debugify", "../sample/", "EXPORT_DEBUGIFY")
@@ -28,7 +29,7 @@ class HeaderHelper
   end
 
   def requiredIncludes(lib)
-    return []
+    return [  ]
   end
 
   def fileSuffix(lang)
@@ -36,7 +37,23 @@ class HeaderHelper
   end
 end
 
-cpp = CPP::LibraryGenerator.new(HeaderHelper.new)
+class PathResolver
+  def pathFor(cls)
+    return "#{cls.name}"
+  end
+
+  def coreClassPath()
+    return "Object"
+  end
+
+  def coreRequires()
+    return [ "require_relative '/Users/jorj/Shared/llvm/ruby-debugger/plugins/DebugifyBindings/sample/DebugifyBindings'" ]
+  end
+end
+
+helper = HeaderHelper.new
+
+cpp = CPP::LibraryGenerator.new(helper)
 
 cpp.generate(parsedLibrary, exposer)
 
@@ -44,9 +61,14 @@ expectedHeader = cpp.headerPath(library)
 expectedSource = cpp.sourcePath(library)
 
 FileUtils.mkdir_p(library.autogenPath(:cpp))
+FileUtils.mkdir_p(library.autogenPath(:ruby))
 File.open(expectedHeader, 'w') do |file|
   file.write(cpp.header)
 end
 File.open(expectedSource, 'w') do |file|
   file.write(cpp.source)
 end
+
+ruby = Ruby::LibraryGenerator.new({ }, { }, PathResolver.new, helper)
+ruby.generate(parsedLibrary, exposer)
+ruby.write(library.autogenPath(:ruby))
