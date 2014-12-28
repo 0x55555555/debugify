@@ -1,3 +1,6 @@
 [submodule "Eks"]
 	path = Eks
 	url = git@github.com:jorj1988/Eks.git
+[submodule "plugins/Ruby/generator/bondage"]
+	path = plugins/Ruby/generator/bondage
+	url = git@github.com:jorj1988/bondage.git

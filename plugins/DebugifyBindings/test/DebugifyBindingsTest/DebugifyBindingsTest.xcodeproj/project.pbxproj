@@ -1,0 +1,76 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXFileReference section */
+		08D13C4C1A5050FA00436C54 /* RubyBinder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = RubyBinder.cpp; path = ../../sample/RubyBinder.cpp; sourceTree = "<group>"; };
+		08D13C4D1A5050FA00436C54 /* RubyBinder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RubyBinder.h; path = ../../sample/RubyBinder.h; sourceTree = "<group>"; };
+		08D13C4E1A50661B00436C54 /* PackHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PackHelper.h; path = ../../generator/bondage/generators/Ruby/runtime/PackHelper.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		08D13C451A50500800436C54 = {
+			isa = PBXGroup;
+			children = (
+				08D13C4E1A50661B00436C54 /* PackHelper.h */,
+				08D13C4C1A5050FA00436C54 /* RubyBinder.cpp */,
+				08D13C4D1A5050FA00436C54 /* RubyBinder.h */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXProject section */
+		08D13C461A50500800436C54 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+			};
+			buildConfigurationList = 08D13C491A50500800436C54 /* Build configuration list for PBXProject "DebugifyBindingsTest" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 08D13C451A50500800436C54;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		08D13C4A1A50500800436C54 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		08D13C4B1A50500800436C54 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		08D13C491A50500800436C54 /* Build configuration list for PBXProject "DebugifyBindingsTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				08D13C4A1A50500800436C54 /* Debug */,
+				08D13C4B1A50500800436C54 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 08D13C461A50500800436C54 /* Project object */;
+}
