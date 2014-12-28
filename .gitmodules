@@ -4,3 +4,6 @@
 [submodule "plugins/Ruby/generator/bondage"]
 	path = plugins/Ruby/generator/bondage
 	url = git@github.com:jorj1988/bondage.git
+[submodule "plugins/DebugifyBindings/generator/bondage"]
+	path = plugins/DebugifyBindings/generator/bondage
+	url = git@github.com:jorj1988/bondage.git
