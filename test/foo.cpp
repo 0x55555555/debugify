@@ -3,5 +3,12 @@
 
 void Pork::foo(std::string in)
   {
-  std::cout << in << std::endl;
+  struct Pie
+    {
+    int i;
+    };
+
+  Pie p;
+
+  std::cout << in << p.i <<   std::endl;
   }

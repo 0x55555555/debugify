@@ -7,6 +7,7 @@ Eks.SubModule {
   references: [
     "Eks/EksAll.qbs",
     "plugins/LldbDriver/LldbDriver.qbs",
+    "plugins/Ruby/Ruby.qbs",
     "debugger/debugger.qbs",
     "test/test.qbs",
   ]

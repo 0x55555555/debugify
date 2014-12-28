@@ -587,6 +587,10 @@
 		08D13C3C1A49E38300436C54 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		08D13C3F1A4A0D2600436C54 /* ModuleExplorer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ModuleExplorer.cpp; path = debugger/ModuleExplorer.cpp; sourceTree = "<group>"; };
 		08D13C401A4A0D2600436C54 /* ModuleExplorer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ModuleExplorer.h; path = debugger/ModuleExplorer.h; sourceTree = "<group>"; };
+		08D13C411A4B4D0700436C54 /* FileEditor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = FileEditor.cpp; path = debugger/FileEditor.cpp; sourceTree = "<group>"; };
+		08D13C421A4B4D0700436C54 /* FileEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = FileEditor.h; path = debugger/FileEditor.h; sourceTree = "<group>"; };
+		08D13C431A4DC2A600436C54 /* TypeManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TypeManager.cpp; path = debugger/TypeManager.cpp; sourceTree = "<group>"; };
+		08D13C441A4DC2A600436C54 /* TypeManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TypeManager.h; path = debugger/TypeManager.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -1911,6 +1915,10 @@
 		08F3B0D11A42D83600FD8694 = {
 			isa = PBXGroup;
 			children = (
+				08D13C431A4DC2A600436C54 /* TypeManager.cpp */,
+				08D13C441A4DC2A600436C54 /* TypeManager.h */,
+				08D13C411A4B4D0700436C54 /* FileEditor.cpp */,
+				08D13C421A4B4D0700436C54 /* FileEditor.h */,
 				08D13C3F1A4A0D2600436C54 /* ModuleExplorer.cpp */,
 				08D13C401A4A0D2600436C54 /* ModuleExplorer.h */,
 				08D139991A49E30900436C54 /* mainwindow.cpp */,
