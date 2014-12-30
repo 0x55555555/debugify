@@ -1,5 +1,5 @@
 #include "RubyBinder.h"
-#include "autogen_Debugify/Debugify.h"
+#include "RubyBindings/autogen/cpp/Debugify.h"
 #include "ModuleBuilder.h"
 
 VALUE DebugifyBindings = Qnil;

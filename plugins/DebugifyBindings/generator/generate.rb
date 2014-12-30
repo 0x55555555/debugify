@@ -12,6 +12,9 @@ require 'fileutils'
 library = Parser::Library.new("Debugify", "../sample/", "EXPORT_DEBUGIFY")
 library.addFiles('.', '*.h', true)
 
+library.setAutogenPath(:cpp, "#{library.root}/RubyBindings/autogen/cpp")
+library.setAutogenPath(:ruby, "#{library.root}/RubyBindings/autogen/")
+
 FileUtils::mkdir_p(library.autogenPath(:cpp))
 
 debugging = false
@@ -47,7 +50,7 @@ class PathResolver
   end
 
   def coreRequires()
-    return [ "require_relative '/Users/jorj/Shared/llvm/ruby-debugger/plugins/DebugifyBindings/sample/DebugifyBindings'" ]
+    return [ "require_relative '../DebuggerBindingsInternal'" ]
   end
 end
 
