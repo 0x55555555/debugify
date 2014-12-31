@@ -1,0 +1,12 @@
+{
+  "::Eks::StringRef": {
+    "name": "StringRef",
+    "parent": null,
+    "filename": "include/Utilities/XStringRef.h"
+  },
+  "::Eks::String": {
+    "name": "String",
+    "parent": null,
+    "filename": "include/Utilities/XStringSimple.h"
+  }
+}

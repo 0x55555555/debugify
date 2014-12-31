@@ -1,6 +1,10 @@
 $:.unshift File.dirname(__FILE__) + "/bondage/parser/ffi-clang/lib"
+
 ENV['LLVM_CONFIG'] = "../../../../llvm-build/Release+Asserts/bin/llvm-config"
-PLATFORM_INCLUDES = [ "/usr/include/c++/4.2.1/" ]
+PLATFORM_INCLUDES = [
+  "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/",
+  "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk/usr/include/"
+]
 
 require_relative 'bondage/parser/Library.rb'
 require_relative 'bondage/exposer/ParsedLibrary.rb'
@@ -9,11 +13,23 @@ require_relative 'bondage/generators/CPP/LibraryGenerator.rb'
 require_relative 'bondage/generators/Ruby/LibraryGenerator.rb'
 require 'fileutils'
 
-library = Parser::Library.new("Debugify", "../sample/", "EXPORT_DEBUGIFY")
-library.addFiles('.', '*.h', true)
+Dir.chdir("../../../")
 
-library.setAutogenPath(:cpp, "#{library.root}/RubyBindings/autogen/cpp")
-library.setAutogenPath(:ruby, "#{library.root}/RubyBindings/autogen/")
+eksLibrary = Parser::Library.new("EksBindings", "Eks/EksCore", "")
+eksLibrary.setAutogenPath(:cpp, "plugins/DebugifyBindings/EksBindings")
+eksLibrary.addIncludePath("include")
+
+manualLibrary = Parser::Library.new("ManualBindings", "plugins/DebugifyBindings/ManualBindings/", "EXPORT_DEBUGIFY")
+manualLibrary.setAutogenPath(:cpp, "#{manualLibrary.root}")
+
+library = Parser::Library.new("LldbDriver", "plugins/LldbDriver", "EXPORT_DEBUGIFY")
+library.addFiles('include', '*.h', true)
+library.addIncludePath("include")
+library.addDependency(eksLibrary)
+library.addDependency(manualLibrary)
+
+library.setAutogenPath(:cpp, "plugins/DebugifyBindings/src/autogen")
+library.setAutogenPath(:ruby, "plugins/DebugifyBindings/ruby/autogen")
 
 FileUtils::mkdir_p(library.autogenPath(:cpp))
 
@@ -56,7 +72,7 @@ end
 
 helper = HeaderHelper.new
 
-cpp = CPP::LibraryGenerator.new(helper)
+cpp = CPP::LibraryGenerator.new(helper, )
 
 cpp.generate(parsedLibrary, exposer)
 

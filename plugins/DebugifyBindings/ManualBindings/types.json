@@ -1,0 +1,20 @@
+{
+  "::std::__1::shared_ptr": {
+    "name": "shared_ptr",
+    "parent": null,
+    "filename": "ManualBindings.h",
+    "templateArgumentsToSatisfy": [ 0 ]
+  },
+  "::std::__1::weak_ptr": {
+    "name": "weak_ptr",
+    "parent": null,
+    "filename": "ManualBindings.h",
+    "templateArgumentsToSatisfy": [ 0 ]
+  },
+  "::std::__1::unique_ptr": {
+    "name": "unique_ptr",
+    "parent": null,
+    "filename": "ManualBindings.h",
+    "templateArgumentsToSatisfy": [ 0 ]
+  }
+} 

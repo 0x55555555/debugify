@@ -2,7 +2,10 @@ import "../../Eks/EksBuild" as Eks;
 
 Eks.Library {
     files: [
-        "sample/**/*",
+        "EksBindings/**/*",
+        "ManualBindings/**/*",
+        "include/**/*",
+        "src/**/*",
         "generator/bondage/generators/Ruby/runtime/**/*",
         "generator/bondage/runtime/include/**/*",
         "generator/bondage/runtime/src/**/*",
@@ -13,7 +16,9 @@ Eks.Library {
 
   cpp.frameworks: base.concat(["Ruby"])
   cpp.includePaths: [
-    "sample",
+    ".",
+    "include",
+    "EksBindings",
     "generator/bondage/runtime/include",
     "generator/bondage/runtime/Reflect/include",
     "generator/bondage/generators/Ruby/runtime",
@@ -21,6 +26,7 @@ Eks.Library {
   ]
 
   Depends { name: "EksCore" }
+  Depends { name: "LldbDriver" }
 
 
   Export {
