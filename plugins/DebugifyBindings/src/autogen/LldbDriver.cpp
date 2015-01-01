@@ -3,7 +3,10 @@
 #include "bondage/RuntimeHelpersImpl.h"
 #include "utility"
 #include "tuple"
+#include "TypeMember.h"
+#include "FunctionMember.h"
 #include "../../../Eks/EksCore/include/Utilities/XStringRef.h"
+#include "Type.h"
 
 
 using namespace LldbDriver;
@@ -20,6 +23,130 @@ const bondage::Library &bindings()
   return g_bondage_library_LldbDriver;
 }
 }
+
+
+// Exposing class ::LldbDriver::TypeMember
+::LldbDriver::TypeMember * LldbDriver_TypeMember_TypeMember_overload0()
+{
+  auto result = bondage::WrappedClassHelper< ::LldbDriver::TypeMember >::create();
+  return result;
+}
+
+::LldbDriver::TypeMember * LldbDriver_TypeMember_TypeMember_overload1(const LldbDriver::TypeMember & inputArg0)
+{
+  auto result = bondage::WrappedClassHelper< ::LldbDriver::TypeMember >::create(std::forward<const LldbDriver::TypeMember &>(inputArg0));
+  return result;
+}
+
+struct LldbDriver_TypeMember_TypeMember_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< ::LldbDriver::TypeMember *(*)() >, &LldbDriver_TypeMember_TypeMember_overload0, bondage::FunctionCaller> { };
+struct LldbDriver_TypeMember_TypeMember_overload1_t : Reflect::FunctionCall<Reflect::FunctionSignature< ::LldbDriver::TypeMember *(*)(const LldbDriver::TypeMember &) >, &LldbDriver_TypeMember_TypeMember_overload1, bondage::FunctionCaller> { };
+struct TypeMember_TypeMember_overload_0 : Reflect::FunctionArgCountSelectorBlock<0,
+      LldbDriver_TypeMember_TypeMember_overload0_t
+      > { };
+struct TypeMember_TypeMember_overload_1 : Reflect::FunctionArgCountSelectorBlock<1,
+      LldbDriver_TypeMember_TypeMember_overload1_t
+      > { };
+struct TypeMember_TypeMember_overload : Reflect::FunctionArgumentCountSelector<
+    TypeMember_TypeMember_overload_0,
+    TypeMember_TypeMember_overload_1
+    > { };
+struct LldbDriver_TypeMember_bitOffset_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< size_t(::LldbDriver::TypeMember::*)() const >, &::LldbDriver::TypeMember::bitOffset, bondage::FunctionCaller> { };
+struct LldbDriver_TypeMember_byteOffset_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< size_t(::LldbDriver::TypeMember::*)() const >, &::LldbDriver::TypeMember::byteOffset, bondage::FunctionCaller> { };
+struct LldbDriver_TypeMember_name_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Eks::String(::LldbDriver::TypeMember::*)() const >, &::LldbDriver::TypeMember::name, bondage::FunctionCaller> { };
+struct LldbDriver_TypeMember_operatore_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::TypeMember &(::LldbDriver::TypeMember::*)(const LldbDriver::TypeMember &) >, &::LldbDriver::TypeMember::operator=, bondage::FunctionCaller> { };
+struct LldbDriver_TypeMember_type_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::Type(::LldbDriver::TypeMember::*)() const >, &::LldbDriver::TypeMember::type, bondage::FunctionCaller> { };
+
+const bondage::Function LldbDriver_TypeMember_methods[] = {
+  bondage::FunctionBuilder::buildOverload< TypeMember_TypeMember_overload >("TypeMember"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_TypeMember_bitOffset_overload0_t
+    >("bitOffset"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_TypeMember_byteOffset_overload0_t
+    >("byteOffset"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_TypeMember_name_overload0_t
+    >("name"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_TypeMember_operatore_overload0_t
+    >("operator="),
+  bondage::FunctionBuilder::build<
+    LldbDriver_TypeMember_type_overload0_t
+    >("type")
+};
+
+
+BONDAGE_IMPLEMENT_EXPOSED_CLASS(
+  LldbDriver_TypeMember,
+  g_bondage_library_LldbDriver,
+  ::LldbDriver,
+  TypeMember,
+  void,
+  LldbDriver_TypeMember_methods,
+  6);
+
+
+
+// Exposing class ::LldbDriver::FunctionMember
+::LldbDriver::FunctionMember * LldbDriver_FunctionMember_FunctionMember_overload0()
+{
+  auto result = bondage::WrappedClassHelper< ::LldbDriver::FunctionMember >::create();
+  return result;
+}
+
+::LldbDriver::FunctionMember * LldbDriver_FunctionMember_FunctionMember_overload1(const LldbDriver::FunctionMember & inputArg0)
+{
+  auto result = bondage::WrappedClassHelper< ::LldbDriver::FunctionMember >::create(std::forward<const LldbDriver::FunctionMember &>(inputArg0));
+  return result;
+}
+
+struct LldbDriver_FunctionMember_FunctionMember_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< ::LldbDriver::FunctionMember *(*)() >, &LldbDriver_FunctionMember_FunctionMember_overload0, bondage::FunctionCaller> { };
+struct LldbDriver_FunctionMember_FunctionMember_overload1_t : Reflect::FunctionCall<Reflect::FunctionSignature< ::LldbDriver::FunctionMember *(*)(const LldbDriver::FunctionMember &) >, &LldbDriver_FunctionMember_FunctionMember_overload1, bondage::FunctionCaller> { };
+struct FunctionMember_FunctionMember_overload_0 : Reflect::FunctionArgCountSelectorBlock<0,
+      LldbDriver_FunctionMember_FunctionMember_overload0_t
+      > { };
+struct FunctionMember_FunctionMember_overload_1 : Reflect::FunctionArgCountSelectorBlock<1,
+      LldbDriver_FunctionMember_FunctionMember_overload1_t
+      > { };
+struct FunctionMember_FunctionMember_overload : Reflect::FunctionArgumentCountSelector<
+    FunctionMember_FunctionMember_overload_0,
+    FunctionMember_FunctionMember_overload_1
+    > { };
+struct LldbDriver_FunctionMember_argument_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::Type(::LldbDriver::FunctionMember::*)(size_t) const >, &::LldbDriver::FunctionMember::argument, bondage::FunctionCaller> { };
+struct LldbDriver_FunctionMember_argumentCount_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< size_t(::LldbDriver::FunctionMember::*)() const >, &::LldbDriver::FunctionMember::argumentCount, bondage::FunctionCaller> { };
+struct LldbDriver_FunctionMember_name_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Eks::String(::LldbDriver::FunctionMember::*)() const >, &::LldbDriver::FunctionMember::name, bondage::FunctionCaller> { };
+struct LldbDriver_FunctionMember_operatore_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::FunctionMember &(::LldbDriver::FunctionMember::*)(const LldbDriver::FunctionMember &) >, &::LldbDriver::FunctionMember::operator=, bondage::FunctionCaller> { };
+struct LldbDriver_FunctionMember_returnType_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::Type(::LldbDriver::FunctionMember::*)() const >, &::LldbDriver::FunctionMember::returnType, bondage::FunctionCaller> { };
+
+const bondage::Function LldbDriver_FunctionMember_methods[] = {
+  bondage::FunctionBuilder::buildOverload< FunctionMember_FunctionMember_overload >("FunctionMember"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_FunctionMember_argument_overload0_t
+    >("argument"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_FunctionMember_argumentCount_overload0_t
+    >("argumentCount"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_FunctionMember_name_overload0_t
+    >("name"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_FunctionMember_operatore_overload0_t
+    >("operator="),
+  bondage::FunctionBuilder::build<
+    LldbDriver_FunctionMember_returnType_overload0_t
+    >("returnType")
+};
+
+
+BONDAGE_IMPLEMENT_EXPOSED_CLASS(
+  LldbDriver_FunctionMember,
+  g_bondage_library_LldbDriver,
+  ::LldbDriver,
+  FunctionMember,
+  void,
+  LldbDriver_FunctionMember_methods,
+  6);
+
 
 
 // Exposing class ::LldbDriver::Debugger
@@ -48,10 +175,14 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
 
 
 // Exposing class ::LldbDriver::Target
+struct LldbDriver_Target_moduleAt_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< std::shared_ptr<Module>(::LldbDriver::Target::*)(size_t) >, &::LldbDriver::Target::moduleAt, bondage::FunctionCaller> { };
 struct LldbDriver_Target_moduleCount_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< size_t(::LldbDriver::Target::*)() >, &::LldbDriver::Target::moduleCount, bondage::FunctionCaller> { };
 struct LldbDriver_Target_path_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Eks::String(::LldbDriver::Target::*)() const >, &::LldbDriver::Target::path, bondage::FunctionCaller> { };
 
 const bondage::Function LldbDriver_Target_methods[] = {
+  bondage::FunctionBuilder::build<
+    LldbDriver_Target_moduleAt_overload0_t
+    >("moduleAt"),
   bondage::FunctionBuilder::build<
     LldbDriver_Target_moduleCount_overload0_t
     >("moduleCount"),
@@ -68,7 +199,189 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
   Target,
   void,
   LldbDriver_Target_methods,
-  2);
+  3);
+
+
+
+// Exposing class ::LldbDriver::CompileUnit
+struct LldbDriver_CompileUnit_module_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< const std::shared_ptr<Module> &(::LldbDriver::CompileUnit::*)() const >, &::LldbDriver::CompileUnit::module, bondage::FunctionCaller> { };
+
+const bondage::Function LldbDriver_CompileUnit_methods[] = {
+  bondage::FunctionBuilder::build<
+    LldbDriver_CompileUnit_module_overload0_t
+    >("module")
+};
+
+
+BONDAGE_IMPLEMENT_EXPOSED_CLASS(
+  LldbDriver_CompileUnit,
+  g_bondage_library_LldbDriver,
+  ::LldbDriver,
+  CompileUnit,
+  void,
+  LldbDriver_CompileUnit_methods,
+  1);
+
+
+
+// Exposing class ::LldbDriver::Type
+::LldbDriver::Type * LldbDriver_Type_Type_overload0()
+{
+  auto result = bondage::WrappedClassHelper< ::LldbDriver::Type >::create();
+  return result;
+}
+
+::LldbDriver::Type * LldbDriver_Type_Type_overload1(const LldbDriver::Type & inputArg0)
+{
+  auto result = bondage::WrappedClassHelper< ::LldbDriver::Type >::create(std::forward<const LldbDriver::Type &>(inputArg0));
+  return result;
+}
+
+struct LldbDriver_Type_Type_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< ::LldbDriver::Type *(*)() >, &LldbDriver_Type_Type_overload0, bondage::FunctionCaller> { };
+struct LldbDriver_Type_Type_overload1_t : Reflect::FunctionCall<Reflect::FunctionSignature< ::LldbDriver::Type *(*)(const LldbDriver::Type &) >, &LldbDriver_Type_Type_overload1, bondage::FunctionCaller> { };
+struct Type_Type_overload_0 : Reflect::FunctionArgCountSelectorBlock<0,
+      LldbDriver_Type_Type_overload0_t
+      > { };
+struct Type_Type_overload_1 : Reflect::FunctionArgCountSelectorBlock<1,
+      LldbDriver_Type_Type_overload1_t
+      > { };
+struct Type_Type_overload : Reflect::FunctionArgumentCountSelector<
+    Type_Type_overload_0,
+    Type_Type_overload_1
+    > { };
+struct LldbDriver_Type_canonicalType_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::Type(::LldbDriver::Type::*)() const >, &::LldbDriver::Type::canonicalType, bondage::FunctionCaller> { };
+struct LldbDriver_Type_compileUnit_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< std::shared_ptr<CompileUnit> &(::LldbDriver::Type::*)() >, &::LldbDriver::Type::compileUnit, bondage::FunctionCaller> { };
+struct LldbDriver_Type_compileUnit_overload1_t : Reflect::FunctionCall<Reflect::FunctionSignature< const std::shared_ptr<CompileUnit> &(::LldbDriver::Type::*)() const >, &::LldbDriver::Type::compileUnit, bondage::FunctionCaller> { };
+struct Type_compileUnit_overload_1 : Reflect::FunctionArgCountSelectorBlock<1, Reflect::FunctionArgumentTypeSelector<
+      LldbDriver_Type_compileUnit_overload0_t,
+      LldbDriver_Type_compileUnit_overload1_t
+      > > { };
+struct Type_compileUnit_overload : Reflect::FunctionArgumentCountSelector<
+    Type_compileUnit_overload_1
+    > { };
+struct LldbDriver_Type_dereferencedType_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::Type(::LldbDriver::Type::*)() const >, &::LldbDriver::Type::dereferencedType, bondage::FunctionCaller> { };
+struct LldbDriver_Type_directBaseClass_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::TypeMember(::LldbDriver::Type::*)(size_t) const >, &::LldbDriver::Type::directBaseClass, bondage::FunctionCaller> { };
+struct LldbDriver_Type_directBaseClassCount_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< size_t(::LldbDriver::Type::*)() const >, &::LldbDriver::Type::directBaseClassCount, bondage::FunctionCaller> { };
+struct LldbDriver_Type_function_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::FunctionMember(::LldbDriver::Type::*)(size_t) const >, &::LldbDriver::Type::function, bondage::FunctionCaller> { };
+struct LldbDriver_Type_functionCount_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< size_t(::LldbDriver::Type::*)() const >, &::LldbDriver::Type::functionCount, bondage::FunctionCaller> { };
+struct LldbDriver_Type_help_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Eks::String(::LldbDriver::Type::*)() const >, &::LldbDriver::Type::help, bondage::FunctionCaller> { };
+struct LldbDriver_Type_isDataStructure_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< bool(::LldbDriver::Type::*)() const >, &::LldbDriver::Type::isDataStructure, bondage::FunctionCaller> { };
+struct LldbDriver_Type_isPointer_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< bool(::LldbDriver::Type::*)() const >, &::LldbDriver::Type::isPointer, bondage::FunctionCaller> { };
+struct LldbDriver_Type_isReference_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< bool(::LldbDriver::Type::*)() const >, &::LldbDriver::Type::isReference, bondage::FunctionCaller> { };
+struct LldbDriver_Type_isTypedef_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< bool(::LldbDriver::Type::*)() const >, &::LldbDriver::Type::isTypedef, bondage::FunctionCaller> { };
+struct LldbDriver_Type_member_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::TypeMember(::LldbDriver::Type::*)(size_t) const >, &::LldbDriver::Type::member, bondage::FunctionCaller> { };
+struct LldbDriver_Type_memberCount_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< size_t(::LldbDriver::Type::*)() const >, &::LldbDriver::Type::memberCount, bondage::FunctionCaller> { };
+struct LldbDriver_Type_name_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Eks::String(::LldbDriver::Type::*)() const >, &::LldbDriver::Type::name, bondage::FunctionCaller> { };
+struct LldbDriver_Type_operatore_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::Type &(::LldbDriver::Type::*)(const LldbDriver::Type &) >, &::LldbDriver::Type::operator=, bondage::FunctionCaller> { };
+struct LldbDriver_Type_pointeeType_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::Type(::LldbDriver::Type::*)() const >, &::LldbDriver::Type::pointeeType, bondage::FunctionCaller> { };
+struct LldbDriver_Type_size_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< size_t(::LldbDriver::Type::*)() const >, &::LldbDriver::Type::size, bondage::FunctionCaller> { };
+struct LldbDriver_Type_templateArgumentCount_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< size_t(::LldbDriver::Type::*)() const >, &::LldbDriver::Type::templateArgumentCount, bondage::FunctionCaller> { };
+struct LldbDriver_Type_templateArgumentType_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::Type(::LldbDriver::Type::*)(size_t) const >, &::LldbDriver::Type::templateArgumentType, bondage::FunctionCaller> { };
+struct LldbDriver_Type_typedefType_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::Type(::LldbDriver::Type::*)() const >, &::LldbDriver::Type::typedefType, bondage::FunctionCaller> { };
+struct LldbDriver_Type_virtualBaseClass_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::TypeMember(::LldbDriver::Type::*)(size_t) const >, &::LldbDriver::Type::virtualBaseClass, bondage::FunctionCaller> { };
+struct LldbDriver_Type_virtualBaseClassCount_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< size_t(::LldbDriver::Type::*)() const >, &::LldbDriver::Type::virtualBaseClassCount, bondage::FunctionCaller> { };
+
+const bondage::Function LldbDriver_Type_methods[] = {
+  bondage::FunctionBuilder::buildOverload< Type_Type_overload >("Type"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Type_canonicalType_overload0_t
+    >("canonicalType"),
+  bondage::FunctionBuilder::buildOverload< Type_compileUnit_overload >("compileUnit"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Type_dereferencedType_overload0_t
+    >("dereferencedType"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Type_directBaseClass_overload0_t
+    >("directBaseClass"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Type_directBaseClassCount_overload0_t
+    >("directBaseClassCount"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Type_function_overload0_t
+    >("function"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Type_functionCount_overload0_t
+    >("functionCount"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Type_help_overload0_t
+    >("help"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Type_isDataStructure_overload0_t
+    >("isDataStructure"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Type_isPointer_overload0_t
+    >("isPointer"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Type_isReference_overload0_t
+    >("isReference"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Type_isTypedef_overload0_t
+    >("isTypedef"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Type_member_overload0_t
+    >("member"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Type_memberCount_overload0_t
+    >("memberCount"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Type_name_overload0_t
+    >("name"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Type_operatore_overload0_t
+    >("operator="),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Type_pointeeType_overload0_t
+    >("pointeeType"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Type_size_overload0_t
+    >("size"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Type_templateArgumentCount_overload0_t
+    >("templateArgumentCount"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Type_templateArgumentType_overload0_t
+    >("templateArgumentType"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Type_typedefType_overload0_t
+    >("typedefType"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Type_virtualBaseClass_overload0_t
+    >("virtualBaseClass"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Type_virtualBaseClassCount_overload0_t
+    >("virtualBaseClassCount")
+};
+
+
+BONDAGE_IMPLEMENT_EXPOSED_CLASS(
+  LldbDriver_Type,
+  g_bondage_library_LldbDriver,
+  ::LldbDriver,
+  Type,
+  void,
+  LldbDriver_Type_methods,
+  24);
+
+
+
+// Exposing class ::LldbDriver::Module
+struct LldbDriver_Module_path_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Eks::String(::LldbDriver::Module::*)() const >, &::LldbDriver::Module::path, bondage::FunctionCaller> { };
+
+const bondage::Function LldbDriver_Module_methods[] = {
+  bondage::FunctionBuilder::build<
+    LldbDriver_Module_path_overload0_t
+    >("path")
+};
+
+
+BONDAGE_IMPLEMENT_EXPOSED_CLASS(
+  LldbDriver_Module,
+  g_bondage_library_LldbDriver,
+  ::LldbDriver,
+  Module,
+  void,
+  LldbDriver_Module_methods,
+  1);
 
 
 

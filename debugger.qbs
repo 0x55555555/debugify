@@ -8,7 +8,7 @@ Eks.SubModule {
     "Eks/EksAll.qbs",
     "plugins/LldbDriver/LldbDriver.qbs",
     "plugins/DebugifyBindings/DebugifyBindings.qbs",
-    "debugger/debugger.qbs",
-    "test/test.qbs",
+    "plugins/UI/UI.qbs",
+    "plugins/UIBindings/UIBindings.qbs",
   ]
 }

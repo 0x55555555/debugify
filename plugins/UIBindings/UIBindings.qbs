@@ -5,7 +5,6 @@ Eks.Library {
   property path reflectPath: bondagePath + "/runtime/Reflect/"
 
     files: [
-        "EksBindings/**/*",
         "ManualBindings/**/*",
         "include/**/*",
         "src/**/*",
@@ -21,7 +20,6 @@ Eks.Library {
   cpp.includePaths: [
     ".",
     "include",
-    "EksBindings",
     bondagePath + "runtime/include",
     bondagePath + "generators/Ruby/runtime",
     reflectPath + "include",
@@ -29,7 +27,7 @@ Eks.Library {
   ]
 
   Depends { name: "EksCore" }
-  Depends { name: "LldbDriver" }
+  Depends { name: "UI" }
 
 
   Export {

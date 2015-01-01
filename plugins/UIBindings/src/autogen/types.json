@@ -1,0 +1,7 @@
+{
+  "::UI::Application": {
+    "name": "Application",
+    "parent": null,
+    "filename": "include/Application.h"
+  }
+}

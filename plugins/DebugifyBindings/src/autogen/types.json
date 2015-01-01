@@ -1,4 +1,14 @@
 {
+  "::LldbDriver::TypeMember": {
+    "name": "TypeMember",
+    "parent": null,
+    "filename": "include/TypeMember.h"
+  },
+  "::LldbDriver::FunctionMember": {
+    "name": "FunctionMember",
+    "parent": null,
+    "filename": "include/FunctionMember.h"
+  },
   "::LldbDriver::Debugger": {
     "name": "Debugger",
     "parent": null,
@@ -8,5 +18,20 @@
     "name": "Target",
     "parent": null,
     "filename": "include/Target.h"
+  },
+  "::LldbDriver::CompileUnit": {
+    "name": "CompileUnit",
+    "parent": null,
+    "filename": "include/CompileUnit.h"
+  },
+  "::LldbDriver::Type": {
+    "name": "Type",
+    "parent": null,
+    "filename": "include/Type.h"
+  },
+  "::LldbDriver::Module": {
+    "name": "Module",
+    "parent": null,
+    "filename": "include/Module.h"
   }
 }
