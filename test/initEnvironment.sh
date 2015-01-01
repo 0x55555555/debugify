@@ -1,4 +1,4 @@
-ROOT="../../"
+ROOT=`pwd`"/../../"
 LLVM_BUILD_ROOT=$ROOT/llvm-build/Release+Asserts/
 BUILD_ID=Desktop_Qt_5_4_0_clang_64bit
 BUILD_VARIANT=qtc_$BUILD_ID
