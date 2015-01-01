@@ -11,5 +11,6 @@ Eks.SubModule {
     "plugins/DebugifyBindings/DebugifyBindings.qbs",
     "plugins/UI/UI.qbs",
     "plugins/UIBindings/UIBindings.qbs",
+    "testClient/test.qbs"
   ]
 }
