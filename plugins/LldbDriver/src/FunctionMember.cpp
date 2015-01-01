@@ -16,7 +16,7 @@ FunctionMember::FunctionMember(const FunctionMember &t)
   }
 
 FunctionMember::~FunctionMember()
- {
+  {
   }
 
 FunctionMember &FunctionMember::operator=(const FunctionMember &t)
