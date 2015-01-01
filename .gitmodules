@@ -4,3 +4,6 @@
 [submodule "plugins/Ruby/generator/bondage"]
 	path = plugins/Ruby/generator/bondage
 	url = git@github.com:jorj1988/bondage.git
+[submodule "plugins/BindingGenerator/bondage"]
+	path = plugins/BindingGenerator/bondage
+	url = git@github.com:jorj1988/bondage.git

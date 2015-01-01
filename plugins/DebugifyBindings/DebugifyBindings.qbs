@@ -1,40 +1,30 @@
 import "../../Eks/EksBuild" as Eks;
 
 Eks.Library {
-  property path bondagePath: "../BindingGenerator/bondage/"
-  property path reflectPath: bondagePath + "/runtime/Reflect/"
 
     files: [
         "EksBindings/**/*",
         "ManualBindings/**/*",
         "include/**/*",
-        "src/**/*",
-        bondagePath + "generators/Ruby/runtime/**/*",
-        bondagePath + "runtime/include/**/*",
-        bondagePath + "runtime/src/**/*",
-        reflectPath + "Reflect/include/**/*",
+        "src/**/*"
     ]
-
-  cpp.defines: base.concat(["REFLECT_DESCRIPTIVE_EXCEPTIONS=1"])
 
   cpp.frameworks: base.concat(["Ruby"])
   cpp.includePaths: [
     ".",
     "include",
-    "EksBindings",
-    bondagePath + "runtime/include",
-    bondagePath + "generators/Ruby/runtime",
-    reflectPath + "include",
-    "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk/System/Library/Frameworks/Ruby.framework/Versions/2.0/Headers/ruby/"
+    "EksBindings"
   ]
 
   Depends { name: "EksCore" }
   Depends { name: "LldbDriver" }
+  Depends { name: "Bondage" }
 
 
   Export {
     Depends { name: "cpp" }
     Depends { name: "EksCore" }
+    Depends { name: "Bondage" }
     cpp.includePaths: [ "include" ]
   }
 }

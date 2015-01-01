@@ -6,6 +6,7 @@ Eks.SubModule {
 
   references: [
     "Eks/EksAll.qbs",
+    "plugins/BindingGenerator/Bondage.qbs",
     "plugins/LldbDriver/LldbDriver.qbs",
     "plugins/DebugifyBindings/DebugifyBindings.qbs",
     "plugins/UI/UI.qbs",
