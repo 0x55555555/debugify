@@ -9,5 +9,3 @@ DYLD_LIBRARY_PATH=$LLVM_BUILD_ROOT/lib:$DEBUGGER_BUILD_ROOT/LldbDriver.qtc_Deskt
 
 ln -s -f $DEBUGGER_BUILD_ROOT/UIBindings.$BUILD_VARIANT/libUIBindings.dylib $PLUGINS_ROOT/UIBindings/ruby/UIBindings.bundle
 ln -s -f $DEBUGGER_BUILD_ROOT/DebugifyBindings.$BUILD_VARIANT/libDebugifyBindings.dylib $PLUGINS_ROOT/DebugifyBindings/ruby/DebugifyBindings.bundle
-
-echo $PLUGINS_ROOT/UIBindings/ruby/
