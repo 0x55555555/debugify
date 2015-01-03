@@ -30,6 +30,12 @@ TypeManager::TypeManager()
 void TypeManager::setTarget(const Target::Pointer &tar)
   {
   _target = tar;
+  _types.clear();
+
+  if (!_target)
+    {
+    return;
+    }
 
   for(size_t i = 0; i < _target->moduleCount(); ++i)
     {

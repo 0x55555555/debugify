@@ -16,12 +16,14 @@ class MainWindow;
 namespace UI
 {
 
+class Terminal;
 class TypeManager;
 class Editor;
 class TargetToolbar;
 class ProcessToolbar;
 class ModuleExplorer;
 
+/// \expose managed
 class MainWindow : public QMainWindow
   {
   Q_OBJECT
@@ -34,6 +36,8 @@ public:
 
   explicit MainWindow(QWidget *parent = 0);
   ~MainWindow();
+
+  Terminal *terminal() const;
 
 private slots:
   void onError(const QString &str);
@@ -67,6 +71,7 @@ private:
   ProcessToolbar *_processToolbar;
   TypeManager *_types;
   ModuleExplorer *_moduleExplorer;
+  Terminal *_terminal;
   };
 
 }

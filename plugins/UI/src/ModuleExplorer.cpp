@@ -267,6 +267,10 @@ void ModuleExplorer::filterChanged(const QString &filter)
 void ModuleExplorer::rebuildTree()
   {
   QStandardItemModel::clear();
+  if (!_target)
+    {
+    return;
+    }
 
   QStandardItem *systemItems = new QStandardItem("System");
 

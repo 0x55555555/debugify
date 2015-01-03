@@ -38,27 +38,27 @@
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>0DB4D184534A15F7E36BB0813C4C39053212C827</key>
-		<string>../../..Eks/EksConcept/</string>
+		<string>../../..Eks/EksConcept</string>
 		<key>1773298C66AB0DB2691D225CC0F29128DDE9F829</key>
-		<string>../../..Eks/</string>
+		<string>../../..Eks</string>
 		<key>432B738309AD5B875E07E85520DBC3DFE7EF61BA</key>
-		<string>../../..Eks/EksCore/</string>
+		<string>../../..Eks/EksCore</string>
 		<key>59646176BA2DC5E70D89EC9BF06E921121785A25</key>
-		<string>../../..Eks/Eks3D/</string>
+		<string>../../..Eks/Eks3D</string>
 		<key>6C58D18BDFA9C8C1BEC349DE670D3E50CCC6F19A</key>
-		<string>../../..Eks/EksGui/</string>
+		<string>../../..Eks/EksGui</string>
 		<key>963EEF9E4CEA5EA27C7D6BF7558E15F702F74490</key>
-		<string>../../..plugins/BindingGenerator/bondage/</string>
+		<string>../../..plugins/BindingGenerator/bondage</string>
 		<key>969B6F8C71B179C24DAD2D83727B7C23AE4C21F5</key>
 		<string>../../..</string>
 		<key>D19996B495DC34885159FE0CC6B5994837B3D9C9</key>
-		<string>../../..plugins/LldbDriver/</string>
+		<string>../../..plugins/LldbDriver</string>
 		<key>D476E15051A7EA8E7BEDD7E550824430E29CB96B</key>
-		<string>../../..plugins/BindingGenerator/bondage/runtime/Reflect/</string>
+		<string>../../..plugins/BindingGenerator/bondage/runtime/Reflect</string>
 		<key>D761AD352FCAACD6844D67AC8CD77FC33ACB0AEB</key>
-		<string>../../..plugins/BindingGenerator/bondage/parser/ffi-clang/</string>
+		<string>../../..plugins/BindingGenerator/bondage/parser/ffi-clang</string>
 		<key>EDE58975C3EF3A9B6650CFDB5FE5FF641F7E0E53</key>
-		<string>../../..Eks/EksBuild/</string>
+		<string>../../..Eks/EksBuild</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>bitbucket.org:jorj1988/debugger.git</string>
@@ -75,14 +75,6 @@
 			<string>963EEF9E4CEA5EA27C7D6BF7558E15F702F74490</string>
 			<key>IDESourceControlWCCName</key>
 			<string>bondage</string>
-		</dict>
-		<dict>
-			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
-			<string>public.vcs.git</string>
-			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>1773298C66AB0DB2691D225CC0F29128DDE9F829</string>
-			<key>IDESourceControlWCCName</key>
-			<string>Eks</string>
 		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
@@ -155,6 +147,14 @@
 			<string>969B6F8C71B179C24DAD2D83727B7C23AE4C21F5</string>
 			<key>IDESourceControlWCCName</key>
 			<string>ruby-debugger</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>1773298C66AB0DB2691D225CC0F29128DDE9F829</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ruby-debuggerEks</string>
 		</dict>
 	</array>
 </dict>

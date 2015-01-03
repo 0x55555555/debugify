@@ -16,5 +16,10 @@
     "parent": null,
     "filename": "ManualBindings.h",
     "templateArgumentsToSatisfy": [ 0 ]
+  },
+  "::std::__1::function": {
+    "name": "function",
+    "parent": null,
+    "filename": "ManualBindings.h"
   }
 } 

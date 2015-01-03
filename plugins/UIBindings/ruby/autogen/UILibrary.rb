@@ -3,6 +3,9 @@
 
 require_relative '../BindingsInternal'
 
+require_relative 'InputNotifier'
+require_relative 'MainWindow'
+require_relative 'Terminal'
 require_relative 'Application'
 
 module UI

@@ -823,7 +823,6 @@
 		08D1402C1A55864500436C54 /* TestUtils.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = TestUtils.rb; sourceTree = "<group>"; };
 		08D1402D1A55864500436C54 /* TypeTest.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = TypeTest.rb; sourceTree = "<group>"; };
 		08D1402E1A55864500436C54 /* Bondage.qbs */ = {isa = PBXFileReference; lastKnownFileType = text; path = Bondage.qbs; sourceTree = "<group>"; };
-		08D1402F1A55864500436C54 /* bondagehelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = bondagehelper.cpp; sourceTree = "<group>"; };
 		08D140301A55864500436C54 /* BondageHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BondageHelper.h; sourceTree = "<group>"; };
 		08D140311A55864500436C54 /* generate.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = generate.rb; sourceTree = "<group>"; };
 		08D140331A55864500436C54 /* DebugifyBindings.qbs */ = {isa = PBXFileReference; lastKnownFileType = text; path = DebugifyBindings.qbs; sourceTree = "<group>"; };
@@ -854,7 +853,6 @@
 		08D140551A55864500436C54 /* Global.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Global.h; sourceTree = "<group>"; };
 		08D140561A55864500436C54 /* Module.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Module.h; sourceTree = "<group>"; };
 		08D140571A55864500436C54 /* Process.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Process.h; sourceTree = "<group>"; };
-		08D1405B1A55864500436C54 /* types.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = types.json; sourceTree = "<group>"; };
 		08D1405C1A55864500436C54 /* Target.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Target.h; sourceTree = "<group>"; };
 		08D1405D1A55864500436C54 /* Type.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Type.h; sourceTree = "<group>"; };
 		08D1405E1A55864500436C54 /* TypeMember.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TypeMember.h; sourceTree = "<group>"; };
@@ -909,12 +907,16 @@
 		08D1409B1A55864500436C54 /* UI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UI.h; sourceTree = "<group>"; };
 		08D1409C1A55864500436C54 /* UIBindings.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UIBindings.cpp; sourceTree = "<group>"; };
 		08D1409D1A55864500436C54 /* UIBindings.qbs */ = {isa = PBXFileReference; lastKnownFileType = text; path = UIBindings.qbs; sourceTree = "<group>"; };
+		08D140A51A5744DA00436C54 /* Terminal.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Terminal.cpp; path = ../plugins/UI/src/Terminal.cpp; sourceTree = "<group>"; };
+		08D140A81A5744E600436C54 /* Terminal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Terminal.h; path = ../plugins/UI/include/Terminal.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		08D13C451A50500800436C54 = {
 			isa = PBXGroup;
 			children = (
+				08D140A81A5744E600436C54 /* Terminal.h */,
+				08D140A51A5744DA00436C54 /* Terminal.cpp */,
 				08D13C531A55864400436C54 /* Eks */,
 				08D13EEF1A55864500436C54 /* plugins */,
 			);
@@ -2257,7 +2259,6 @@
 			children = (
 				08D13EF11A55864500436C54 /* bondage */,
 				08D1402E1A55864500436C54 /* Bondage.qbs */,
-				08D1402F1A55864500436C54 /* bondagehelper.cpp */,
 				08D140301A55864500436C54 /* BondageHelper.h */,
 				08D140311A55864500436C54 /* generate.rb */,
 			);
@@ -3178,36 +3179,11 @@
 				08D140551A55864500436C54 /* Global.h */,
 				08D140561A55864500436C54 /* Module.h */,
 				08D140571A55864500436C54 /* Process.h */,
-				08D140581A55864500436C54 /* RubyBindings */,
 				08D1405C1A55864500436C54 /* Target.h */,
 				08D1405D1A55864500436C54 /* Type.h */,
 				08D1405E1A55864500436C54 /* TypeMember.h */,
 			);
 			path = include;
-			sourceTree = "<group>";
-		};
-		08D140581A55864500436C54 /* RubyBindings */ = {
-			isa = PBXGroup;
-			children = (
-				08D140591A55864500436C54 /* autogen */,
-			);
-			path = RubyBindings;
-			sourceTree = "<group>";
-		};
-		08D140591A55864500436C54 /* autogen */ = {
-			isa = PBXGroup;
-			children = (
-				08D1405A1A55864500436C54 /* cpp */,
-			);
-			path = autogen;
-			sourceTree = "<group>";
-		};
-		08D1405A1A55864500436C54 /* cpp */ = {
-			isa = PBXGroup;
-			children = (
-				08D1405B1A55864500436C54 /* types.json */,
-			);
-			path = cpp;
 			sourceTree = "<group>";
 		};
 		08D1405F1A55864500436C54 /* internalInclude */ = {

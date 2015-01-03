@@ -10,6 +10,7 @@
 #include "QDockWidget"
 #include "FileEditor.h"
 #include "TypeEditor.h"
+#include "Terminal.h"
 
 namespace UI
 {
@@ -39,6 +40,14 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(_processToolbar, SIGNAL(statusUpdate(QString)), this, SLOT(setStatusText(QString)));
   connect(_processToolbar, SIGNAL(stateChanged(Process::State)), this, SLOT(processStateChanged(Process::State)));
   addToolBar(_processToolbar);
+
+  _terminal = new Terminal();
+  auto term = new QDockWidget();
+  term->setObjectName("Terminal");
+  term->setWindowTitle(term->objectName());
+  term->setWidget(_terminal);
+  addDockWidget(Qt::BottomDockWidgetArea, term);
+
 
   _types = new TypeManager();
 
@@ -98,6 +107,11 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
   {
   delete ui;
+  }
+
+Terminal *MainWindow::terminal() const
+  {
+  return _terminal;
   }
 
 void MainWindow::setTarget(const Target::Pointer &tar)

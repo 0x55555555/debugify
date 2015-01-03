@@ -3,7 +3,8 @@ import "../../Eks/EksBuild" as Eks;
 Eks.Library {
   property path bondagePath: "bondage/"
   property path reflectPath: bondagePath + "runtime/Reflect/"
-  property string systemRubyPath: "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk/System/Library/Frameworks/Ruby.framework/Versions/2.0/Headers/ruby/"
+  property string rubyPath: "/Users/jorj/.rvm/rubies/ruby-2.2.0/"
+  property string rubySystemPath: rubyPath + "include/ruby-2.2.0/x86_64-darwin14/"
 
   files: [
         "*.*",
@@ -11,17 +12,21 @@ Eks.Library {
         bondagePath + "runtime/include/**/*",
         bondagePath + "runtime/src/**/*",
         reflectPath + "include/**/*",
+        "EksBindings/**/*"
     ]
 
   cpp.defines: base.concat(["REFLECT_DESCRIPTIVE_EXCEPTIONS=1", "REFLECT_ASSERT=xAssert", "BONDAGE_HELPER"])
 
-  cpp.frameworks: base.concat(["Ruby"])
+  cpp.libraryPaths: base.concat([rubyPath + "lib/"])
+  cpp.dynamicLibraries: base.concat(["ruby"])
   cpp.includePaths: [
     ".",
     bondagePath + "runtime/include",
     bondagePath + "generators/Ruby/runtime",
     reflectPath + "include",
-    systemRubyPath
+    rubyPath + "include/ruby-2.2.0",
+    rubySystemPath,
+    "EksBindings"
   ]
 
   Depends { name: "EksCore" }
@@ -34,8 +39,13 @@ Eks.Library {
       bondagePath + "runtime/include",
       bondagePath + "generators/Ruby/runtime",
       reflectPath + "include",
-      systemRubyPath
+      rubyPath + "include/ruby-2.2.0",
+      rubySystemPath,
+      "EksBindings"
     ]
+
+    cpp.libraryPaths: base.concat([rubyPath + "lib/"])
+    cpp.dynamicLibraries: base.concat(["ruby"])
 
     cpp.defines: base.concat(["REFLECT_DESCRIPTIVE_EXCEPTIONS=1", "REFLECT_ASSERT=xAssert", "BONDAGE_HELPER"])
   }

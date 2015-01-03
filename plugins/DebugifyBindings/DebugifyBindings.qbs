@@ -3,17 +3,14 @@ import "../../Eks/EksBuild" as Eks;
 Eks.Library {
 
     files: [
-        "EksBindings/**/*",
         "ManualBindings/**/*",
         "include/**/*",
         "src/**/*"
     ]
 
-  cpp.frameworks: base.concat(["Ruby"])
   cpp.includePaths: [
     ".",
     "include",
-    "EksBindings"
   ]
 
   Depends { name: "EksCore" }

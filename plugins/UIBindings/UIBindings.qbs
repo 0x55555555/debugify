@@ -2,23 +2,26 @@ import "../../Eks/EksBuild" as Eks;
 
 Eks.Library {
   files: [
-    "include/**/*",
-    "src/**/*"
-  ]
+        "QtBindings/**/*",
+        "include/**/*",
+        "src/**/*",
+    ]
 
-  cpp.frameworks: base.concat(["Ruby"])
   cpp.includePaths: [
-    "include"
+    "include",
+    "QtBindings"
   ]
 
   Depends { name: "EksCore" }
   Depends { name: "UI" }
   Depends { name: "Bondage" }
+  Depends { name: "LldbDriver" }
 
   Export {
     Depends { name: "cpp" }
     Depends { name: "EksCore" }
     Depends { name: "Bondage" }
+    Depends { name: "LldbDriver" }
     cpp.includePaths: [ "include" ]
   }
 }

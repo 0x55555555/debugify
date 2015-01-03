@@ -15,8 +15,16 @@ require 'fileutils'
 
 Dir.chdir("../../")
 
+qt = Parser::Library.new("Qt", "plugins/UIBindings/QtBindings", "")
+qt.setAutogenPath(:cpp, "plugins/UIBindings/QtBindings")
+qtPath = "/Applications/Qt/5.4/5.4/clang_64/"
+qt.addIncludePath("#{qtPath}lib/QtCore.framework/Headers")
+qt.addIncludePath("#{qtPath}lib/QtGui.framework/Headers")
+qt.addIncludePath("#{qtPath}lib/QtWidgets.framework/Headers")
+qt.addIncludePath("#{qtPath}mkspecs/macx-clang")
+
 eksLibrary = Parser::Library.new("EksBindings", "Eks/EksCore", "")
-eksLibrary.setAutogenPath(:cpp, "plugins/DebugifyBindings/EksBindings")
+eksLibrary.setAutogenPath(:cpp, "plugins/BindingGenerator/EksBindings")
 eksLibrary.addIncludePath("include")
 
 manualLibrary = Parser::Library.new("ManualBindings", "plugins/DebugifyBindings/ManualBindings/", "EXPORT_DEBUGIFY")
@@ -34,6 +42,9 @@ debugifyLibrary.setAutogenPath(:ruby, "plugins/DebugifyBindings/ruby/autogen")
 uiLibrary = Parser::Library.new("UI", "plugins/UI", "EXPORT_DEBUGIFY")
 uiLibrary.addFiles('include', '*.h', true)
 uiLibrary.addIncludePath("include")
+uiLibrary.addDependency(qt)
+uiLibrary.addDependency(debugifyLibrary)
+uiLibrary.addDependency(eksLibrary)
 
 uiLibrary.setAutogenPath(:cpp, "plugins/UIBindings/src/autogen")
 uiLibrary.setAutogenPath(:ruby, "plugins/UIBindings/ruby/autogen")
@@ -70,12 +81,11 @@ class PathResolver
   end
 end
 
-def generateLibrary(library)
-  debugging = false
+def generateLibrary(library, extraArgs = [], debugging = false)
   FileUtils.mkdir_p(library.autogenPath(:cpp))
   FileUtils.mkdir_p(library.autogenPath(:ruby))
 
-  parsedLibrary = ParsedLibrary.parse(library, PLATFORM_INCLUDES, [], debugging)
+  parsedLibrary = ParsedLibrary.parse(library, PLATFORM_INCLUDES, extraArgs, debugging)
   exposer = ClassExposer.new(parsedLibrary, debugging)
 
   helper = HeaderHelper.new
@@ -100,4 +110,4 @@ def generateLibrary(library)
 end
 
 generateLibrary(debugifyLibrary)
-generateLibrary(uiLibrary)
+generateLibrary(uiLibrary, ["-F#{qtPath}lib"], false)

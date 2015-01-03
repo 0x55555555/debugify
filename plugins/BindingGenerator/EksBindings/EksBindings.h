@@ -10,32 +10,32 @@
 EKS_TYPE(Eks::StringRef)
 EKS_TYPE(Eks::String)
 
-template <> class bondage::Ruby::Caster<Eks::String &>
-  {
-public:
-  typedef Eks::String Result;
-
-  static bool canCast(bondage::Ruby::Boxer *, VALUE val)
+  template <> class bondage::Ruby::Caster<Eks::String &>
     {
-    return TYPE(val) == T_STRING;
-    }
+  public:
+    typedef Eks::String Result;
 
-  static Result cast(bondage::Ruby::Boxer *b, VALUE val)
-    {
-    if (TYPE(val) != T_STRING)
+    static bool canCast(bondage::Ruby::Boxer *, VALUE val)
       {
-      throw Crate::TypeException(b->getType(val), Crate::findType<const char *>());
+      return TYPE(val) == T_STRING;
       }
 
-    Eks::String str(RSTRING_PTR(val), RSTRING_LEN(val));
-    return str;
-    }
+    static Result cast(bondage::Ruby::Boxer *b, VALUE val)
+      {
+      if (TYPE(val) != T_STRING)
+        {
+        throw Crate::TypeException(b->getType(val), Crate::findType<const char *>());
+        }
 
-  static void pack(bondage::Ruby::Boxer *, VALUE *v, const Eks::String &result)
-    {
-    *v = rb_str_new2(result.data());
-    }
-  };
+      Eks::String str(RSTRING_PTR(val), RSTRING_LEN(val));
+      return str;
+      }
+
+    static void pack(bondage::Ruby::Boxer *, VALUE *v, const Eks::String &result)
+      {
+      *v = rb_str_new2(result.data());
+      }
+    };
 
 template <> class bondage::Ruby::Caster<Eks::StringRef &>
   {

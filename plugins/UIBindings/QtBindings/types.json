@@ -1,0 +1,25 @@
+{
+  "::QMainWindow": {
+    "name": "QMainWindow",
+    "parent": "::QWidget",
+    "filename": "QtWidgets.h",
+    "derivable": true
+  },
+  "::QWidget": {
+    "name": "QWidget",
+    "parent": null,
+    "filename": "QtWidgets.h",
+    "derivable": true
+  },
+  "::QApplication": {
+    "name": "QApplication",
+    "parent": null,
+    "filename": "QtWidgets.h",
+    "derivable": true
+  },
+  "::QString": {
+    "name": "QString",
+    "parent": null,
+    "filename": "QtWidgets.h"
+  }
+}

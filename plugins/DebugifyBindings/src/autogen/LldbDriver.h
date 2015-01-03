@@ -8,7 +8,7 @@
 #include "CompileUnit.h"
 #include "Type.h"
 #include "Module.h"
-#include "../../DebugifyBindings/EksBindings/EksBindings.h"
+#include "../../BindingGenerator/EksBindings/EksBindings.h"
 #include "../../DebugifyBindings/ManualBindings/ManualBindings.h"
 #include "bondage/RuntimeHelpers.h"
 

@@ -7,6 +7,6 @@
   "::Eks::String": {
     "name": "String",
     "parent": null,
-    "filename": "include/Utilities/XStringSimple.h"
+    "filename": "include/Containers/XStringSimple.h"
   }
 }

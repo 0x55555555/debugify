@@ -7,7 +7,7 @@ module UI
 
 # \brief managed
 #
-class Application
+class Application < Qt::QApplication
   # nil Application::Application()
   # \brief 
 end

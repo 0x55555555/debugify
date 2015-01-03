@@ -1,7 +1,11 @@
 import "../../Eks/EksBuild" as Eks;
 
 Eks.Library {
-  files: [ "include/**/*.h", "src/**/*.cpp", "forms/**/*.ui" ]
+  files: [
+        "include/**/*.h",
+        "src/**/*.cpp",
+        "forms/**/*.ui"
+    ]
 
   Depends { name: "Qt.core" }
   Depends { name: "Qt.gui" }

@@ -1,7 +1,53 @@
 {
+  "::UI::InputNotifier": {
+    "name": "InputNotifier",
+    "parent": null,
+    "filename": "include/Terminal.h"
+  },
+  "::UI::MainWindow": {
+    "name": "MainWindow",
+    "parent": "::QMainWindow",
+    "filename": "include/MainWindow.h",
+    "derivable": true
+  },
+  "::UI::Terminal": {
+    "name": "Terminal",
+    "parent": "::QWidget",
+    "filename": "include/Terminal.h",
+    "derivable": true
+  },
+  "::UI::LineNumberArea": {
+    "name": "LineNumberArea",
+    "parent": "::QWidget",
+    "filename": "include/FileEditor.h",
+    "partial": true,
+    "derivable": true
+  },
+  "::UI::Editor": {
+    "name": "Editor",
+    "parent": "::QWidget",
+    "filename": "include/Editor.h",
+    "partial": true,
+    "derivable": true
+  },
+  "::UI::TypeEditor": {
+    "name": "TypeEditor",
+    "parent": "::UI::Editor",
+    "filename": "include/TypeEditor.h",
+    "partial": true,
+    "derivable": true
+  },
+  "::UI::FileEditor": {
+    "name": "FileEditor",
+    "parent": "::UI::Editor",
+    "filename": "include/FileEditor.h",
+    "partial": true,
+    "derivable": true
+  },
   "::UI::Application": {
     "name": "Application",
-    "parent": null,
-    "filename": "include/Application.h"
+    "parent": "::QApplication",
+    "filename": "include/Application.h",
+    "derivable": true
   }
 }
