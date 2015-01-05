@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "MainWindow.h"
 #include "ui_mainwindow.h"
 #include "TargetToolbar.h"
 #include "ProcessToolbar.h"
@@ -11,6 +11,7 @@
 #include "FileEditor.h"
 #include "TypeEditor.h"
 #include "Terminal.h"
+#include "EditableTextWindow.h"
 
 namespace UI
 {
@@ -125,6 +126,40 @@ Console *MainWindow::addConsole(const QString &name)
   addDockWidget(Qt::BottomDockWidgetArea, dock);
 
   return console;
+  }
+
+EditableTextWindow *MainWindow::addEditor(const QString &n)
+  {
+  auto editor = new EditableTextWindow();
+  auto dock = new QDockWidget();
+  dock->setObjectName(name);
+  dock->setWindowTitle(name);
+  dock->setWidget(editor);
+  addDockWidget(Qt::LeftDockWidgetArea, dock);
+
+  return editor;
+  }
+
+void MainWindow::showDock(QWidget *w)
+  {
+  if (auto dock = qobject_cast<QDockWidget *>(w->parent()))
+    {
+    dock->show();
+    return;
+    }
+
+  qWarning() << "Invalid dock widget passed to show " << w;
+  }
+
+void MainWindow::hideDock(QWidget *w)
+  {
+  if (auto dock = qobject_cast<QDockWidget *>(w->parent()))
+    {
+    dock->hide();
+    return;
+    }
+
+  qWarning() << "Invalid dock widget passed to hide " << w;
   }
 
 Target::Pointer MainWindow::target() const

@@ -38,11 +38,11 @@ public:
   explicit Console(QWidget *parent = 0);
   ~Console();
 
-  /// \expose
   void append(QString str);
+  void clear();
 
-  /// \expose
   InputNotifier *input() { return &_onInput; }
+
 
   const QString &currentSubmit() const { return _submit; }
   void setSubmit(const QString &str);

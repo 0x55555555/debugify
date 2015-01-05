@@ -63,10 +63,12 @@ struct MainWindow_MainWindow_overload : Reflect::FunctionArgumentCountSelector<
 struct UI_MainWindow_addConsole_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::Console *(::UI::MainWindow::*)(const QString &) >, &::UI::MainWindow::addConsole, bondage::FunctionCaller> { };
 struct UI_MainWindow_addTerminal_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::Terminal *(::UI::MainWindow::*)(const QString &) >, &::UI::MainWindow::addTerminal, bondage::FunctionCaller> { };
 struct UI_MainWindow_errors_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::OutputNotifier *(::UI::MainWindow::*)() >, &::UI::MainWindow::errors, bondage::FunctionCaller> { };
+struct UI_MainWindow_hideDock_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::MainWindow::*)(QWidget *) >, &::UI::MainWindow::hideDock, bondage::FunctionCaller> { };
 struct UI_MainWindow_output_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::OutputNotifier *(::UI::MainWindow::*)() >, &::UI::MainWindow::output, bondage::FunctionCaller> { };
 struct UI_MainWindow_process_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Process::Pointer(::UI::MainWindow::*)() const >, &::UI::MainWindow::process, bondage::FunctionCaller> { };
 struct UI_MainWindow_processChanged_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::ProcessNotifier *(::UI::MainWindow::*)() >, &::UI::MainWindow::processChanged, bondage::FunctionCaller> { };
 struct UI_MainWindow_processStateChanged_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::ProcessStateNotifier *(::UI::MainWindow::*)() >, &::UI::MainWindow::processStateChanged, bondage::FunctionCaller> { };
+struct UI_MainWindow_showDock_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::MainWindow::*)(QWidget *) >, &::UI::MainWindow::showDock, bondage::FunctionCaller> { };
 struct UI_MainWindow_target_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Target::Pointer(::UI::MainWindow::*)() const >, &::UI::MainWindow::target, bondage::FunctionCaller> { };
 struct UI_MainWindow_targetChanged_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::TargetNotifier *(::UI::MainWindow::*)() >, &::UI::MainWindow::targetChanged, bondage::FunctionCaller> { };
 struct UI_MainWindow_tr_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *) >, &UI_MainWindow_tr_overload0, bondage::FunctionCaller> { };
@@ -106,6 +108,9 @@ const bondage::Function UI_MainWindow_methods[] = {
     UI_MainWindow_errors_overload0_t
     >("errors"),
   bondage::FunctionBuilder::build<
+    UI_MainWindow_hideDock_overload0_t
+    >("hideDock"),
+  bondage::FunctionBuilder::build<
     UI_MainWindow_output_overload0_t
     >("output"),
   bondage::FunctionBuilder::build<
@@ -117,6 +122,9 @@ const bondage::Function UI_MainWindow_methods[] = {
   bondage::FunctionBuilder::build<
     UI_MainWindow_processStateChanged_overload0_t
     >("processStateChanged"),
+  bondage::FunctionBuilder::build<
+    UI_MainWindow_showDock_overload0_t
+    >("showDock"),
   bondage::FunctionBuilder::build<
     UI_MainWindow_target_overload0_t
     >("target"),
@@ -135,7 +143,7 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
   MainWindow,
   ::QMainWindow,
   UI_MainWindow_methods,
-  12);
+  14);
 
 
 
@@ -265,6 +273,7 @@ QString UI_Console_trUtf8_overload0(const char * inputArg0)
 }
 
 struct UI_Console_append_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::Console::*)(QString) >, &::UI::Console::append, bondage::FunctionCaller> { };
+struct UI_Console_clear_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::Console::*)() >, &::UI::Console::clear, bondage::FunctionCaller> { };
 struct UI_Console_clearSubmit_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::Console::*)() >, &::UI::Console::clearSubmit, bondage::FunctionCaller> { };
 struct UI_Console_currentSubmit_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< const QString &(::UI::Console::*)() const >, &::UI::Console::currentSubmit, bondage::FunctionCaller> { };
 struct UI_Console_deleteBack_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::Console::*)() >, &::UI::Console::deleteBack, bondage::FunctionCaller> { };
@@ -303,6 +312,9 @@ const bondage::Function UI_Console_methods[] = {
     UI_Console_append_overload0_t
     >("append"),
   bondage::FunctionBuilder::build<
+    UI_Console_clear_overload0_t
+    >("clear"),
+  bondage::FunctionBuilder::build<
     UI_Console_clearSubmit_overload0_t
     >("clearSubmit"),
   bondage::FunctionBuilder::build<
@@ -338,7 +350,7 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
   Console,
   ::QWidget,
   UI_Console_methods,
-  11);
+  12);
 
 
 

@@ -108,6 +108,12 @@ void Console::append(QString str)
   toEnd();
   }
 
+void Console::clear()
+  {
+  clearSubmit();
+  _edit->clear();
+  }
+
 void Console::setSubmit(const QString &str)
   {
   clearSubmit();

@@ -21,6 +21,9 @@ class MainWindow < Qt::QMainWindow
   # UI::OutputNotifier MainWindow#errors()
   # \brief 
 
+  # nil MainWindow#hideDock(QWidget w)
+  # \brief 
+
   # UI::OutputNotifier MainWindow#output()
   # \brief 
 
@@ -31,6 +34,9 @@ class MainWindow < Qt::QMainWindow
   # \brief 
 
   # UI::ProcessStateNotifier MainWindow#processStateChanged()
+  # \brief 
+
+  # nil MainWindow#showDock(QWidget w)
   # \brief 
 
   # std::__1::shared_ptr MainWindow#target()

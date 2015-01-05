@@ -19,6 +19,7 @@ namespace UI
 
 class Terminal;
 class Console;
+class EditableTextWindow;
 class TypeManager;
 class Editor;
 class TargetToolbar;
@@ -53,6 +54,10 @@ public:
 
   Terminal *addTerminal(const QString &n);
   Console *addConsole(const QString &n);
+  EditableTextWindow *addEditor(const QString &n);
+
+  void showDock(QWidget *w);
+  void hideDock(QWidget *w);
 
   TargetNotifier *targetChanged() { return &_targetNotifier; }
   Target::Pointer target() const;
