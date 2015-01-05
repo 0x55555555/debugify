@@ -21,4 +21,12 @@ class InputNotifier
   prepend NotifierExtensions
 end
 
+class TargetNotifier
+  prepend NotifierExtensions
+end
+
+class ProcessNotifier
+  prepend NotifierExtensions
+end
+
 end

@@ -113,7 +113,7 @@ ModuleExplorer::ModuleExplorer(TypeManager *types)
 
   connect(_tree, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(itemDoubleClicked(QModelIndex)));
 
-  connect(types, SIGNAL(typeAdded(Module::Pointer, CachedType::Pointer, const Type*)), this, SLOT(typeAdded(Module::Pointer, CachedType::Pointer, const Type*)));
+  connect(types, SIGNAL(typeAdded(Module::Pointer, UI::CachedType::Pointer, const Type*)), this, SLOT(typeAdded(Module::Pointer, UI::CachedType::Pointer, const Type*)));
   }
 
 ModuleExplorer::~ModuleExplorer()

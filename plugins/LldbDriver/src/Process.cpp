@@ -24,11 +24,6 @@ std::shared_ptr<Target> Process::target()
   return _impl->target;
   }
 
-std::shared_ptr<const Target> Process::target() const
-  {
-  return _impl->target;
-  }
-
 size_t Process::processID() const
   {
   return _impl->process.GetProcessID();

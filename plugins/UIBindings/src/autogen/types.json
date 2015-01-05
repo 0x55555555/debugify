@@ -10,6 +10,16 @@
     "filename": "include/MainWindow.h",
     "derivable": true
   },
+  "::UI::ProcessNotifier": {
+    "name": "ProcessNotifier",
+    "parent": null,
+    "filename": "include/MainWindow.h"
+  },
+  "::UI::TargetNotifier": {
+    "name": "TargetNotifier",
+    "parent": null,
+    "filename": "include/MainWindow.h"
+  },
   "::UI::Terminal": {
     "name": "Terminal",
     "parent": "::QWidget",

@@ -4,6 +4,7 @@
 require_relative '../BindingsInternal'
 
 require_relative 'TypeMember'
+require_relative 'Process'
 require_relative 'FunctionMember'
 require_relative 'Debugger'
 require_relative 'Target'

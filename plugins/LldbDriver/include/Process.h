@@ -8,12 +8,14 @@ namespace LldbDriver
 class Error;
 class Target;
 
+/// \expose sharedpointer
 class Process
   {
   SHARED_CLASS(Process);
   PIMPL_CLASS(Process, sizeof(void*) * 8);
 
 public:
+  /// \noexpose
   Process();
   ~Process();
 
@@ -36,7 +38,6 @@ public:
     };
 
   std::shared_ptr<Target> target();
-  std::shared_ptr<const Target> target() const;
 
   size_t processID() const;
   State currentState() const;

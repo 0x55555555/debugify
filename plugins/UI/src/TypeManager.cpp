@@ -24,7 +24,7 @@ TypeManager::TypeManager()
 
   connect(this, SIGNAL(loadTypes(Module::Pointer)), _worker, SLOT(loadTypes(Module::Pointer)));
 
-  connect(_worker, SIGNAL(loadedType(Module::Pointer, CachedType::Pointer, const Type*)), this, SLOT(loadedType(Module::Pointer, CachedType::Pointer, const Type*)));
+  connect(_worker, SIGNAL(loadedType(Module::Pointer, UI::CachedType::Pointer, const Type*)), this, SLOT(loadedType(Module::Pointer, UI::CachedType::Pointer, const Type*)));
   }
 
 void TypeManager::setTarget(const Target::Pointer &tar)
@@ -58,7 +58,7 @@ std::shared_ptr<CachedType> TypeManager::findType(const QString &str)
   return _types.value(str);
   }
 
-void TypeManager::loadedType(const Module::Pointer &module, const CachedType::Pointer &cached, const Type *type)
+void TypeManager::loadedType(const Module::Pointer &module, const UI::CachedType::Pointer &cached, const Type *type)
   {
   emit typeAdded(module, cached, type);
   }

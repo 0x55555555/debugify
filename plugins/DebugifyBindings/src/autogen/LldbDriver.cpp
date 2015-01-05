@@ -87,6 +87,35 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
 
 
 
+// Exposing class ::LldbDriver::Process
+struct LldbDriver_Process_processEvents_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::LldbDriver::Process::*)() >, &::LldbDriver::Process::processEvents, bondage::FunctionCaller> { };
+struct LldbDriver_Process_processID_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< size_t(::LldbDriver::Process::*)() const >, &::LldbDriver::Process::processID, bondage::FunctionCaller> { };
+struct LldbDriver_Process_target_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< std::shared_ptr<Target>(::LldbDriver::Process::*)() >, &::LldbDriver::Process::target, bondage::FunctionCaller> { };
+
+const bondage::Function LldbDriver_Process_methods[] = {
+  bondage::FunctionBuilder::build<
+    LldbDriver_Process_processEvents_overload0_t
+    >("processEvents"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Process_processID_overload0_t
+    >("processID"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Process_target_overload0_t
+    >("target")
+};
+
+
+BONDAGE_IMPLEMENT_EXPOSED_CLASS(
+  LldbDriver_Process,
+  g_bondage_library_LldbDriver,
+  ::LldbDriver,
+  Process,
+  void,
+  LldbDriver_Process_methods,
+  3);
+
+
+
 // Exposing class ::LldbDriver::FunctionMember
 ::LldbDriver::FunctionMember * LldbDriver_FunctionMember_FunctionMember_overload0()
 {

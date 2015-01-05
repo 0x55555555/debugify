@@ -16,12 +16,30 @@ void TerminalWidget::keyPressEvent(QKeyEvent *e)
       case Qt::Key_Backspace:
         {
         emit deleteBack();
-        }
-      //case Qt::Key_Left:
-      //case Qt::Key_Right:
-      case Qt::Key_Up:
-      case Qt::Key_Down:
         break;
+        }
+      case Qt::Key_Left:
+        {
+        emit move(-1);
+        QPlainTextEdit::keyPressEvent(e);
+        break;
+        }
+      case Qt::Key_Right:
+        {
+        emit move(1);
+        QPlainTextEdit::keyPressEvent(e);
+        break;
+        }
+      case Qt::Key_Up:
+        {
+        emit moveHistory(-1);
+        break;
+        }
+      case Qt::Key_Down:
+        {
+        emit moveHistory(1);
+        break;
+        }
       default:
         {
         QPlainTextEdit::keyPressEvent(e);
@@ -38,7 +56,9 @@ void onQMessage(QtMsgType, const QMessageLogContext &, const QString &str)
   }
 
 Terminal::Terminal(QWidget *parent)
-    : QWidget(parent)
+    : QWidget(parent),
+      _pos(0),
+      _historyPos(0)
   {
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(4, 4, 4, 4);
@@ -52,6 +72,8 @@ Terminal::Terminal(QWidget *parent)
 
   connect(_edit, SIGNAL(keyPress(int, QString)), this, SLOT(onInput(int, QString)));
   connect(_edit, SIGNAL(deleteBack()), this, SLOT(deleteBack()));
+  connect(_edit, SIGNAL(move(int)), this, SLOT(move(int)));
+  connect(_edit, SIGNAL(moveHistory(int)), this, SLOT(moveHistory(int)));
 
   xAssert(!g_lastTerminal);
   g_lastTerminal = this;
@@ -106,11 +128,15 @@ void Terminal::onInput(int chr, QString str)
   if (chr == Qt::Key_Return)
     {
     _onInput(_submit.toUtf8().data());
+
+    _history << _submit;
+    _historyPos = _history.size();
     _submit.clear();
     }
   else
     {
-    _submit += str;
+    _submit.insert(_pos, str);
+    _pos += str.length();
     }
   }
 
@@ -118,10 +144,27 @@ void Terminal::deleteBack()
   {
   if (_submit.length())
     {
-    toEnd();
-    _edit->textCursor().clearSelection();
     _edit->textCursor().deletePreviousChar();
-    _submit.resize(_submit.size()-1);
+    _submit.remove(_pos-1, 1);
+    _pos -= 1;
+    }
+  }
+
+void Terminal::move(int dir)
+  {
+  _pos = Eks::clamp(_pos + dir, 0, _submit.length());
+  }
+
+void Terminal::moveHistory(int dir)
+  {
+  _historyPos = Eks::clamp(_historyPos + dir, 0, _history.size() + 1);
+  if (_historyPos < _history.size())
+    {
+    setCommand(_history[_historyPos]);
+    }
+  else
+    {
+    clearCommand();
     }
   }
 
@@ -130,6 +173,25 @@ void Terminal::toEnd()
   auto c = _edit->textCursor();
   c.movePosition(QTextCursor::End, QTextCursor::MoveAnchor);
   _edit->setTextCursor(c);
+  _pos = _submit.length();
+  }
+
+void Terminal::clearCommand()
+  {
+  toEnd();
+
+  while(_submit.length())
+    {
+    deleteBack();
+    }
+  }
+
+void Terminal::setCommand(const QString &str)
+  {
+  clearCommand();
+  _submit = str;
+  _pos = _submit.length();
+  append(str);
   }
 }
 

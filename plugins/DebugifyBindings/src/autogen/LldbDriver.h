@@ -2,6 +2,7 @@
 
 #pragma once
 #include "TypeMember.h"
+#include "Process.h"
 #include "FunctionMember.h"
 #include "Debugger.h"
 #include "Target.h"
@@ -18,6 +19,7 @@ EXPORT_DEBUGIFY const bondage::Library &bindings();
 }
 
 BONDAGE_EXPOSED_CLASS_COPYABLE(EXPORT_DEBUGIFY, ::LldbDriver::TypeMember)
+BONDAGE_EXPOSED_CLASS_SHARED_POINTER(EXPORT_DEBUGIFY, ::LldbDriver::Process)
 BONDAGE_EXPOSED_CLASS_COPYABLE(EXPORT_DEBUGIFY, ::LldbDriver::FunctionMember)
 BONDAGE_EXPOSED_CLASS_SHARED_POINTER(EXPORT_DEBUGIFY, ::LldbDriver::Debugger)
 BONDAGE_EXPOSED_CLASS_SHARED_POINTER(EXPORT_DEBUGIFY, ::LldbDriver::Target)

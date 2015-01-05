@@ -41,11 +41,11 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(_processToolbar, SIGNAL(stateChanged(Process::State)), this, SLOT(processStateChanged(Process::State)));
   addToolBar(_processToolbar);
 
-  _terminal = new Terminal();
+  _debuggerTerminal = new Terminal();
   auto term = new QDockWidget();
   term->setObjectName("Terminal");
   term->setWindowTitle(term->objectName());
-  term->setWidget(_terminal);
+  term->setWidget(_debuggerTerminal);
   addDockWidget(Qt::BottomDockWidgetArea, term);
 
 
@@ -109,9 +109,19 @@ MainWindow::~MainWindow()
   delete ui;
   }
 
-Terminal *MainWindow::terminal() const
+Terminal *MainWindow::debuggerTerminal() const
   {
-  return _terminal;
+  return _debuggerTerminal;
+  }
+
+Target::Pointer MainWindow::target() const
+  {
+  return _target;
+  }
+
+Process::Pointer MainWindow::process() const
+  {
+  return _process;
   }
 
 void MainWindow::setTarget(const Target::Pointer &tar)
@@ -120,6 +130,9 @@ void MainWindow::setTarget(const Target::Pointer &tar)
 
   _moduleExplorer->setTarget(tar);
   _types->setTarget(tar);
+
+  _target = tar;
+  _targetNotifier(_target);
 
   if (tar)
     {
@@ -131,6 +144,9 @@ void MainWindow::setTarget(const Target::Pointer &tar)
 void MainWindow::setProcess(const Process::Pointer &ptr)
   {
   _processToolbar->setVisible(false);
+
+  _process = ptr;
+  _processNotifier(_process);
 
   if (ptr)
     {

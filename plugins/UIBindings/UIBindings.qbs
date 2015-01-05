@@ -16,6 +16,7 @@ Eks.Library {
   Depends { name: "UI" }
   Depends { name: "Bondage" }
   Depends { name: "LldbDriver" }
+  Depends { name: "DebugifyBindings" }
 
   Export {
     Depends { name: "cpp" }

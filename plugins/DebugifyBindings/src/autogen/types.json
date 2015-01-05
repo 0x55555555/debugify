@@ -4,6 +4,11 @@
     "parent": null,
     "filename": "include/TypeMember.h"
   },
+  "::LldbDriver::Process": {
+    "name": "Process",
+    "parent": null,
+    "filename": "include/Process.h"
+  },
   "::LldbDriver::FunctionMember": {
     "name": "FunctionMember",
     "parent": null,

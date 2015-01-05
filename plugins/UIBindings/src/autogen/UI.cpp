@@ -85,7 +85,11 @@ struct MainWindow_MainWindow_overload : Reflect::FunctionArgumentCountSelector<
     MainWindow_MainWindow_overload_0,
     MainWindow_MainWindow_overload_1
     > { };
-struct UI_MainWindow_terminal_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::Terminal *(::UI::MainWindow::*)() const >, &::UI::MainWindow::terminal, bondage::FunctionCaller> { };
+struct UI_MainWindow_debuggerTerminal_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::Terminal *(::UI::MainWindow::*)() const >, &::UI::MainWindow::debuggerTerminal, bondage::FunctionCaller> { };
+struct UI_MainWindow_process_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Process::Pointer(::UI::MainWindow::*)() const >, &::UI::MainWindow::process, bondage::FunctionCaller> { };
+struct UI_MainWindow_processChanged_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::ProcessNotifier *(::UI::MainWindow::*)() >, &::UI::MainWindow::processChanged, bondage::FunctionCaller> { };
+struct UI_MainWindow_target_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Target::Pointer(::UI::MainWindow::*)() const >, &::UI::MainWindow::target, bondage::FunctionCaller> { };
+struct UI_MainWindow_targetChanged_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::TargetNotifier *(::UI::MainWindow::*)() >, &::UI::MainWindow::targetChanged, bondage::FunctionCaller> { };
 struct UI_MainWindow_tr_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *) >, &UI_MainWindow_tr_overload0, bondage::FunctionCaller> { };
 struct UI_MainWindow_tr_overload1_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *, const char *, int) >, &::UI::MainWindow::tr, bondage::FunctionCaller> { };
 struct MainWindow_tr_overload_1 : Reflect::FunctionArgCountSelectorBlock<1,
@@ -114,8 +118,20 @@ struct MainWindow_trUtf8_overload : Reflect::FunctionArgumentCountSelector<
 const bondage::Function UI_MainWindow_methods[] = {
   bondage::FunctionBuilder::buildOverload< MainWindow_MainWindow_overload >("MainWindow"),
   bondage::FunctionBuilder::build<
-    UI_MainWindow_terminal_overload0_t
-    >("terminal"),
+    UI_MainWindow_debuggerTerminal_overload0_t
+    >("debuggerTerminal"),
+  bondage::FunctionBuilder::build<
+    UI_MainWindow_process_overload0_t
+    >("process"),
+  bondage::FunctionBuilder::build<
+    UI_MainWindow_processChanged_overload0_t
+    >("processChanged"),
+  bondage::FunctionBuilder::build<
+    UI_MainWindow_target_overload0_t
+    >("target"),
+  bondage::FunctionBuilder::build<
+    UI_MainWindow_targetChanged_overload0_t
+    >("targetChanged"),
   bondage::FunctionBuilder::buildOverload< MainWindow_tr_overload >("tr"),
   bondage::FunctionBuilder::buildOverload< MainWindow_trUtf8_overload >("trUtf8")
 };
@@ -128,7 +144,57 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
   MainWindow,
   ::QMainWindow,
   UI_MainWindow_methods,
-  4);
+  8);
+
+
+
+// Exposing class ::UI::ProcessNotifier
+struct UI_ProcessNotifier_listen_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< int(::UI::ProcessNotifier::*)(std::function<void (Process::Pointer)> &&) >, &::UI::ProcessNotifier::listen, bondage::FunctionCaller> { };
+struct UI_ProcessNotifier_remove_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::ProcessNotifier::*)(int) >, &::UI::ProcessNotifier::remove, bondage::FunctionCaller> { };
+
+const bondage::Function UI_ProcessNotifier_methods[] = {
+  bondage::FunctionBuilder::build<
+    UI_ProcessNotifier_listen_overload0_t
+    >("listen"),
+  bondage::FunctionBuilder::build<
+    UI_ProcessNotifier_remove_overload0_t
+    >("remove")
+};
+
+
+BONDAGE_IMPLEMENT_EXPOSED_CLASS(
+  UI_ProcessNotifier,
+  g_bondage_library_UI,
+  ::UI,
+  ProcessNotifier,
+  void,
+  UI_ProcessNotifier_methods,
+  2);
+
+
+
+// Exposing class ::UI::TargetNotifier
+struct UI_TargetNotifier_listen_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< int(::UI::TargetNotifier::*)(std::function<void (Target::Pointer)> &&) >, &::UI::TargetNotifier::listen, bondage::FunctionCaller> { };
+struct UI_TargetNotifier_remove_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::TargetNotifier::*)(int) >, &::UI::TargetNotifier::remove, bondage::FunctionCaller> { };
+
+const bondage::Function UI_TargetNotifier_methods[] = {
+  bondage::FunctionBuilder::build<
+    UI_TargetNotifier_listen_overload0_t
+    >("listen"),
+  bondage::FunctionBuilder::build<
+    UI_TargetNotifier_remove_overload0_t
+    >("remove")
+};
+
+
+BONDAGE_IMPLEMENT_EXPOSED_CLASS(
+  UI_TargetNotifier,
+  g_bondage_library_UI,
+  ::UI,
+  TargetNotifier,
+  void,
+  UI_TargetNotifier_methods,
+  2);
 
 
 

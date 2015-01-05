@@ -50,7 +50,7 @@ signals:
 private slots:
   void loadedFiles(const QStandardItem *module, const Module::Pointer &, const QStringList &str);
   void itemDoubleClicked(const QModelIndex &);
-  void typeAdded(const Module::Pointer &module, const CachedType::Pointer &, const Type *t);
+  void typeAdded(const Module::Pointer &module, const UI::CachedType::Pointer &, const Type *t);
   void filterChanged(const QString &filter);
 
 private:

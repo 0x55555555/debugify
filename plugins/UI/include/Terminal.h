@@ -43,6 +43,8 @@ public:
 signals:
   void keyPress(int chr, QString c);
   void deleteBack();
+  void move(int);
+  void moveHistory(int);
   };
 
 /// \expose
@@ -64,13 +66,20 @@ public:
 private slots:
   void onInput(int chr, QString str);
   void deleteBack();
+  void move(int);
+  void moveHistory(int);
 
 private:
   void toEnd();
+  void clearCommand();
+  void setCommand(const QString &str);
 
   TerminalWidget *_edit;
   InputNotifier _onInput;
   QString _submit;
+  int _pos;
+  int _historyPos;
+  QStringList _history;
   QtMessageHandler _oldHandler;
   };
 

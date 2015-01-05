@@ -8,6 +8,7 @@
 #include "Target.h"
 #include "Process.h"
 #include "Module.h"
+#include "Notifier.h"
 
 namespace Ui {
 class MainWindow;
@@ -23,6 +24,12 @@ class TargetToolbar;
 class ProcessToolbar;
 class ModuleExplorer;
 
+/// \expose unmanaged
+DECLARE_NOTIFIER(TargetNotifier, std::function<void (Target::Pointer)>);
+
+/// \expose unmanaged
+DECLARE_NOTIFIER(ProcessNotifier, std::function<void (Process::Pointer)>);
+
 /// \expose managed
 class MainWindow : public QMainWindow
   {
@@ -37,7 +44,13 @@ public:
   explicit MainWindow(QWidget *parent = 0);
   ~MainWindow();
 
-  Terminal *terminal() const;
+  Terminal *debuggerTerminal() const;
+
+  TargetNotifier *targetChanged() { return &_targetNotifier; }
+  Target::Pointer target() const;
+
+  ProcessNotifier *processChanged() { return &_processNotifier; }
+  Process::Pointer process() const;
 
 private slots:
   void onError(const QString &str);
@@ -71,7 +84,13 @@ private:
   ProcessToolbar *_processToolbar;
   TypeManager *_types;
   ModuleExplorer *_moduleExplorer;
-  Terminal *_terminal;
+  Terminal *_debuggerTerminal;
+
+  TargetNotifier _targetNotifier;
+  Target::Pointer _target;
+
+  ProcessNotifier _processNotifier;
+  Process::Pointer _process;
   };
 
 }
