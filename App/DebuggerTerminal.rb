@@ -39,14 +39,16 @@ module App
       end
     end
 
-    def initialize(terminal)
-      $stdout = IOWrapper.new(terminal, $stdout)
-      $stderr = IOWrapper.new(terminal, $stderr)
+    def initialize(mainWindow)
+      @terminal = mainWindow.addTerminal("Debugify Debug Console")
+
+      $stdout = IOWrapper.new(@terminal, $stdout)
+      $stderr = IOWrapper.new(@terminal, $stderr)
 
       @pry = initPry($stdout)
       $stdout.pry = @pry
 
-      terminal.input.listen do |inp|
+      @terminal.input.listen do |inp|
         @pry.eval inp
         $stdout.prompt
       end

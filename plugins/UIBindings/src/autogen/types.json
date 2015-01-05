@@ -1,30 +1,29 @@
 {
-  "::UI::InputNotifier": {
-    "name": "InputNotifier",
-    "parent": null,
-    "filename": "include/Terminal.h"
-  },
   "::UI::MainWindow": {
     "name": "MainWindow",
     "parent": "::QMainWindow",
-    "filename": "include/MainWindow.h",
+    "filename": "include/mainwindow.h",
     "derivable": true
+  },
+  "::UI::OutputNotifier": {
+    "name": "OutputNotifier",
+    "parent": null,
+    "filename": "include/mainwindow.h"
+  },
+  "::UI::ProcessStateNotifier": {
+    "name": "ProcessStateNotifier",
+    "parent": null,
+    "filename": "include/mainwindow.h"
   },
   "::UI::ProcessNotifier": {
     "name": "ProcessNotifier",
     "parent": null,
-    "filename": "include/MainWindow.h"
+    "filename": "include/mainwindow.h"
   },
   "::UI::TargetNotifier": {
     "name": "TargetNotifier",
     "parent": null,
-    "filename": "include/MainWindow.h"
-  },
-  "::UI::Terminal": {
-    "name": "Terminal",
-    "parent": "::QWidget",
-    "filename": "include/Terminal.h",
-    "derivable": true
+    "filename": "include/mainwindow.h"
   },
   "::UI::LineNumberArea": {
     "name": "LineNumberArea",
@@ -53,6 +52,23 @@
     "filename": "include/FileEditor.h",
     "partial": true,
     "derivable": true
+  },
+  "::UI::Console": {
+    "name": "Console",
+    "parent": "::QWidget",
+    "filename": "include/Console.h",
+    "derivable": true
+  },
+  "::UI::Terminal": {
+    "name": "Terminal",
+    "parent": "::UI::Console",
+    "filename": "include/Terminal.h",
+    "derivable": true
+  },
+  "::UI::InputNotifier": {
+    "name": "InputNotifier",
+    "parent": null,
+    "filename": "include/Console.h"
   },
   "::UI::Application": {
     "name": "Application",

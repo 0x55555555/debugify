@@ -20,6 +20,8 @@ signals:
   void error(const QString &);
   void statusUpdate(const QString &);
   void stateChanged(Process::State newState);
+  void processOutput(const QString &);
+  void processError(const QString &);
 
 private slots:
   void togglePause();

@@ -1,3 +1,4 @@
 debugger.xcodeproj/project.xcworkspace
 *.bundle
 ruby
+App/DebugifyBindingsTest.xcodeproj/project.xcworkspace

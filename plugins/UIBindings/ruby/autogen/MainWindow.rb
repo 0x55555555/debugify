@@ -12,13 +12,25 @@ class MainWindow < Qt::QMainWindow
   # nil MainWindow::MainWindow(QWidget parent)
   # \brief 
 
-  # UI::Terminal MainWindow#debuggerTerminal()
+  # UI::Console MainWindow#addConsole(QString n)
+  # \brief 
+
+  # UI::Terminal MainWindow#addTerminal(QString n)
+  # \brief 
+
+  # UI::OutputNotifier MainWindow#errors()
+  # \brief 
+
+  # UI::OutputNotifier MainWindow#output()
   # \brief 
 
   # std::__1::shared_ptr MainWindow#process()
   # \brief 
 
   # UI::ProcessNotifier MainWindow#processChanged()
+  # \brief 
+
+  # UI::ProcessStateNotifier MainWindow#processStateChanged()
   # \brief 
 
   # std::__1::shared_ptr MainWindow#target()

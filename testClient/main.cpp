@@ -11,6 +11,7 @@ void foo()
   i = 1 + 3;
 
   std::cout << i << std::endl;
+  std::cerr << 5 << std::endl;
   }
 
 int main(int argc, char *argv[])

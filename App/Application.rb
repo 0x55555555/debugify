@@ -1,4 +1,5 @@
 require_relative 'DebuggerTerminal'
+require_relative 'Console'
 
 module App
 
@@ -6,7 +7,8 @@ module App
     def initialize()
       @application = UI::Application.new()
       @mainwindow = UI::MainWindow.new()
-      @debugTerminal = App::DebuggerTerminal.new(@mainwindow.debuggerTerminal)
+      @debugTerminal = App::DebuggerTerminal.new(@mainwindow)
+      @console = App::Console.new(@mainwindow)
 
       @mainwindow.targetChanged.listen do |t|
         puts "target now #{t}"

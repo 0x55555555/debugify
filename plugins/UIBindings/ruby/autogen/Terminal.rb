@@ -7,13 +7,7 @@ module UI
 
 # \brief 
 #
-class Terminal < Qt::QWidget
-  # nil Terminal#append(QString str)
-  # \brief 
-
-  # UI::InputNotifier Terminal#input()
-  # \brief 
-
+class Terminal < UI::Console
   # QString Terminal::tr(string s)
   # QString Terminal::tr(string s, string c, number n)
   # \brief 

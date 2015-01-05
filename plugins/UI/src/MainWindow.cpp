@@ -39,15 +39,9 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(_processToolbar, SIGNAL(error(QString)), this, SLOT(onError(QString)));
   connect(_processToolbar, SIGNAL(statusUpdate(QString)), this, SLOT(setStatusText(QString)));
   connect(_processToolbar, SIGNAL(stateChanged(Process::State)), this, SLOT(processStateChanged(Process::State)));
+  connect(_processToolbar, SIGNAL(processOutput(QString)), this, SLOT(onPrcocessOutput(QString)));
+  connect(_processToolbar, SIGNAL(processError(QString)), this, SLOT(onPrcocessError(QString)));
   addToolBar(_processToolbar);
-
-  _debuggerTerminal = new Terminal();
-  auto term = new QDockWidget();
-  term->setObjectName("Terminal");
-  term->setWindowTitle(term->objectName());
-  term->setWidget(_debuggerTerminal);
-  addDockWidget(Qt::BottomDockWidgetArea, term);
-
 
   _types = new TypeManager();
 
@@ -109,9 +103,28 @@ MainWindow::~MainWindow()
   delete ui;
   }
 
-Terminal *MainWindow::debuggerTerminal() const
+Terminal *MainWindow::addTerminal(const QString &name)
   {
-  return _debuggerTerminal;
+  auto terminal = new Terminal();
+  auto dock = new QDockWidget();
+  dock->setObjectName(name);
+  dock->setWindowTitle(name);
+  dock->setWidget(terminal);
+  addDockWidget(Qt::BottomDockWidgetArea, dock);
+
+  return terminal;
+  }
+
+Console *MainWindow::addConsole(const QString &name)
+  {
+  auto console = new Console();
+  auto dock = new QDockWidget();
+  dock->setObjectName(name);
+  dock->setWindowTitle(name);
+  dock->setWidget(console);
+  addDockWidget(Qt::BottomDockWidgetArea, dock);
+
+  return console;
   }
 
 Target::Pointer MainWindow::target() const
@@ -167,20 +180,32 @@ void MainWindow::setStatusText(const QString &str)
 
 void MainWindow::processStateChanged(Process::State state)
   {
+  static const char *states[] = {
+    "invalid",
+    "unloaded",
+    "connected",
+    "attaching",
+    "launching",
+    "stopped",
+    "running",
+    "stepping",
+    "crashed",
+    "detached",
+    "exited",
+    "suspended"
+  };
+  _processStateNotifier(states[(int)state]);
+
   if (state == Process::State::Invalid)
     {
     _processToolbar->setVisible(false);
+    setProcess(nullptr);
     }
   }
 
 void MainWindow::onProcessStarted(const Process::Pointer &process)
   {
   setProcess(process);
-  }
-
-void MainWindow::onProcessEnded(const Process::Pointer &)
-  {
-  setProcess(nullptr);
   }
 
 void MainWindow::closeFile(int tab)
@@ -231,6 +256,16 @@ void MainWindow::openType(const QString &type)
     {
     // ignore and return
     }
+  }
+
+void MainWindow::onPrcocessOutput(const QString &str)
+  {
+  _stdout(str);
+  }
+
+void MainWindow::onPrcocessError(const QString &str)
+  {
+  _stderr(str);
   }
 
 void MainWindow::checkError(const Error &err)

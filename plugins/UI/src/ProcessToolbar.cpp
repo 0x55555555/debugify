@@ -33,19 +33,19 @@ ProcessToolbar::ProcessToolbar()
 
     _process->processEvents();
 
-    auto forwardOutput = [this](auto type)
+    auto forwardOutput = [this](auto type, const auto &send)
       {
       std::array<char, 256> output;
       while (size_t read = _process->getOutput(type, output.data(), output.size()-1))
         {
-        xAssert(read < (output.size()-1));
+        xAssert(read <= (output.size()-1));
         output[read] = '\0';
-        std::cout << output.data();
+        send(output.data());
         }
       };
 
-    forwardOutput(Process::OutputType::Output);
-    forwardOutput(Process::OutputType::Error);
+    forwardOutput(Process::OutputType::Output, [this](auto str) { emit processOutput(str); });
+    forwardOutput(Process::OutputType::Error, [this](auto str) { emit processError(str); });
     });
   _timer.start(100);
   }
