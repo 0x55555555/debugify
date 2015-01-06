@@ -91,6 +91,8 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
 struct LldbDriver_Process_processEvents_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::LldbDriver::Process::*)() >, &::LldbDriver::Process::processEvents, bondage::FunctionCaller> { };
 struct LldbDriver_Process_processID_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< size_t(::LldbDriver::Process::*)() const >, &::LldbDriver::Process::processID, bondage::FunctionCaller> { };
 struct LldbDriver_Process_target_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< std::shared_ptr<Target>(::LldbDriver::Process::*)() >, &::LldbDriver::Process::target, bondage::FunctionCaller> { };
+struct LldbDriver_Process_threadAt_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< std::shared_ptr<Thread>(::LldbDriver::Process::*)(size_t) >, &::LldbDriver::Process::threadAt, bondage::FunctionCaller> { };
+struct LldbDriver_Process_threadCount_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< size_t(::LldbDriver::Process::*)() >, &::LldbDriver::Process::threadCount, bondage::FunctionCaller> { };
 
 const bondage::Function LldbDriver_Process_methods[] = {
   bondage::FunctionBuilder::build<
@@ -101,7 +103,13 @@ const bondage::Function LldbDriver_Process_methods[] = {
     >("processID"),
   bondage::FunctionBuilder::build<
     LldbDriver_Process_target_overload0_t
-    >("target")
+    >("target"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Process_threadAt_overload0_t
+    >("threadAt"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Process_threadCount_overload0_t
+    >("threadCount")
 };
 
 
@@ -112,7 +120,32 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
   Process,
   void,
   LldbDriver_Process_methods,
-  3);
+  5);
+
+
+
+// Exposing class ::LldbDriver::Thread
+struct LldbDriver_Thread_process_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< std::shared_ptr<Process>(::LldbDriver::Thread::*)() >, &::LldbDriver::Thread::process, bondage::FunctionCaller> { };
+struct LldbDriver_Thread_threadID_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< size_t(::LldbDriver::Thread::*)() const >, &::LldbDriver::Thread::threadID, bondage::FunctionCaller> { };
+
+const bondage::Function LldbDriver_Thread_methods[] = {
+  bondage::FunctionBuilder::build<
+    LldbDriver_Thread_process_overload0_t
+    >("process"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Thread_threadID_overload0_t
+    >("threadID")
+};
+
+
+BONDAGE_IMPLEMENT_EXPOSED_CLASS(
+  LldbDriver_Thread,
+  g_bondage_library_LldbDriver,
+  ::LldbDriver,
+  Thread,
+  void,
+  LldbDriver_Thread_methods,
+  2);
 
 
 

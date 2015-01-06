@@ -2,22 +2,27 @@
 module App
 
   class Console
+
+    attr_reader :widget
+
     def initialize(mainWindow)
-      @console = mainWindow.addConsole("Console")
+      @widget = mainWindow.addConsole("Console")
 
       mainWindow.output.listen do |p|
-        @console.append(p)
+        @widget.append(p)
       end
 
       mainWindow.errors.listen do |p|
-        @console.append(p)
+        @widget.append(p)
       end
 
       mainWindow.processStateChanged.listen do |p|
-        @console.puts("Process state changed to #{p}")
+        @widget.puts("Process state changed to #{p}")
+      end
 
-        if (p.to_sym == :invalid)
-          @console.clear()
+      mainWindow.processChanged.listen do |p|
+        if (p != nil)
+          @widget.clear()
         end
       end
     end

@@ -9,6 +9,11 @@
     "parent": null,
     "filename": "include/Process.h"
   },
+  "::LldbDriver::Thread": {
+    "name": "Thread",
+    "parent": null,
+    "filename": "include/Thread.h"
+  },
   "::LldbDriver::FunctionMember": {
     "name": "FunctionMember",
     "parent": null,

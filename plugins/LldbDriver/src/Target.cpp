@@ -58,6 +58,7 @@ Process::Pointer Target::launch(
   Eks::Vector<const char *> envData(&alloc);
   bake(env, envStorage, envData);
 
+  process->_impl->myself = process;
   process->_impl->target = _impl->myself.lock();
   process->_impl->listener = lldb::SBListener("ProcessListener");
   process->_impl->process = _impl->target.Launch(

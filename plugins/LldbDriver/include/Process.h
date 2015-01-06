@@ -7,12 +7,13 @@ namespace LldbDriver
 
 class Error;
 class Target;
+class Thread;
 
 /// \expose sharedpointer
 class Process
   {
   SHARED_CLASS(Process);
-  PIMPL_CLASS(Process, sizeof(void*) * 8);
+  PIMPL_CLASS(Process, sizeof(void*) * 16);
 
 public:
   /// \noexpose
@@ -54,6 +55,9 @@ public:
   Error kill();
   Error pauseExecution();
   Error continueExecution();
+
+  size_t threadCount();
+  std::shared_ptr<Thread> threadAt(size_t index);
 
   void processEvents();
 

@@ -11,6 +11,24 @@
     "filename": "QtWidgets.h",
     "derivable": true
   },
+  "::QFrame": {
+    "name": "QFrame",
+    "parent": "::QWidget",
+    "filename": "QtWidgets.h",
+    "derivable": true
+  },
+  "::QAbstractScrollArea": {
+    "name": "QAbstractScrollArea",
+    "parent": "::QFrame",
+    "filename": "QtWidgets.h",
+    "derivable": true
+  },
+  "::QTextEdit": {
+    "name": "QTextEdit",
+    "parent": "::QAbstractScrollArea",
+    "filename": "QtWidgets.h",
+    "derivable": true
+  },
   "::QApplication": {
     "name": "QApplication",
     "parent": null,

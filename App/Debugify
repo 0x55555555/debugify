@@ -1,2 +1,5 @@
 #!/bin/sh
+
+source ./initEnvironment.sh
+
 ruby ./Main.rb "$0" "$@"

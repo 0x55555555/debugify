@@ -2,3 +2,6 @@
 #include "QMainWindow"
 #include "QApplication"
 #include "QString"
+#include "QFrame"
+#include "QAbstractScrollArea"
+#include "QTextEdit"

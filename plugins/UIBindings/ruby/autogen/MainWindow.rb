@@ -15,6 +15,9 @@ class MainWindow < Qt::QMainWindow
   # UI::Console MainWindow#addConsole(QString n)
   # \brief 
 
+  # UI::EditableTextWindow MainWindow#addEditor(QString n)
+  # \brief 
+
   # UI::Terminal MainWindow#addTerminal(QString n)
   # \brief 
 

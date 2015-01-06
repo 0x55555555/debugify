@@ -28,6 +28,10 @@ class OutputNotifier
   prepend NotifierExtensions
 end
 
+class ClickNotifier
+  prepend NotifierExtensions
+end
+
 class Console < Qt::QWidget
   def puts(s)
     append("#{s}\n")

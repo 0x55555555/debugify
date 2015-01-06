@@ -1,6 +1,7 @@
 require_relative 'DebuggerTerminal'
 require_relative 'Console'
 require_relative 'CallStack'
+require_relative 'Threads'
 
 module App
 
@@ -11,8 +12,9 @@ module App
       @debugTerminal = App::DebuggerTerminal.new(@mainwindow)
 
       @callStack = App::CallStack.new(@mainwindow)
+      @threads = App::Threads.new(@mainwindow)
       @console = App::Console.new(@mainwindow)
-      @processWindows = [ @callStack, @console ]
+      @processWindows = [ @threads, @callStack ]
 
       @mainwindow.targetChanged.listen do |t|
         puts "target now #{t}"
@@ -30,9 +32,9 @@ module App
     def processChanged(p)
       @processWindows.each do |w|
         if (p != nil)
-          mainWindow.showDock(@console)
+          @mainwindow.showDock(w.widget)
         else
-          mainWindow.hideDock(@console)
+          @mainwindow.hideDock(w.widget)
         end
       end
     end

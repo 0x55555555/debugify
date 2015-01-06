@@ -4,6 +4,9 @@ require 'strscan'
 module App
 
   class DebuggerTerminal
+
+    attr_reader :widget
+    
     class IOWrapper
       def initialize(term, old)
         @term = term
@@ -40,15 +43,15 @@ module App
     end
 
     def initialize(mainWindow)
-      @terminal = mainWindow.addTerminal("Debugify Debug Console")
+      @widget = mainWindow.addTerminal("Debugify Debug Console")
 
-      $stdout = IOWrapper.new(@terminal, $stdout)
-      $stderr = IOWrapper.new(@terminal, $stderr)
+      $stdout = IOWrapper.new(@widget, $stdout)
+      $stderr = IOWrapper.new(@widget, $stderr)
 
       @pry = initPry($stdout)
       $stdout.pry = @pry
 
-      @terminal.input.listen do |inp|
+      @widget.input.listen do |inp|
         @pry.eval inp
         $stdout.prompt
       end
@@ -60,6 +63,7 @@ module App
 
   private
     def initPry(output)
+      Pry.config.editor = "subl"
       Pry.config.pager = false
       return Pry.new(
         :output => output,

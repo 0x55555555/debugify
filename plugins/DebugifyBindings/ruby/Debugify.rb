@@ -17,6 +17,7 @@ def self.addEnumerator(cls, nameSym, countSym, atSym)
 end
 
 addEnumerator(Target, :modules, :moduleCount, :moduleAt)
+addEnumerator(Process, :threads, :threadCount, :threadAt)
 
 end
 

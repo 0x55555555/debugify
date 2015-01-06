@@ -128,7 +128,7 @@ Console *MainWindow::addConsole(const QString &name)
   return console;
   }
 
-EditableTextWindow *MainWindow::addEditor(const QString &n)
+EditableTextWindow *MainWindow::addEditor(const QString &name)
   {
   auto editor = new EditableTextWindow();
   auto dock = new QDockWidget();

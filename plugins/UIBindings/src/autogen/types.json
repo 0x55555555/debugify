@@ -2,28 +2,28 @@
   "::UI::MainWindow": {
     "name": "MainWindow",
     "parent": "::QMainWindow",
-    "filename": "include/mainwindow.h",
+    "filename": "include/MainWindow.h",
     "derivable": true
   },
   "::UI::OutputNotifier": {
     "name": "OutputNotifier",
     "parent": null,
-    "filename": "include/mainwindow.h"
+    "filename": "include/MainWindow.h"
   },
   "::UI::ProcessStateNotifier": {
     "name": "ProcessStateNotifier",
     "parent": null,
-    "filename": "include/mainwindow.h"
+    "filename": "include/MainWindow.h"
   },
   "::UI::ProcessNotifier": {
     "name": "ProcessNotifier",
     "parent": null,
-    "filename": "include/mainwindow.h"
+    "filename": "include/MainWindow.h"
   },
   "::UI::TargetNotifier": {
     "name": "TargetNotifier",
     "parent": null,
-    "filename": "include/mainwindow.h"
+    "filename": "include/MainWindow.h"
   },
   "::UI::LineNumberArea": {
     "name": "LineNumberArea",
@@ -52,6 +52,17 @@
     "filename": "include/FileEditor.h",
     "partial": true,
     "derivable": true
+  },
+  "::UI::EditableTextWindow": {
+    "name": "EditableTextWindow",
+    "parent": "::QTextEdit",
+    "filename": "include/EditableTextWindow.h",
+    "derivable": true
+  },
+  "::UI::ClickNotifier": {
+    "name": "ClickNotifier",
+    "parent": null,
+    "filename": "include/EditableTextWindow.h"
   },
   "::UI::Console": {
     "name": "Console",

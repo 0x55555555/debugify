@@ -78,15 +78,18 @@ void Process::processEvents()
   lldb::SBEvent ev;
   while (_impl->listener.GetNextEvent(ev))
     {
-    lldb::SBStream desc;
-    ev.GetDescription(desc);
-
-    /*std::cout << "Event: ";
-    if (desc.GetData())
-      {
-      std::cout << desc.GetData();
-      }
-    std::cout << std::endl;*/
     }
+  }
+
+size_t Process::threadCount()
+  {
+  return _impl->process.GetNumThreads();
+  }
+
+std::shared_ptr<Thread> Process::threadAt(size_t index)
+  {
+  auto thread = _impl->process.GetThreadAtIndex(index);
+
+  return _impl->wrapThread(thread);
   }
 }
