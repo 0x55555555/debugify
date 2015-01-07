@@ -1,57 +1,73 @@
-#include "Thread.h"
-#include "ThreadImpl.h"
+#include "Frame.h"
+#include "FrameImpl.h"
+#include "Math/XMathHelpers.h"
+#include "Containers/XStringSimple.h"
+#include "Containers/XStringBuilder.h"
 #include "lldb/API/SBStream.h"
+#include "lldb/API/SBLineEntry.h"
 
 namespace LldbDriver
 {
 
-Thread::Thread()
+Frame::Frame()
   {
   }
 
-Thread::~Thread()
+Frame::Frame(const Frame &f) : _impl(f._impl)
   {
   }
 
-std::shared_ptr<Process> Thread::process()
+Frame::~Frame()
   {
-  return _impl->process;
   }
 
-size_t Thread::id() const
+std::shared_ptr<Thread> Frame::thread()
   {
-  return _impl->thread.GetThreadID();
+  return _impl->thread;
   }
 
-Eks::String Thread::name() const
+size_t Frame::id() const
   {
-  auto n = _impl->thread.GetName();
+  return _impl->frame.GetFrameID();
+  }
+
+Eks::String Frame::functionName() const
+  {
+  auto n = _impl->frame.GetFunctionName();
   if (!n)
     {
     return "";
     }
-  
-    return n;
+
+  return n;
   }
 
-bool Thread::isCurrent() const
+Eks::String Frame::filename() const
   {
-  return this == _impl->process->selectedThread().get();
+  auto file = _impl->frame.GetLineEntry().GetFileSpec();
+  file.ResolveExecutableLocation();
+
+  Eks::StringBuilder sb;
+  if (file.GetDirectory() && file.GetFilename())
+    {
+    sb << file.GetDirectory() << "/" << file.GetFilename();
+    }
+
+  return sb;
   }
 
-size_t Thread::frameCount() const
+bool Frame::hasLineNumber() const
   {
+  return _impl->frame.GetLineEntry().GetLine() != Eks::maxFor<uint32_t>();
   }
 
-std::shared_ptr<Frame> Thread::frameAt(size_t i)
+size_t Frame::lineNumber() const
   {
+  return _impl->frame.GetLineEntry().GetLine();
   }
 
-void Thread::selectFrame(const std::shared_ptr<Frame> &)
+bool Frame::isCurrent() const
   {
-  }
-
-std::shared_ptr<Frame> Thread::selectedFrame()
-  {
+  return _impl->frame == _impl->thread->selectedFrame()._impl->frame;
   }
 }

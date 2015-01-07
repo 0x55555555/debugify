@@ -1,6 +1,7 @@
 #pragma once
 #include "UiGlobal.h"
 #include "Editor.h"
+#include "Notifier.h"
 #include "Module.h"
 #include "QtWidgets/QPlainTextEdit"
 
@@ -18,6 +19,11 @@ public:
 
   void lineNumberAreaPaintEvent(QPaintEvent *event);
   int lineNumberAreaWidth();
+
+  void marginMouseReleaseEvent(QMouseEvent *e);
+
+signals:
+  void marginClicked(int);
 
 protected:
   void resizeEvent(QResizeEvent *event);
@@ -44,20 +50,36 @@ public:
     return QSize(codeEditor->lineNumberAreaWidth(), 0);
     }
 
+signals:
+
+
 protected:
   void paintEvent(QPaintEvent *event)
     {
     codeEditor->lineNumberAreaPaintEvent(event);
     }
 
+  void mouseReleaseEvent(QMouseEvent *e)
+    {
+    codeEditor->marginMouseReleaseEvent(e);
+    }
+
 private:
   CodeEditor *codeEditor;
   };
 
+/// \expose unmanaged
+DECLARE_NOTIFIER(MarginClickNotifier, std::function<void (int)>);
+
+/// \expose
 class FileEditor : public Editor
   {
+  Q_OBJECT
 public:
+  /// \noexpose
   FileEditor(const QString &filename);
+
+  void focusOnLine(size_t line);
 
   static QString makeKey(const QString &filename);
 
@@ -65,9 +87,15 @@ public:
   QString key() const X_OVERRIDE;
   QString title() const X_OVERRIDE;
 
+  MarginClickNotifier *marginClicked() { return &_marginClicked; }
+
+private slots:
+  void marginClicked(int);
+
 private:
   QString _path;
   CodeEditor *_editor;
+  MarginClickNotifier _marginClicked;
   };
 
 }

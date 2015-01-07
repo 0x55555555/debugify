@@ -21,6 +21,32 @@ module App
 
       processChanged(nil)
       @mainwindow.processChanged.listen { |p| processChanged(p) }
+
+      @debugger.ready.listen do |process|
+        loadCurrentSource()
+      end
+
+      @mainwindow.editorOpened.listen do |editor|
+        if (editor.class == UI::FileEditor)
+          editor.marginClicked.listen do |line|
+            puts "Clicked line #{line}"
+          end
+        end
+      end
+    end
+
+    def loadCurrentSource()
+      thread = @mainwindow.process.selectedThread
+      frame = thread.selectedFrame
+
+      file = frame.filename
+      line = frame.lineNumber
+      if (file.length > 0)
+        editor = @mainwindow.openFile(file)
+        if (editor != nil)
+          editor.focusOnLine(line)
+        end
+      end
     end
 
     def execute()

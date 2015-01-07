@@ -15,15 +15,20 @@
     "filename": "include/Process.h",
     "type": "enum"
   },
-  "::LldbDriver::Thread": {
-    "name": "Thread",
-    "parent": null,
-    "filename": "include/Thread.h"
-  },
   "::LldbDriver::FunctionMember": {
     "name": "FunctionMember",
     "parent": null,
     "filename": "include/FunctionMember.h"
+  },
+  "::LldbDriver::Frame": {
+    "name": "Frame",
+    "parent": null,
+    "filename": "include/Frame.h"
+  },
+  "::LldbDriver::Thread": {
+    "name": "Thread",
+    "parent": null,
+    "filename": "include/Thread.h"
   },
   "::LldbDriver::Debugger": {
     "name": "Debugger",

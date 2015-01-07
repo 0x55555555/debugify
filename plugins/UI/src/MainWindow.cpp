@@ -241,16 +241,22 @@ void MainWindow::closeFile(int tab)
   ui->tabWidget->removeTab(tab);
   }
 
-void MainWindow::openFile(const Module::Pointer &, const QString &file)
+Editor *MainWindow::openFile(const QString &file)
   {
   if (auto editor = _editors.value(FileEditor::makeKey(file), nullptr))
     {
     focusEditor(editor);
-    return;
+    return editor;
     }
 
   auto editor = new FileEditor(file);
   addEditor(editor);
+  return editor;
+  }
+
+void MainWindow::openFile(const Module::Pointer &, const QString &file)
+  {
+  openFile(file);
   }
 
 void MainWindow::openType(const Module::Pointer &, const QString &type)
@@ -303,6 +309,8 @@ void MainWindow::addEditor(Editor *editor)
   ui->tabWidget->setTabToolTip(tabIndex, editor->path());
   _editors[editor->key()] = editor;
   focusEditor(editor);
+
+  _editorOpened(editor);
   }
 
 void MainWindow::focusEditor(Editor *editor)

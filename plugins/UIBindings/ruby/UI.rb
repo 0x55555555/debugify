@@ -32,6 +32,14 @@ class ClickNotifier
   prepend NotifierExtensions
 end
 
+class EditorNotifier
+  prepend NotifierExtensions
+end
+
+class MarginClickNotifier
+  prepend NotifierExtensions
+end
+
 class Console < Qt::QWidget
   def puts(s)
     append("#{s}\n")

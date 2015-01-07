@@ -38,6 +38,9 @@ DECLARE_NOTIFIER(ProcessStateNotifier, std::function<void (Process::State)>);
 /// \expose unmanaged
 DECLARE_NOTIFIER(OutputNotifier, std::function<void (QString)>);
 
+/// \expose unmanaged
+DECLARE_NOTIFIER(EditorNotifier, std::function<void (Editor *)>);
+
 /// \expose managed
 class MainWindow : public QMainWindow
   {
@@ -68,6 +71,10 @@ public:
 
   OutputNotifier *output() { return &_stdout; }
   OutputNotifier *errors() { return &_stderr; }
+
+  EditorNotifier *editorOpened() { return &_editorOpened; }
+
+  Editor *openFile(const QString &str);
 
 private slots:
   void onError(const QString &str);
@@ -113,6 +120,8 @@ private:
 
   OutputNotifier _stdout;
   OutputNotifier _stderr;
+
+  EditorNotifier _editorOpened;
   };
 
 }

@@ -27,10 +27,10 @@ public:
   bool isCurrent() const;
 
   size_t frameCount() const;
-  std::shared_ptr<Frame> frameAt(size_t i);
+  Frame frameAt(size_t i);
 
-  void selectFrame(const std::shared_ptr<Frame> &);
-  std::shared_ptr<Frame> selectedFrame();
+  void selectFrame(const Frame &);
+  Frame selectedFrame();
 
 
   friend class Process;

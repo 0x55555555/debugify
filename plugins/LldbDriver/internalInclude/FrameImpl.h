@@ -1,11 +1,10 @@
+#include "Frame.h"
+#include "lldb/API/SBFrame.h"
 #include "Thread.h"
-#include "lldb/API/SBThread.h"
-#include "Process.h"
 
-class LldbDriver::Thread::Impl
+class LldbDriver::Frame::Impl
   {
 public:
-  std::weak_ptr<LldbDriver::Thread> myself;
-  Process::Pointer process;
-  lldb::SBThread thread;
+  Thread::Pointer thread;
+  lldb::SBFrame frame;
   };

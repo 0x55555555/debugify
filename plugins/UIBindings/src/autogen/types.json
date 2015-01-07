@@ -5,6 +5,11 @@
     "filename": "include/MainWindow.h",
     "derivable": true
   },
+  "::UI::EditorNotifier": {
+    "name": "EditorNotifier",
+    "parent": null,
+    "filename": "include/MainWindow.h"
+  },
   "::UI::OutputNotifier": {
     "name": "OutputNotifier",
     "parent": null,
@@ -25,6 +30,11 @@
     "parent": null,
     "filename": "include/MainWindow.h"
   },
+  "::UI::MarginClickNotifier": {
+    "name": "MarginClickNotifier",
+    "parent": null,
+    "filename": "include/FileEditor.h"
+  },
   "::UI::LineNumberArea": {
     "name": "LineNumberArea",
     "parent": "::QWidget",
@@ -36,7 +46,6 @@
     "name": "Editor",
     "parent": "::QWidget",
     "filename": "include/Editor.h",
-    "partial": true,
     "derivable": true
   },
   "::UI::TypeEditor": {
@@ -50,7 +59,6 @@
     "name": "FileEditor",
     "parent": "::UI::Editor",
     "filename": "include/FileEditor.h",
-    "partial": true,
     "derivable": true
   },
   "::UI::EditableTextWindow": {

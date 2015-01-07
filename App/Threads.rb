@@ -1,3 +1,4 @@
+require_relative 'TextWindow'
 
 module App
 
@@ -31,31 +32,16 @@ module App
     end
 
     def formatThread(t)
-      return "<a href=\"#{t.id}\">0x#{t.id.to_s(16)} #{t.name()}<a>"
-    end
-
-    SELECTED = "#e8e762"
-    ALTERNATE_A = "#ffffff"
-    ALTERNATE_B = "#f7f7f7"
-
-    def alternatingColourList(list, options)
-      rows = list.map.with_index do |t, i|
-        col = nil
-        if (i == options[:selected])
-          col = SELECTED
-        else
-          col = i % 2 == 0 ? ALTERNATE_A : ALTERNATE_B
-        end
-
-        colouredRow(t, col)
+      frameTop = t.frames[0]
+      lineData = nil
+      if (frameTop.hasLineNumber)
+        lineData = "line #{frameTop.lineNumber}"
       end
 
-      return rows.join()
+      return link(t.id, "0x#{t.id.to_s(16)} #{t.name()} #{frameTop.functionName} #{lineData}")
     end
 
-    def colouredRow(str, col)
-      return "<div style=\"background-color: #{col}; width: 100%\">#{str}</div>"
-    end
+    include TextWindow
   end
 
 end

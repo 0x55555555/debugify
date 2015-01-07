@@ -4,28 +4,33 @@
 namespace LldbDriver
 {
 
-class Process;
+class Thread;
 
-/// \expose sharedpointer
-class Thread
+/// \expose
+class Frame
   {
-  SHARED_CLASS(Thread);
-  PIMPL_CLASS(Thread, sizeof(void*) * 8);
+  PIMPL_CLASS(Frame, sizeof(void*) * 8);
 
 public:
   /// \noexpose
-  Thread();
-  ~Thread();
+  Frame();
+  /// \noexpose
+  Frame(const Frame &);
+  ~Frame();
 
-  std::shared_ptr<Process> process();
+  std::shared_ptr<Thread> thread();
 
   size_t id() const;
 
-  Eks::String name() const;
+  Eks::String functionName() const;
+
+  Eks::String filename() const;
+  bool hasLineNumber() const;
+  size_t lineNumber() const;
 
   bool isCurrent() const;
 
-  friend class Process;
+  friend class Thread;
   };
 
 }

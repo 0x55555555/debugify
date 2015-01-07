@@ -21,10 +21,16 @@ class MainWindow < Qt::QMainWindow
   # UI::Terminal MainWindow#addTerminal(QString n)
   # \brief 
 
+  # UI::EditorNotifier MainWindow#editorOpened()
+  # \brief 
+
   # UI::OutputNotifier MainWindow#errors()
   # \brief 
 
   # nil MainWindow#hideDock(QWidget w)
+  # \brief 
+
+  # UI::Editor MainWindow#openFile(QString str)
   # \brief 
 
   # UI::OutputNotifier MainWindow#output()

@@ -31,11 +31,35 @@ Eks::String Thread::name() const
     return "";
     }
   
-    return n;
+  return n;
   }
 
 bool Thread::isCurrent() const
   {
   return this == _impl->process->selectedThread().get();
+  }
+
+size_t Thread::frameCount() const
+  {
+  return _impl->thread.GetNumFrames();
+  }
+
+Frame Thread::frameAt(size_t index)
+  {
+  auto frame = _impl->thread.GetFrameAtIndex(index);
+
+  return _impl->make(frame);
+  }
+
+void Thread::selectFrame(const Frame &f)
+  {
+  _impl->thread.SetSelectedFrame(f.id());
+  }
+
+Frame Thread::selectedFrame()
+  {
+  auto frame = _impl->thread.GetSelectedFrame();
+
+  return _impl->make(frame);
   }
 }

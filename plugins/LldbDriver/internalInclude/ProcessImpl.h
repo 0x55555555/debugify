@@ -7,7 +7,7 @@
 
 template <> struct std::hash<lldb::SBThread>
   {
-  size_t operator()(const lldb::SBThread v) const
+  size_t operator()(const lldb::SBThread &v) const
     {
     return std::hash<lldb::tid_t>{}(v.GetThreadID());
     }

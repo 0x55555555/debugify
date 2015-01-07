@@ -1,4 +1,4 @@
-#include "FileEditor.h"
+  #include "FileEditor.h"
 #include "QFile"
 #include "QFileInfo"
 #include "QPainter"
@@ -33,6 +33,12 @@ int CodeEditor::lineNumberAreaWidth()
   int space = 10 + fontMetrics().width(QLatin1Char('9')) * digits;
 
   return space;
+  }
+
+void CodeEditor::marginMouseReleaseEvent(QMouseEvent *e)
+  {
+  auto cursor = cursorForPosition(QPoint(0, e->pos().y()));
+  emit marginClicked(cursor.blockNumber());
   }
 
 void CodeEditor::updateLineNumberAreaWidth(int)
@@ -133,6 +139,15 @@ FileEditor::FileEditor(const QString &path)
     {
     _editor->setReadOnly(true);
     }
+
+  connect(_editor, SIGNAL(marginClicked(int)), this, SLOT(marginClicked(int)));
+  }
+
+void FileEditor::focusOnLine(size_t line)
+  {
+  QTextCursor cursor(_editor->document()->findBlockByLineNumber(line - 1));
+  cursor.select(QTextCursor::LineUnderCursor);
+  _editor->setTextCursor(cursor);
   }
 
 QString FileEditor::makeKey(const QString &filename)
@@ -154,6 +169,11 @@ QString FileEditor::title() const
   {
   QFileInfo info(_path);
   return info.fileName();
+  }
+
+void FileEditor::marginClicked(int i)
+  {
+  _marginClicked(i);
   }
 
 }
