@@ -9,6 +9,7 @@ namespace UI
 {
 
 ProcessToolbar::ProcessToolbar()
+    : _processState(Process::State::Invalid)
   {
   auto kill = addAction("Kill");
   connect(kill, &QAction::triggered, [this]()
@@ -23,15 +24,25 @@ ProcessToolbar::ProcessToolbar()
 
   connect(&_timer, &QTimer::timeout, [this]
     {
-    auto newState = _process ? _process->currentState() : Process::State::Invalid;
-    syncState(newState);
-
     if (!_process)
       {
+      syncState(Process::State::Invalid);
       return;
       }
 
     _process->processEvents();
+
+    auto newState = _process->currentState();
+    bool postStateChange =
+      newState == Process::State::Stopped ||
+      newState == Process::State::Crashed ||
+      newState == Process::State::Detached ||
+      newState == Process::State::Exited ||
+      newState == Process::State::Suspended;
+    if (!postStateChange)
+      {
+      syncState(newState);
+      }
 
     auto forwardOutput = [this](auto type, const auto &send)
       {
@@ -46,6 +57,11 @@ ProcessToolbar::ProcessToolbar()
 
     forwardOutput(Process::OutputType::Output, [this](auto str) { emit processOutput(str); });
     forwardOutput(Process::OutputType::Error, [this](auto str) { emit processError(str); });
+
+    if (postStateChange)
+      {
+      syncState(newState);
+      }
     });
   _timer.start(100);
   }

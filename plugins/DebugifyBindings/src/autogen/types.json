@@ -9,6 +9,12 @@
     "parent": null,
     "filename": "include/Process.h"
   },
+  "::LldbDriver::Process::State": {
+    "name": "State",
+    "parent": null,
+    "filename": "include/Process.h",
+    "type": "enum"
+  },
   "::LldbDriver::Thread": {
     "name": "Thread",
     "parent": null,

@@ -38,4 +38,20 @@ bool Thread::isCurrent() const
   {
   return this == _impl->process->selectedThread().get();
   }
+
+size_t Thread::frameCount() const
+  {
+  }
+
+std::shared_ptr<Frame> Thread::frameAt(size_t i)
+  {
+  }
+
+void Thread::selectFrame(const std::shared_ptr<Frame> &)
+  {
+  }
+
+std::shared_ptr<Frame> Thread::selectedFrame()
+  {
+  }
 }

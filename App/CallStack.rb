@@ -5,7 +5,7 @@ module App
 
     attr_reader :widget
     
-    def initialize(mainWindow)
+    def initialize(mainWindow, debugger)
       @widget = mainWindow.addEditor("Call Stack")
 
       @widget.setContents("<a href=\"plink\">Plink</a><br><a href=\"plonk\">Plonk</a>")

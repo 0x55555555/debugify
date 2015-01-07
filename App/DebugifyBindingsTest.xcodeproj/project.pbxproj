@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXFileReference section */
+		0866AA081A5C90EC003FAAB8 /* Console.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Console.h; sourceTree = "<group>"; };
+		0866AA091A5C90EC003FAAB8 /* EditableTextWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditableTextWindow.h; sourceTree = "<group>"; };
+		0866AA0A1A5C90EC003FAAB8 /* Notifier.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Notifier.h; sourceTree = "<group>"; };
+		0866AA0D1A5C90F5003FAAB8 /* Console.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Console.cpp; sourceTree = "<group>"; };
+		0866AA0E1A5C90F5003FAAB8 /* EditableTextWindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EditableTextWindow.cpp; sourceTree = "<group>"; };
 		08D13C541A55864400436C54 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		08D13C551A55864400436C54 /* .gitmodules */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitmodules; sourceTree = "<group>"; };
 		08D13C561A55864400436C54 /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
@@ -3241,6 +3246,9 @@
 		08D140781A55864500436C54 /* include */ = {
 			isa = PBXGroup;
 			children = (
+				0866AA081A5C90EC003FAAB8 /* Console.h */,
+				0866AA091A5C90EC003FAAB8 /* EditableTextWindow.h */,
+				0866AA0A1A5C90EC003FAAB8 /* Notifier.h */,
 				08D140791A55864500436C54 /* Application.h */,
 				08D1407A1A55864500436C54 /* Editor.h */,
 				08D1407B1A55864500436C54 /* FileEditor.h */,
@@ -3258,6 +3266,8 @@
 		08D140831A55864500436C54 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				0866AA0D1A5C90F5003FAAB8 /* Console.cpp */,
+				0866AA0E1A5C90F5003FAAB8 /* EditableTextWindow.cpp */,
 				08D140841A55864500436C54 /* Application.cpp */,
 				08D140851A55864500436C54 /* FileEditor.cpp */,
 				08D140861A55864500436C54 /* MainWindow.cpp */,

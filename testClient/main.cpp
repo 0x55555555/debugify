@@ -1,6 +1,7 @@
 #include <QCoreApplication>
 #include <iostream>
 #include <unistd.h>
+#include <future>
 #include <QVector>
 #include "foo.h"
 
@@ -25,9 +26,23 @@ int main(int argc, char *argv[])
     test.push_back(i);
     }
 
-  while(true)
+  std::vector<std::unique_ptr<std::thread>> threads;
+
+  for (int i = 0; i < 10; ++i)
     {
-    foo();
-    usleep(100000);
+    threads.push_back(std::make_unique<std::thread>([]()
+      {
+      while(true)
+        {
+        foo();
+        usleep(100000);
+        }
+      }));
+    }
+
+
+  for(auto &t : threads)
+    {
+    t->join();
     }
   }

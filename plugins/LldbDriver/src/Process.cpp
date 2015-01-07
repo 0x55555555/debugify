@@ -92,4 +92,19 @@ std::shared_ptr<Thread> Process::threadAt(size_t index)
 
   return _impl->wrapThread(thread);
   }
+
+void Process::selectThread(const std::shared_ptr<Thread> &t)
+  {
+  if (!t)
+    {
+    return;
+    }
+
+  _impl->process.SetSelectedThread(t->_impl->thread);
+  }
+
+std::shared_ptr<Thread> Process::selectedThread()
+  {
+  return _impl->wrapThread(_impl->process.GetSelectedThread());
+  }
 }

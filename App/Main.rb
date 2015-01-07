@@ -1,5 +1,6 @@
 require 'pry-rescue'
 require 'pry'
+require_relative 'Enum'
 
 application = nil
 

@@ -17,7 +17,7 @@ module App
       end
 
       mainWindow.processStateChanged.listen do |p|
-        @widget.puts("Process state changed to #{p}")
+        @widget.puts("Process state changed to #{LldbDriver::Process::State[p]}")
       end
 
       mainWindow.processChanged.listen do |p|

@@ -20,6 +20,7 @@ public:
   Process();
   ~Process();
 
+  /// \expose
   enum class State
     {
     Invalid = 0,
@@ -58,6 +59,9 @@ public:
 
   size_t threadCount();
   std::shared_ptr<Thread> threadAt(size_t index);
+
+  void selectThread(const std::shared_ptr<Thread> &);
+  std::shared_ptr<Thread> selectedThread();
 
   void processEvents();
 

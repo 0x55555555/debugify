@@ -32,7 +32,7 @@ public:
     {
     if (TYPE(val) != T_STRING)
       {
-      throw Crate::TypeException(b->getType(val), Crate::findType<const char *>());
+      throw Crate::TypeException(Crate::findType<const char *>(), b->getType(val));
       }
 
     QString str(QLatin1String(RSTRING_PTR(val), RSTRING_LEN(val)));

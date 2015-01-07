@@ -1,4 +1,5 @@
 require_relative 'DebuggerTerminal'
+require_relative 'Debugger'
 require_relative 'Console'
 require_relative 'CallStack'
 require_relative 'Threads'
@@ -11,14 +12,12 @@ module App
       @mainwindow = UI::MainWindow.new()
       @debugTerminal = App::DebuggerTerminal.new(@mainwindow)
 
-      @callStack = App::CallStack.new(@mainwindow)
-      @threads = App::Threads.new(@mainwindow)
+      @debugger = App::Debugger.new(@mainwindow)
+
+      @callStack = App::CallStack.new(@mainwindow, @debugger)
+      @threads = App::Threads.new(@mainwindow, @debugger)
       @console = App::Console.new(@mainwindow)
       @processWindows = [ @threads, @callStack ]
-
-      @mainwindow.targetChanged.listen do |t|
-        puts "target now #{t}"
-      end
 
       processChanged(nil)
       @mainwindow.processChanged.listen { |p| processChanged(p) }

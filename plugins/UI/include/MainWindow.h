@@ -33,7 +33,7 @@ DECLARE_NOTIFIER(TargetNotifier, std::function<void (Target::Pointer)>);
 DECLARE_NOTIFIER(ProcessNotifier, std::function<void (Process::Pointer)>);
 
 /// \expose unmanaged
-DECLARE_NOTIFIER(ProcessStateNotifier, std::function<void (QString)>);
+DECLARE_NOTIFIER(ProcessStateNotifier, std::function<void (Process::State)>);
 
 /// \expose unmanaged
 DECLARE_NOTIFIER(OutputNotifier, std::function<void (QString)>);
@@ -72,7 +72,7 @@ public:
 private slots:
   void onError(const QString &str);
   void setStatusText(const QString &str);
-  void processStateChanged(Process::State );
+  void processStateChanged(Process::State);
 
   void onProcessStarted(const Process::Pointer &);
 

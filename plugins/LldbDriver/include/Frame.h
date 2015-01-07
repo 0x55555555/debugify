@@ -5,7 +5,6 @@ namespace LldbDriver
 {
 
 class Process;
-class Frame;
 
 /// \expose sharedpointer
 class Thread
@@ -25,13 +24,6 @@ public:
   Eks::String name() const;
 
   bool isCurrent() const;
-
-  size_t frameCount() const;
-  std::shared_ptr<Frame> frameAt(size_t i);
-
-  void selectFrame(const std::shared_ptr<Frame> &);
-  std::shared_ptr<Frame> selectedFrame();
-
 
   friend class Process;
   };

@@ -7,6 +7,12 @@ namespace UI
 
 EditableTextWindow::EditableTextWindow()
   {
+  QFont font("Courier New");
+  font.setStyleHint(QFont::Monospace);
+  setFont(font);
+
+  document()->setDocumentMargin(0.0);
+
   document()->setDefaultStyleSheet("a { color: black; text-decoration: none; }");
   }
 

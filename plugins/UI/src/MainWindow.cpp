@@ -215,21 +215,7 @@ void MainWindow::setStatusText(const QString &str)
 
 void MainWindow::processStateChanged(Process::State state)
   {
-  static const char *states[] = {
-    "invalid",
-    "unloaded",
-    "connected",
-    "attaching",
-    "launching",
-    "stopped",
-    "running",
-    "stepping",
-    "crashed",
-    "detached",
-    "exited",
-    "suspended"
-  };
-  _processStateNotifier(states[(int)state]);
+  _processStateNotifier(state);
 
   if (state == Process::State::Invalid)
     {

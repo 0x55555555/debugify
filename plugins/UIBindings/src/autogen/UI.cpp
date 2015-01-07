@@ -177,7 +177,7 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
 
 
 // Exposing class ::UI::ProcessStateNotifier
-struct UI_ProcessStateNotifier_listen_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< int(::UI::ProcessStateNotifier::*)(std::function<void (QString)> &&) >, &::UI::ProcessStateNotifier::listen, bondage::FunctionCaller> { };
+struct UI_ProcessStateNotifier_listen_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< int(::UI::ProcessStateNotifier::*)(std::function<void (Process::State)> &&) >, &::UI::ProcessStateNotifier::listen, bondage::FunctionCaller> { };
 struct UI_ProcessStateNotifier_remove_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::ProcessStateNotifier::*)(int) >, &::UI::ProcessStateNotifier::remove, bondage::FunctionCaller> { };
 
 const bondage::Function UI_ProcessStateNotifier_methods[] = {
