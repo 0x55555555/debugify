@@ -8,6 +8,18 @@ module LldbDriver
 # \brief sharedpointer
 #
 class Target
+  # LldbDriver::Breakpoint Target#addBreakpoint(Eks::String file, number line)
+  # \brief 
+
+  # LldbDriver::Breakpoint Target#breakpointAt(number index)
+  # \brief 
+
+  # number Target#breakpointCount()
+  # \brief 
+
+  # LldbDriver::BreakpointNotifier Target#breakpointsChanged()
+  # \brief 
+
   # std::__1::shared_ptr Target#moduleAt(number index)
   # \brief 
 

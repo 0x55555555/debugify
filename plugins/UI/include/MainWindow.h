@@ -8,7 +8,7 @@
 #include "Target.h"
 #include "Process.h"
 #include "Module.h"
-#include "Notifier.h"
+#include "Utilities/XNotifier.h"
 
 namespace Ui {
 class MainWindow;
@@ -27,19 +27,19 @@ class ProcessToolbar;
 class ModuleExplorer;
 
 /// \expose unmanaged
-DECLARE_NOTIFIER(TargetNotifier, std::function<void (Target::Pointer)>);
+X_DECLARE_NOTIFIER(TargetNotifier, std::function<void (Target::Pointer)>);
 
 /// \expose unmanaged
-DECLARE_NOTIFIER(ProcessNotifier, std::function<void (Process::Pointer)>);
+X_DECLARE_NOTIFIER(ProcessNotifier, std::function<void (Process::Pointer)>);
 
 /// \expose unmanaged
-DECLARE_NOTIFIER(ProcessStateNotifier, std::function<void (Process::State)>);
+X_DECLARE_NOTIFIER(ProcessStateNotifier, std::function<void (Process::State)>);
 
 /// \expose unmanaged
-DECLARE_NOTIFIER(OutputNotifier, std::function<void (QString)>);
+X_DECLARE_NOTIFIER(OutputNotifier, std::function<void (QString)>);
 
 /// \expose unmanaged
-DECLARE_NOTIFIER(EditorNotifier, std::function<void (Editor *)>);
+X_DECLARE_NOTIFIER(EditorNotifier, std::function<void (Editor *)>);
 
 /// \expose managed
 class MainWindow : public QMainWindow

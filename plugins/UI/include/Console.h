@@ -1,7 +1,7 @@
 #pragma once
 #include <QWidget>
 #include <QPlainTextEdit>
-#include "Notifier.h"
+#include "Utilities/XNotifier.h"
 #include "Containers/XStringSimple.h"
 #include "Containers/XStringBuffer.h"
 
@@ -11,7 +11,7 @@ namespace UI
 {
 
 /// \expose unmanaged
-DECLARE_NOTIFIER(InputNotifier, std::function<void (Eks::String)>);
+X_DECLARE_NOTIFIER(InputNotifier, std::function<void (Eks::String)>);
 
 class ConsoleWidget : public QPlainTextEdit
   {

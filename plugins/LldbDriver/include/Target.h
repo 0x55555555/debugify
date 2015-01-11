@@ -1,6 +1,7 @@
 #pragma once
 #include "Global.h"
 #include "Utilities/XStringRef.h"
+#include "Utilities/XNotifier.h"
 
 namespace LldbDriver
 {
@@ -8,6 +9,10 @@ namespace LldbDriver
 class Process;
 class Module;
 class Error;
+class Breakpoint;
+
+/// \expose unmanaged
+X_DECLARE_NOTIFIER(BreakpointNotifier, std::function<void ()>);
 
 /// \expose sharedpointer
 class Target
@@ -30,7 +35,15 @@ public:
   size_t moduleCount();
   std::shared_ptr<Module> moduleAt(size_t index);
 
+  BreakpointNotifier *breakpointsChanged() { return &_breakpointsChanged; }
+
+  Breakpoint addBreakpoint(const Eks::String &file, size_t line);
+
+  size_t breakpointCount();
+  Breakpoint breakpointAt(size_t index);
+
 private:
+  BreakpointNotifier _breakpointsChanged;
   friend class Debugger;
   };
 

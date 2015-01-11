@@ -6,7 +6,7 @@ module App
     ALTERNATE_A = "#ffffff"
     ALTERNATE_B = "#f7f7f7"
 
-    def alternatingColourList(list, options)
+    def alternatingColourList(list, options = {})
       rows = list.map.with_index do |t, i|
         col = nil
         if (i == options[:selected])
@@ -27,6 +27,10 @@ module App
 
     def link(href, str)
       return "<a href=\"#{href}\">#{str}<a>"
+    end
+
+    def colour(str, col)
+      return "<span style=\"color: #{col}\">#{str}</span>"
     end
   end
 

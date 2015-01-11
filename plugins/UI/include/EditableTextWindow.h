@@ -1,13 +1,13 @@
 #pragma once
 #include "QTextEdit"
 #include "XGlobal.h"
-#include "Notifier.h"
+#include "Utilities/XNotifier.h"
 
 namespace UI
 {
 
 /// \expose unmanaged
-DECLARE_NOTIFIER(ClickNotifier, std::function<void (QString)>);
+X_DECLARE_NOTIFIER(ClickNotifier, std::function<void (QString)>);
 
 /// \expose
 class EditableTextWindow : public QTextEdit

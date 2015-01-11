@@ -3,13 +3,12 @@ require_relative 'TextWindow'
 module App
 
   class CallStack
+    include TextWindow
 
     attr_reader :widget
     
     def initialize(mainWindow, debugger)
       @widget = mainWindow.addEditor("Call Stack")
-
-      @widget.setContents("<a href=\"plink\">Plink</a><br><a href=\"plonk\">Plonk</a>")
 
       @widget.clicked.listen do |f|
         thread = mainWindow.process.selectedThread
@@ -41,7 +40,6 @@ module App
       return link(frame.id, "#{frame.functionName} #{lineData}")
     end
 
-    include TextWindow
   end
 
 end

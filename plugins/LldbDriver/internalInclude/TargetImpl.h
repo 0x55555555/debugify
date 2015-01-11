@@ -1,6 +1,6 @@
 #include "Target.h"
-#include "Module.h"
 #include "ModuleImpl.h"
+#include "BreakpointImpl.h"
 #include "lldb/API/SBTarget.h"
 #include <vector>
 
@@ -31,5 +31,14 @@ public:
       }
 
     modulesCached = true;
+    }
+
+  LldbDriver::Breakpoint make(const lldb::SBBreakpoint &br)
+    {
+    LldbDriver::Breakpoint breakpoint;
+    breakpoint._impl->target = myself.lock();
+    breakpoint._impl->breakpoint = br;
+
+    return breakpoint;
     }
   };

@@ -4,6 +4,11 @@
     "parent": null,
     "filename": "include/TypeMember.h"
   },
+  "::LldbDriver::BreakpointNotifier": {
+    "name": "BreakpointNotifier",
+    "parent": null,
+    "filename": "include/Target.h"
+  },
   "::LldbDriver::Process": {
     "name": "Process",
     "parent": null,
@@ -35,11 +40,6 @@
     "parent": null,
     "filename": "include/Debugger.h"
   },
-  "::LldbDriver::Target": {
-    "name": "Target",
-    "parent": null,
-    "filename": "include/Target.h"
-  },
   "::LldbDriver::CompileUnit": {
     "name": "CompileUnit",
     "parent": null,
@@ -54,5 +54,20 @@
     "name": "Module",
     "parent": null,
     "filename": "include/Module.h"
+  },
+  "::LldbDriver::Breakpoint": {
+    "name": "Breakpoint",
+    "parent": null,
+    "filename": "include/Breakpoint.h"
+  },
+  "::LldbDriver::BreakpointLocation": {
+    "name": "BreakpointLocation",
+    "parent": null,
+    "filename": "include/Breakpoint.h"
+  },
+  "::LldbDriver::Target": {
+    "name": "Target",
+    "parent": null,
+    "filename": "include/Target.h"
   }
 }

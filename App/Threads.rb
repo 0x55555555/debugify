@@ -3,6 +3,7 @@ require_relative 'TextWindow'
 module App
 
   class Threads
+    include TextWindow
 
     attr_reader :widget
     
@@ -40,8 +41,6 @@ module App
 
       return link(t.id, "0x#{t.id.to_s(16)} #{t.name()} #{frameTop.functionName} #{lineData}")
     end
-
-    include TextWindow
   end
 
 end

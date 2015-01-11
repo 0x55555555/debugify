@@ -88,4 +88,22 @@ std::shared_ptr<Module> Target::moduleAt(size_t index)
   _impl->cacheModules();
   return _impl->modules[index];
   }
+
+Breakpoint Target::addBreakpoint(const Eks::String &file, size_t line)
+  {
+  auto br = _impl->make(_impl->target.BreakpointCreateByLocation(file.data(), line));
+
+  _breakpointsChanged();
+  return br;
+  }
+
+size_t Target::breakpointCount()
+  {
+  return _impl->target.GetNumBreakpoints();
+  }
+
+Breakpoint Target::breakpointAt(size_t index)
+  {
+  return _impl->make(_impl->target.GetBreakpointAtIndex(index));
+  }
 }

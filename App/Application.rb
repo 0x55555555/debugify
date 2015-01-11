@@ -3,6 +3,7 @@ require_relative 'Debugger'
 require_relative 'Console'
 require_relative 'CallStack'
 require_relative 'Threads'
+require_relative 'Breakpoints'
 
 module App
 
@@ -16,6 +17,7 @@ module App
 
       @callStack = App::CallStack.new(@mainwindow, @debugger)
       @threads = App::Threads.new(@mainwindow, @debugger)
+      @breakpoints = App::Breakpoints.new(@mainwindow, @debugger)
       @console = App::Console.new(@mainwindow)
       @processWindows = [ @threads, @callStack ]
 
@@ -29,7 +31,7 @@ module App
       @mainwindow.editorOpened.listen do |editor|
         if (editor.class == UI::FileEditor)
           editor.marginClicked.listen do |line|
-            puts "Clicked line #{line}"
+            @mainwindow.target.addBreakpoint(editor.path(), line)
           end
         end
       end

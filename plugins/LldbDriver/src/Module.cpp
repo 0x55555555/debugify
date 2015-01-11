@@ -2,6 +2,7 @@
 #include "ModuleImpl.h"
 #include "CompileUnit.h"
 #include "CompileUnitImpl.h"
+#include "Utils.h"
 
 namespace LldbDriver
 {
@@ -19,12 +20,7 @@ Eks::String Module::path() const
   std::lock_guard<std::mutex> l(_impl->mutex);
 
   auto file = _impl->module.GetFileSpec();
-  file.ResolveExecutableLocation();
-
-  Eks::StringBuilder sb;
-  sb << file.GetDirectory() << "/" << file.GetFilename();
-
-  return sb;
+  return fileSpecAsString(file);
   }
 
 std::set<Eks::String> Module::files() const
@@ -33,14 +29,10 @@ std::set<Eks::String> Module::files() const
 
   auto addFile = [&set](auto spec)
     {
-    spec.ResolveExecutableLocation();
-
-    if (spec.GetDirectory() && spec.GetFilename())
+    auto s = fileSpecAsString(spec);
+    if (s.length())
       {
-      Eks::StringBuilder sb;
-      sb << spec.GetDirectory() << "/" << spec.GetFilename();
-
-      set.insert(sb);
+      set.insert(s);
       }
     };
 

@@ -25,6 +25,11 @@ class EnumerationWrapper
   end
 end
 
+
+NotifierExtensions.install([
+  BreakpointNotifier
+])
+
 def self.addEnumerator(cls, nameSym, countSym, atSym)
 
   count = cls.instance_method(countSym)
@@ -36,8 +41,10 @@ def self.addEnumerator(cls, nameSym, countSym, atSym)
 end
 
 addEnumerator(Target, :modules, :moduleCount, :moduleAt)
+addEnumerator(Target, :breakpoints, :breakpointCount, :breakpointAt)
 addEnumerator(Process, :threads, :threadCount, :threadAt)
 addEnumerator(Thread, :frames, :frameCount, :frameAt)
+addEnumerator(Breakpoint, :locations, :locationCount, :locationAt)
 
 end
 

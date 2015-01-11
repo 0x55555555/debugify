@@ -4,15 +4,18 @@
 require_relative '../BindingsInternal'
 
 require_relative 'TypeMember'
+require_relative 'BreakpointNotifier'
 require_relative 'Process'
 require_relative 'FunctionMember'
 require_relative 'Frame'
 require_relative 'Thread'
 require_relative 'Debugger'
-require_relative 'Target'
 require_relative 'CompileUnit'
 require_relative 'Type'
 require_relative 'Module'
+require_relative 'Breakpoint'
+require_relative 'BreakpointLocation'
+require_relative 'Target'
 
 module LldbDriver
 

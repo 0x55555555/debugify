@@ -5,6 +5,7 @@
 #include "Containers/XStringBuilder.h"
 #include "lldb/API/SBStream.h"
 #include "lldb/API/SBLineEntry.h"
+#include "Utils.h"
 
 namespace LldbDriver
 {
@@ -45,15 +46,7 @@ Eks::String Frame::functionName() const
 Eks::String Frame::filename() const
   {
   auto file = _impl->frame.GetLineEntry().GetFileSpec();
-  file.ResolveExecutableLocation();
-
-  Eks::StringBuilder sb;
-  if (file.GetDirectory() && file.GetFilename())
-    {
-    sb << file.GetDirectory() << "/" << file.GetFilename();
-    }
-
-  return sb;
+  return fileSpecAsString(file);
   }
 
 bool Frame::hasLineNumber() const
