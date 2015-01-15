@@ -12,7 +12,7 @@ CodeEditor::CodeEditor(QWidget *parent)
     : QPlainTextEdit(parent),
       _currentLine(-1)
   {
-  lineNumberArea = new LineNumberArea(this);
+  _lineNumberArea = new LineNumberArea(this);
 
   connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int)));
   connect(this, SIGNAL(updateRequest(QRect,int)), this, SLOT(updateLineNumberArea(QRect,int)));
@@ -38,12 +38,13 @@ int CodeEditor::lineNumberAreaWidth()
 void CodeEditor::marginMouseReleaseEvent(QMouseEvent *e)
   {
   auto cursor = cursorForPosition(QPoint(0, e->pos().y()));
-  emit marginClicked(cursor.blockNumber());
+  emit marginClicked(cursor.blockNumber()+1);
   }
 
 void CodeEditor::addBreakpoint(int line)
   {
   _breakpoints.insert(line);
+  _lineNumberArea->update();
   }
 
 void CodeEditor::removeBreakpoint(int line)
@@ -52,7 +53,14 @@ void CodeEditor::removeBreakpoint(int line)
   if (it != _breakpoints.end())
     {
     _breakpoints.erase(it);
+    _lineNumberArea->update();
     }
+  }
+
+void CodeEditor::clearBreakpoints()
+  {
+  _breakpoints.clear();
+  _lineNumberArea->update();
   }
 
 void CodeEditor::addActiveLine(int line)
@@ -71,10 +79,16 @@ void CodeEditor::removeActiveLine(int line)
     }
   }
 
+void CodeEditor::clearActiveLines()
+  {
+  _activelines.clear(); 
+  }
+
 void CodeEditor::setCurrentLine(int line)
   {
   _currentLine = line;
   highlightLines();
+  _lineNumberArea->update();
   }
 
 void CodeEditor::updateLineNumberAreaWidth(int)
@@ -86,11 +100,11 @@ void CodeEditor::updateLineNumberArea(const QRect &rect, int dy)
   {
   if (dy)
     {
-    lineNumberArea->scroll(0, dy);
+    _lineNumberArea->scroll(0, dy);
     }
   else
     {
-    lineNumberArea->update(0, rect.y(), lineNumberArea->width(), rect.height());
+    _lineNumberArea->update(0, rect.y(), _lineNumberArea->width(), rect.height());
     }
 
   if (rect.contains(viewport()->rect()))
@@ -104,7 +118,7 @@ void CodeEditor::resizeEvent(QResizeEvent *e)
   QPlainTextEdit::resizeEvent(e);
 
   QRect cr = contentsRect();
-  lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
+  _lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
   }
 
 void CodeEditor::highlightLines()
@@ -120,8 +134,6 @@ void CodeEditor::highlightLines()
     selection.cursor = QTextCursor(document()->findBlockByLineNumber(line));
     selection.cursor.clearSelection();
     extraSelections.append(selection);
-      
-    qDebug() << selection.cursor.blockNumber();
     };
 
   if (_currentLine != -1)
@@ -143,7 +155,7 @@ void CodeEditor::highlightLines()
 
 void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
   {
-  QPainter painter(lineNumberArea);
+  QPainter painter(_lineNumberArea);
   painter.fillRect(event->rect(), Qt::lightGray);
   QTextBlock block = firstVisibleBlock();
 
@@ -153,7 +165,7 @@ void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
   int bottom = top + (int) blockBoundingRect(block).height();
   auto breakpoint = _breakpoints.lower_bound(blockNumber);
 
-  const int width = lineNumberArea->width() - 5;
+  const int width = _lineNumberArea->width() - 5;
   const int fontHeight = fontMetrics().height();
 
   while (block.isValid() && top <= event->rect().bottom())
@@ -167,7 +179,7 @@ void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
       }
 
     int breakpointCount = 0;
-    while (*breakpoint == blockNumber && breakpoint != _breakpoints.end())
+    while (*breakpoint == (blockNumber+1) && breakpoint != _breakpoints.end())
       {
       int offset = std::min(breakpointCount * 3, width - fontHeight);
 
@@ -176,6 +188,12 @@ void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
 
       ++breakpointCount;
       ++breakpoint;
+      }
+
+    if (_currentLine == (blockNumber+1))
+      {
+      painter.setBrush(Qt::yellow);
+      painter.drawRect(width-fontHeight, top+5, fontHeight, fontHeight-10);
       }
 
     block = block.next();
@@ -209,26 +227,6 @@ FileEditor::FileEditor(const QString &path)
     }
 
   connect(_editor, SIGNAL(marginClicked(int)), this, SLOT(marginClicked(int)));
-
-
-  _editor->addBreakpoint(5);
-  _editor->addBreakpoint(10);
-  _editor->addBreakpoint(10);
-  _editor->addBreakpoint(13);
-  _editor->addBreakpoint(13);
-  _editor->addBreakpoint(13);
-  _editor->addBreakpoint(100);
-  _editor->addBreakpoint(105);
-  _editor->addBreakpoint(110);
-  _editor->addBreakpoint(1000);
-  _editor->addBreakpoint(1002);
-
-  _editor->addActiveLine(6);
-  _editor->addActiveLine(7);
-
-  _editor->addActiveLine(9);
-
-  _editor->setCurrentLine(5);
   }
 
 void FileEditor::focusOnLine(size_t line)
@@ -284,6 +282,22 @@ void FileEditor::removeMarker(MarkerType m, size_t line)
   else if (m == ActiveLine)
     {
     _editor->removeActiveLine(line);
+    }
+  else if (m == CurrentLine)
+    {
+    _editor->setCurrentLine(-1);
+    }
+  }
+
+void FileEditor::clearMarkers(MarkerType m)
+  {
+  if (m == Breakpoint)
+    {
+    _editor->clearBreakpoints();
+    }
+  else if (m == ActiveLine)
+    {
+    _editor->clearActiveLines();
     }
   else if (m == CurrentLine)
     {

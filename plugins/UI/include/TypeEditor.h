@@ -39,12 +39,14 @@ public:
 
 signals:
   void selectType(const QString &path);
+  void selectFile(const QString &file, int line);
 
 private slots:
   void selectIndex(const QModelIndex &);
   void repopulate();
 
 private:
+  void populateLocation(const Type &type);
   void populatorLocator(QWidget *widg, const std::shared_ptr<CachedType> &);
   void populateAttributes(const Type &type);
   void populateTemplateArguments(const Type &type);

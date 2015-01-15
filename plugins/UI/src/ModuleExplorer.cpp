@@ -113,7 +113,8 @@ ModuleExplorer::ModuleExplorer(TypeManager *types)
 
   connect(_tree, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(itemDoubleClicked(QModelIndex)));
 
-  connect(types, SIGNAL(typeAdded(Module::Pointer, UI::CachedType::Pointer, const Type*)), this, SLOT(typeAdded(Module::Pointer, UI::CachedType::Pointer, const Type*)));
+  connect(types, SIGNAL(typeAdded(Module::Pointer, UI::CachedType::Pointer)), this, SLOT(typeAdded(Module::Pointer, UI::CachedType::Pointer)));
+  connect(types, SIGNAL(typeDeclarationAdded(Module::Pointer, UI::CachedType::Pointer, const Type*)), this, SLOT(typeDeclarationAdded(Module::Pointer, UI::CachedType::Pointer, const Type*)));
   }
 
 ModuleExplorer::~ModuleExplorer()
@@ -203,6 +204,14 @@ void ModuleExplorer::loadedFiles(const QStandardItem *constItem, const Module::P
     moduleData.filesItem->appendRow(fileItem);
 
     _fileMap[file] = fileItem;
+
+    auto beg = _unownedTypeMap.lowerBound(file);
+    auto end = _unownedTypeMap.upperBound(file);
+    for (; beg != end; ++beg)
+      {
+      insertTypeReference(module, fileItem, beg.value());
+      }
+    _unownedTypeMap.remove(file);
     }
 
   moduleData.filesItem->sortChildren(0);
@@ -221,7 +230,7 @@ void ModuleExplorer::itemDoubleClicked(const QModelIndex &index)
     }
   }
 
-void ModuleExplorer::typeAdded(const Module::Pointer &module, const CachedType::Pointer &type, const Type *)
+void ModuleExplorer::typeAdded(const Module::Pointer &module, const CachedType::Pointer &type)
   {
   auto &item = _moduleMap[module];
   if (!item.moduleItem)
@@ -253,6 +262,44 @@ void ModuleExplorer::typeAdded(const Module::Pointer &module, const CachedType::
   typeItem->setToolTip(type->path);
 
   parent->sortChildren(0);
+  }
+
+void ModuleExplorer::typeDeclarationAdded(const Module::Pointer &module, const CachedType::Pointer &type, const Type *)
+  {
+  auto &moduleItem = _moduleMap[module];
+  if (!moduleItem.moduleItem)
+    {
+    xAssertFail();
+    return;
+    }
+
+  auto item = _fileMap[type->file];
+  if (item)
+    {
+    insertTypeReference(module, item, type);
+    return;
+    }
+
+  _unownedTypeMap.insert(type->file, type);
+  }
+
+void ModuleExplorer::insertTypeReference(const Module::Pointer &module, QStandardItem *parent, const CachedType::Pointer &type)
+  {
+  for (int i = 0; i < parent->rowCount(); ++i)
+    {
+    QStandardItem *child = parent->child(i);
+    if (child->data(PathRole).toString() == type->path)
+      {
+      return;
+      }
+    }
+
+  auto typeItem = new QStandardItem(type->basename + type->specialisation);
+  typeItem->setData(DataType, TypeRole);
+  typeItem->setData(type->path, PathRole);
+  typeItem->setData(QVariant::fromValue(module), ModuleRole);
+
+  parent->appendRow(typeItem);
   }
 
 void ModuleExplorer::filterChanged(const QString &filter)

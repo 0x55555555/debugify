@@ -24,7 +24,8 @@ TypeManager::TypeManager()
 
   connect(this, SIGNAL(loadTypes(Module::Pointer)), _worker, SLOT(loadTypes(Module::Pointer)));
 
-  connect(_worker, SIGNAL(loadedType(Module::Pointer, UI::CachedType::Pointer, const Type*)), this, SLOT(loadedType(Module::Pointer, UI::CachedType::Pointer, const Type*)));
+  connect(_worker, SIGNAL(loadedType(Module::Pointer, UI::CachedType::Pointer)), this, SLOT(loadedType(Module::Pointer, UI::CachedType::Pointer)));
+  connect(_worker, SIGNAL(loadedTypeDeclaration(Module::Pointer,UI::CachedType::Pointer,const Type*)), this, SLOT(loadedTypeDeclaration(Module::Pointer, UI::CachedType::Pointer, const Type*)));
   }
 
 void TypeManager::setTarget(const Target::Pointer &tar)
@@ -58,9 +59,14 @@ std::shared_ptr<CachedType> TypeManager::findType(const QString &str)
   return _types.value(str);
   }
 
-void TypeManager::loadedType(const Module::Pointer &module, const UI::CachedType::Pointer &cached, const Type *type)
+void TypeManager::loadedType(const Module::Pointer &module, const UI::CachedType::Pointer &cached)
   {
-  emit typeAdded(module, cached, type);
+  emit typeAdded(module, cached);
+  }
+
+void TypeManager::loadedTypeDeclaration(const Module::Pointer &module, const UI::CachedType::Pointer &cached, const Type *type)
+  {
+  emit typeDeclarationAdded(module, cached, type);
   }
 
 TypeManagerWorker::TypeManagerWorker(TypeManager *mgr)
@@ -152,7 +158,7 @@ void TypeManagerWorker::loadType(const Module::Pointer &ptr, const Type &t)
   QString qSource = source.data();
   if (auto type = _manager->findType(qSource))
     {
-    type->definitions << t;
+    addDeclaration(ptr, type, &t);
     return;
     }
 
@@ -186,16 +192,33 @@ std::shared_ptr<CachedType> TypeManagerWorker::createType(const Module::Pointer 
   type->path = qStr;
   type->basename = basename.data();
   type->specialisation = specialisation.data();
+  type->line = 0;
+
+  _manager->registerType(type);
+  emit loadedType(module, type);
 
   if (t)
     {
-    type->definitions << *t;
+    addDeclaration(module, type, t);
     }
 
-  _manager->registerType(type);
-  emit loadedType(module, type, t);
-
   return type;
+  }
+
+void TypeManagerWorker::addDeclaration(const Module::Pointer &module, const std::shared_ptr<CachedType> &type, const Type *t)
+  {
+  type->definitions << *t;
+
+  Eks::TemporaryAllocator alloc(Eks::Core::temporaryAllocator());
+  Eks::String file;
+  size_t line = 0;
+  if (t->getLocation(file, line))
+    {
+    type->file = file.data();
+    type->line = line;
+    }
+
+  emit loadedTypeDeclaration(module, type, t);
   }
 
 }

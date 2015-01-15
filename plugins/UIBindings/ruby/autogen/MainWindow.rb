@@ -30,7 +30,7 @@ class MainWindow < Qt::QMainWindow
   # nil MainWindow#hideDock(QWidget w)
   # \brief 
 
-  # UI::Editor MainWindow#openFile(QString str)
+  # UI::Editor MainWindow#openFile(QString str, number line)
   # \brief 
 
   # UI::OutputNotifier MainWindow#output()

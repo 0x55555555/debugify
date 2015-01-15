@@ -9,6 +9,8 @@ module App
 
   class Application
     def initialize()
+      @editors = { }
+
       @application = UI::Application.new()
       @mainwindow = UI::MainWindow.new()
       @debugTerminal = App::DebuggerTerminal.new(@mainwindow)
@@ -30,11 +32,51 @@ module App
 
       @mainwindow.editorOpened.listen do |editor|
         if (editor.class == UI::FileEditor)
-          editor.marginClicked.listen do |line|
-            @mainwindow.target.addBreakpoint(editor.path(), line)
-          end
+          setupFileEditor(editor)
         end
       end
+
+      @mainwindow.targetChanged.listen do |t|
+        if (t != nil)
+          t.breakpointsChanged.listen { |_| syncEditorBreakpoints() }
+        end
+      end
+    end
+
+    def execute()
+      @mainwindow.show()
+      @application.execute()
+    end
+
+  private
+    def setupFileEditor(editor)
+      path = editor.path()
+      editor.marginClicked.listen do |line|
+        found, brk, loc = @mainwindow.target.findBreakpoint(path, line)
+        if (found)
+          @mainwindow.target.removeBreakpoint(brk)
+        else
+          @mainwindow.target.addBreakpoint(path, line)
+        end
+      end
+
+      @editors[path] = editor
+    end
+
+    def syncEditorBreakpoints()
+      @editors.each { |_, e| e.clearMarkers(UI::FileEditor::MarkerType[:Breakpoint]) }
+      target = @mainwindow.target
+      target.breakpoints.each do |br|
+        br.locations.each do |l|
+          addEditorBreakpoint(l.file, l.line)
+        end
+      end
+    end
+
+    def addEditorBreakpoint(file, line)
+      editor = @editors[file]
+
+      editor.addMarker(UI::FileEditor::MarkerType[:Breakpoint], line) if editor
     end
 
     def loadCurrentSource()
@@ -44,16 +86,8 @@ module App
       file = frame.filename
       line = frame.lineNumber
       if (file.length > 0)
-        editor = @mainwindow.openFile(file)
-        if (editor != nil)
-          editor.focusOnLine(line)
-        end
+        editor = @mainwindow.openFile(file, line)
       end
-    end
-
-    def execute()
-      @mainwindow.show()
-      @application.execute()
     end
 
     def processChanged(p)

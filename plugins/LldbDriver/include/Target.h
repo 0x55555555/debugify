@@ -10,6 +10,7 @@ class Process;
 class Module;
 class Error;
 class Breakpoint;
+class BreakpointLocation;
 
 /// \expose unmanaged
 X_DECLARE_NOTIFIER(BreakpointNotifier, std::function<void ()>);
@@ -37,7 +38,11 @@ public:
 
   BreakpointNotifier *breakpointsChanged() { return &_breakpointsChanged; }
 
+  /// \param[out] outBrk the found breakpoint
+  /// \param[out] outLoc the found breakpoint location
+  bool findBreakpoint(const Eks::String &file, size_t line, Breakpoint *outBrk, BreakpointLocation *outLoc);
   Breakpoint addBreakpoint(const Eks::String &file, size_t line);
+  bool removeBreakpoint(const Breakpoint &brk);
 
   size_t breakpointCount();
   Breakpoint breakpointAt(size_t index);

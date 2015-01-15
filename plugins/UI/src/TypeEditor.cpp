@@ -32,6 +32,16 @@ TypeEditor::TypeEditor(TypeManager *types, const QString &path)
     connect(ui->members, SIGNAL(activated(QModelIndex)), this, SLOT(selectIndex(QModelIndex)));
 
     connect(ui->baseClasses, SIGNAL(activated(QModelIndex)), this, SLOT(selectIndex(QModelIndex)));
+
+    connect(ui->goToLocation, &QPushButton::clicked, [this]()
+      {
+      Eks::String file;
+      xsize line;
+      if (_type->definitions.front().getLocation(file, line))
+        {
+        emit selectFile(file.data(), line);
+        }
+      });
     }
   else
     {
@@ -73,6 +83,7 @@ void TypeEditor::repopulate()
   {
   auto firstDef = _type->definitions.front();
 
+  populateLocation(firstDef);
   populateAttributes(firstDef);
   populateTemplateArguments(firstDef);
   populateFunctions(firstDef);
@@ -88,6 +99,24 @@ void TypeEditor::populatorLocator(QWidget *widg, const std::shared_ptr<CachedTyp
     }
 
   widg->layout()->addWidget(makeTypeLink(object));
+  }
+
+void TypeEditor::populateLocation(const Type &type)
+  {
+  ui->locationGroup->setVisible(false);
+
+  Eks::String file;
+  xsize line;
+  if (type.getLocation(file, line))
+    {
+    ui->locationGroup->setVisible(true);
+
+    QFontMetrics metrics(font());
+    QString path = file.data();
+    QString fileElided = metrics.elidedText(path, Qt::ElideLeft, 225);
+    ui->locationString->setText(QString("%1 at line %2").arg(fileElided).arg(line));
+    ui->locationString->setToolTip(path);
+    }
   }
 
 void TypeEditor::populateAttributes(const Type &type)

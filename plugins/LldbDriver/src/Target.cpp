@@ -3,6 +3,9 @@
 #include "Process.h"
 #include "ProcessImpl.h"
 #include "ErrorImpl.h"
+#include <iostream>
+#include "lldb/API/SBBreakpointLocation.h"
+#include "Utils.h"
 
 namespace LldbDriver
 {
@@ -89,12 +92,36 @@ std::shared_ptr<Module> Target::moduleAt(size_t index)
   return _impl->modules[index];
   }
 
+bool Target::findBreakpoint(const Eks::String &file, size_t line, Breakpoint *outBrk, BreakpointLocation *outLoc)
+  {
+  auto count = breakpointCount();
+  for (size_t i = 0; i < count; ++i)
+    {
+    auto brk = breakpointAt(i);
+
+    if (brk.findLocation(file, line, outLoc))
+      {
+      *outBrk = brk;
+      return true;
+      }
+    }
+  return false;
+  }
+
 Breakpoint Target::addBreakpoint(const Eks::String &file, size_t line)
   {
   auto br = _impl->make(_impl->target.BreakpointCreateByLocation(file.data(), line));
 
   _breakpointsChanged();
   return br;
+  }
+
+bool Target::removeBreakpoint(const Breakpoint &brk)
+  {
+  auto res = _impl->target.BreakpointDelete(brk._impl->breakpoint.GetID());
+
+  _breakpointsChanged();
+  return res;
   }
 
 size_t Target::breakpointCount()

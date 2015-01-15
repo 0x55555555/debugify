@@ -23,6 +23,8 @@ public:
   const std::shared_ptr<CompileUnit> &compileUnit() const;
   std::shared_ptr<CompileUnit> &compileUnit();
 
+  bool getLocation(Eks::String &file, size_t &line) const;
+
   size_t size() const;
 
   size_t memberCount() const;

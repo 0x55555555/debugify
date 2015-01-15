@@ -3,5 +3,8 @@
 void sample()
   {
   Pork p;
-  p.foo("test");
+
+  int i = 4 + (size_t)&p;
+
+  p.foo("test" + std::to_string(i));
   }

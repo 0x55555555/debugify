@@ -38,14 +38,11 @@ module App
       loc = "#{b.id} "
 
       b.locations.each do |l|
-        if (l.resolved)
-          file = File.basename(l.file)
-          loc << "#{file} #{l.line}"
-          break
-        end
+        file = File.basename(l.file)
+        loc << "#{file} #{l.line}"
       end
 
-      col = b.enabled ? :black : :'darkgray'
+      col = b.enabled ? :black : :darkgray
       link(b.id, colour(loc, col))
     end
   end

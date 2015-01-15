@@ -61,6 +61,12 @@
     "filename": "include/FileEditor.h",
     "derivable": true
   },
+  "::UI::FileEditor::MarkerType": {
+    "name": "MarkerType",
+    "parent": null,
+    "filename": "include/FileEditor.h",
+    "type": "enum"
+  },
   "::UI::EditableTextWindow": {
     "name": "EditableTextWindow",
     "parent": "::QTextEdit",

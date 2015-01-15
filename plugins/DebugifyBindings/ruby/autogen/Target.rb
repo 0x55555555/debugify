@@ -20,6 +20,11 @@ class Target
   # LldbDriver::BreakpointNotifier Target#breakpointsChanged()
   # \brief 
 
+  # boolean, LldbDriver::Breakpoint, LldbDriver::BreakpointLocation Target#findBreakpoint(Eks::String file, number line)
+  # \brief the found breakpoint
+  # \param[out] 1 outBrk the found breakpoint
+  # \param[out] 2 outLoc the found breakpoint location
+
   # std::__1::shared_ptr Target#moduleAt(number index)
   # \brief 
 
@@ -27,6 +32,9 @@ class Target
   # \brief 
 
   # Eks::String Target#path()
+  # \brief 
+
+  # boolean Target#removeBreakpoint(LldbDriver::Breakpoint brk)
   # \brief 
 end
 

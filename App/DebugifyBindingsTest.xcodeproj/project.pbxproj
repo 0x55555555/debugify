@@ -12,6 +12,16 @@
 		0866AA0A1A5C90EC003FAAB8 /* Notifier.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Notifier.h; sourceTree = "<group>"; };
 		0866AA0D1A5C90F5003FAAB8 /* Console.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Console.cpp; sourceTree = "<group>"; };
 		0866AA0E1A5C90F5003FAAB8 /* EditableTextWindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EditableTextWindow.cpp; sourceTree = "<group>"; };
+		0866AA141A67173F003FAAB8 /* Breakpoint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Breakpoint.h; sourceTree = "<group>"; };
+		0866AA151A67173F003FAAB8 /* Frame.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Frame.h; sourceTree = "<group>"; };
+		0866AA161A67173F003FAAB8 /* Thread.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Thread.h; sourceTree = "<group>"; };
+		0866AA171A671747003FAAB8 /* Breakpoint.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Breakpoint.cpp; sourceTree = "<group>"; };
+		0866AA181A671747003FAAB8 /* Frame.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Frame.cpp; sourceTree = "<group>"; };
+		0866AA191A671747003FAAB8 /* Thread.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Thread.cpp; sourceTree = "<group>"; };
+		0866AA1A1A671750003FAAB8 /* BreakpointImpl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BreakpointImpl.h; sourceTree = "<group>"; };
+		0866AA1B1A671750003FAAB8 /* FrameImpl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FrameImpl.h; sourceTree = "<group>"; };
+		0866AA1C1A671750003FAAB8 /* ThreadImpl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThreadImpl.h; sourceTree = "<group>"; };
+		0866AA1D1A671750003FAAB8 /* Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
 		08D13C541A55864400436C54 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		08D13C551A55864400436C54 /* .gitmodules */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitmodules; sourceTree = "<group>"; };
 		08D13C561A55864400436C54 /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
@@ -3177,6 +3187,9 @@
 		08D140501A55864500436C54 /* include */ = {
 			isa = PBXGroup;
 			children = (
+				0866AA141A67173F003FAAB8 /* Breakpoint.h */,
+				0866AA151A67173F003FAAB8 /* Frame.h */,
+				0866AA161A67173F003FAAB8 /* Thread.h */,
 				08D140511A55864500436C54 /* CompileUnit.h */,
 				08D140521A55864500436C54 /* Debugger.h */,
 				08D140531A55864500436C54 /* Error.h */,
@@ -3194,6 +3207,10 @@
 		08D1405F1A55864500436C54 /* internalInclude */ = {
 			isa = PBXGroup;
 			children = (
+				0866AA1A1A671750003FAAB8 /* BreakpointImpl.h */,
+				0866AA1B1A671750003FAAB8 /* FrameImpl.h */,
+				0866AA1C1A671750003FAAB8 /* ThreadImpl.h */,
+				0866AA1D1A671750003FAAB8 /* Utils.h */,
 				08D140601A55864500436C54 /* CompileUnitImpl.h */,
 				08D140611A55864500436C54 /* DebuggerImpl.h */,
 				08D140621A55864500436C54 /* ErrorImpl.h */,
@@ -3210,6 +3227,9 @@
 		08D1406A1A55864500436C54 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				0866AA171A671747003FAAB8 /* Breakpoint.cpp */,
+				0866AA181A671747003FAAB8 /* Frame.cpp */,
+				0866AA191A671747003FAAB8 /* Thread.cpp */,
 				08D1406B1A55864500436C54 /* CompileUnit.cpp */,
 				08D1406C1A55864500436C54 /* Debugger.cpp */,
 				08D1406D1A55864500436C54 /* Error.cpp */,

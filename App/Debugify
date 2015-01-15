@@ -1,5 +1,7 @@
 #!/bin/sh
 
-source ./initEnvironment.sh
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
-ruby ./Main.rb "$0" "$@"
+source $DIR/initEnvironment.sh
+
+ruby $DIR/Main.rb "$0" "$@"

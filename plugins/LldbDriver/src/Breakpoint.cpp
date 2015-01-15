@@ -7,6 +7,10 @@
 namespace LldbDriver
 {
 
+BreakpointLocation::BreakpointLocation()
+  {
+  }
+
 BreakpointLocation::BreakpointLocation(const char *file, size_t line, bool resolved)
     : _file(file),
       _line(line),
@@ -63,9 +67,39 @@ BreakpointLocation Breakpoint::locationAt(size_t i) const
   auto loc = _impl->breakpoint.GetLocationAtIndex(i);
 
   auto lineSpec = loc.GetAddress().GetLineEntry();
-  auto file = loc.GetAddress().GetLineEntry().GetFileSpec();
+  auto fileSpec = loc.GetAddress().GetLineEntry().GetFileSpec();
+  auto line = lineSpec.GetLine();
 
-  return BreakpointLocation{ fileSpecAsString(file).data(), lineSpec.GetLine(), loc.IsResolved() };
+  lldb::SBAddress addr = loc.GetAddress();
+  lldb::SBSymbolContext ctx = addr.GetSymbolContext(lldb::eSymbolContextEverything);
+
+  lldb::SBAddress parentAddr;
+  if (ctx.GetParentOfInlinedScope(addr, parentAddr).IsValid())
+    {
+    auto blk = ctx.GetBlock();
+    lldb::SBBlock parentBlock = ctx.GetBlock().GetContainingInlinedBlock();
+    fileSpec = parentBlock.GetInlinedCallSiteFile();
+    line = parentBlock.GetInlinedCallSiteLine();
+    }
+
+  return BreakpointLocation{ fileSpecAsString(fileSpec).data(), line, loc.IsResolved() };
+  }
+
+bool Breakpoint::findLocation(const Eks::String &file, size_t line, BreakpointLocation *outLoc)
+  {
+  auto locCount = locationCount();
+  for (size_t j = 0; j < locCount; ++j)
+    {
+    auto loc = locationAt(j);
+
+    if (loc.file() == file && loc.line() == line)
+      {
+      *outLoc = loc;
+      return true;
+      }
+    }
+
+  return false;
   }
 
 }

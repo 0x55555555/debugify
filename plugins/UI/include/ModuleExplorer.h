@@ -50,7 +50,8 @@ signals:
 private slots:
   void loadedFiles(const QStandardItem *module, const Module::Pointer &, const QStringList &str);
   void itemDoubleClicked(const QModelIndex &);
-  void typeAdded(const Module::Pointer &module, const UI::CachedType::Pointer &, const Type *t);
+  void typeAdded(const Module::Pointer &module, const UI::CachedType::Pointer &);
+  void typeDeclarationAdded(const Module::Pointer &module, const UI::CachedType::Pointer &, const Type *t);
   void filterChanged(const QString &filter);
 
 private:
@@ -58,6 +59,7 @@ private:
   void buildModule(QStandardItem *module, const Module::Pointer &, bool &isSystem);
   bool isSystemModule(const QString &path, const Module::Pointer &);
   QString makeFileTooltip(const QString file, const QFileInfo &info);
+  void insertTypeReference(const Module::Pointer &module, QStandardItem *parent, const CachedType::Pointer &type);
 
   struct ModuleData
     {
@@ -68,6 +70,7 @@ private:
     };
 
   QHash<QString, QStandardItem*> _fileMap;
+  QMultiMap<QString, CachedType::Pointer> _unownedTypeMap;
   std::unordered_map<Module::Pointer, ModuleData> _moduleMap;
 
   QWidget *_widget;

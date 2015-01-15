@@ -5,6 +5,9 @@
 #include "lldb/API/SBStream.h"
 #include "Containers/XStringSimple.h"
 #include "Containers/XStringBuilder.h"
+#include "lldb/API/SBStream.h"
+#include "lldb/API/SBDeclaration.h"
+#include "Utils.h"
 
 namespace LldbDriver
 {
@@ -36,6 +39,19 @@ const std::shared_ptr<CompileUnit> &Type::compileUnit() const
 std::shared_ptr<CompileUnit> &Type::compileUnit()
   {
   return _impl->compileUnit;
+  }
+
+bool Type::getLocation(Eks::String &file, size_t &line) const
+  {
+  auto decl = _impl->type.GetDeclaration();
+  if (decl.IsValid())
+    {
+    file = fileSpecAsString(decl.GetFileSpec());
+    line = decl.GetLine();
+    return true;
+    }
+
+  return false;
   }
 
 size_t Type::size() const

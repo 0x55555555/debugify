@@ -25,9 +25,11 @@ public:
 
   void addBreakpoint(int line);
   void removeBreakpoint(int line);
+  void clearBreakpoints();
 
   void addActiveLine(int line);
   void removeActiveLine(int line);
+  void clearActiveLines();
 
   void setCurrentLine(int line);
 
@@ -43,7 +45,7 @@ private slots:
   void updateLineNumberArea(const QRect &, int);
 
 private:
-  QWidget *lineNumberArea;
+  QWidget *_lineNumberArea;
   std::multiset<int> _breakpoints;
   int _currentLine;
   std::set<int> _activelines;
@@ -111,6 +113,7 @@ public:
 
   void addMarker(MarkerType m, size_t line);
   void removeMarker(MarkerType m, size_t line);
+  void clearMarkers(MarkerType m);
 
 private slots:
   void marginClicked(int);

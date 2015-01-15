@@ -12,6 +12,8 @@ class BreakpointLocation
   {
 public:
   /// \noexpose
+  BreakpointLocation();
+  /// \noexpose
   BreakpointLocation(const char *file, size_t line, bool resolved);
 
   Eks::String file() const { return _file; }
@@ -45,6 +47,9 @@ public:
 
   size_t locationCount() const;
   BreakpointLocation locationAt(size_t i) const;
+
+  /// \param[out] outLoc the found breakpoint location
+  bool findLocation(const Eks::String &file, size_t line, BreakpointLocation *outLoc);
 
   friend class Target;
   };

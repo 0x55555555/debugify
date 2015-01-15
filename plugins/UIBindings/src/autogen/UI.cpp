@@ -5,6 +5,7 @@
 #include "tuple"
 #include "../../UIBindings/QtBindings/QtWidgets.h"
 #include "../../DebugifyBindings/ManualBindings/ManualBindings.h"
+#include "FileEditor.h"
 
 
 using namespace UI;
@@ -66,7 +67,7 @@ struct UI_MainWindow_addTerminal_overload0_t : Reflect::FunctionCall<Reflect::Fu
 struct UI_MainWindow_editorOpened_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::EditorNotifier *(::UI::MainWindow::*)() >, &::UI::MainWindow::editorOpened, bondage::FunctionCaller> { };
 struct UI_MainWindow_errors_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::OutputNotifier *(::UI::MainWindow::*)() >, &::UI::MainWindow::errors, bondage::FunctionCaller> { };
 struct UI_MainWindow_hideDock_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::MainWindow::*)(QWidget *) >, &::UI::MainWindow::hideDock, bondage::FunctionCaller> { };
-struct UI_MainWindow_openFile_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::Editor *(::UI::MainWindow::*)(const QString &) >, &::UI::MainWindow::openFile, bondage::FunctionCaller> { };
+struct UI_MainWindow_openFile_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::Editor *(::UI::MainWindow::*)(const QString &, int) >, &::UI::MainWindow::openFile, bondage::FunctionCaller> { };
 struct UI_MainWindow_output_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::OutputNotifier *(::UI::MainWindow::*)() >, &::UI::MainWindow::output, bondage::FunctionCaller> { };
 struct UI_MainWindow_process_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Process::Pointer(::UI::MainWindow::*)() const >, &::UI::MainWindow::process, bondage::FunctionCaller> { };
 struct UI_MainWindow_processChanged_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::ProcessNotifier *(::UI::MainWindow::*)() >, &::UI::MainWindow::processChanged, bondage::FunctionCaller> { };
@@ -395,9 +396,12 @@ QString UI_FileEditor_trUtf8_overload0(const char * inputArg0)
   return result;
 }
 
+struct UI_FileEditor_addMarker_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::FileEditor::*)(UI::FileEditor::MarkerType, size_t) >, &::UI::FileEditor::addMarker, bondage::FunctionCaller> { };
+struct UI_FileEditor_clearMarkers_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::FileEditor::*)(UI::FileEditor::MarkerType) >, &::UI::FileEditor::clearMarkers, bondage::FunctionCaller> { };
 struct UI_FileEditor_focusOnLine_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::FileEditor::*)(size_t) >, &::UI::FileEditor::focusOnLine, bondage::FunctionCaller> { };
 struct UI_FileEditor_makeKey_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const QString &) >, &::UI::FileEditor::makeKey, bondage::FunctionCaller> { };
 struct UI_FileEditor_marginClicked_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::MarginClickNotifier *(::UI::FileEditor::*)() >, &::UI::FileEditor::marginClicked, bondage::FunctionCaller> { };
+struct UI_FileEditor_removeMarker_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::FileEditor::*)(UI::FileEditor::MarkerType, size_t) >, &::UI::FileEditor::removeMarker, bondage::FunctionCaller> { };
 struct UI_FileEditor_tr_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *) >, &UI_FileEditor_tr_overload0, bondage::FunctionCaller> { };
 struct UI_FileEditor_tr_overload1_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *, const char *, int) >, &::UI::FileEditor::tr, bondage::FunctionCaller> { };
 struct FileEditor_tr_overload_1 : Reflect::FunctionArgCountSelectorBlock<1,
@@ -425,6 +429,12 @@ struct FileEditor_trUtf8_overload : Reflect::FunctionArgumentCountSelector<
 
 const bondage::Function UI_FileEditor_methods[] = {
   bondage::FunctionBuilder::build<
+    UI_FileEditor_addMarker_overload0_t
+    >("addMarker"),
+  bondage::FunctionBuilder::build<
+    UI_FileEditor_clearMarkers_overload0_t
+    >("clearMarkers"),
+  bondage::FunctionBuilder::build<
     UI_FileEditor_focusOnLine_overload0_t
     >("focusOnLine"),
   bondage::FunctionBuilder::build<
@@ -433,6 +443,9 @@ const bondage::Function UI_FileEditor_methods[] = {
   bondage::FunctionBuilder::build<
     UI_FileEditor_marginClicked_overload0_t
     >("marginClicked"),
+  bondage::FunctionBuilder::build<
+    UI_FileEditor_removeMarker_overload0_t
+    >("removeMarker"),
   bondage::FunctionBuilder::buildOverload< FileEditor_tr_overload >("tr"),
   bondage::FunctionBuilder::buildOverload< FileEditor_trUtf8_overload >("trUtf8")
 };
@@ -445,7 +458,7 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
   FileEditor,
   ::UI::Editor,
   UI_FileEditor_methods,
-  5);
+  8);
 
 
 

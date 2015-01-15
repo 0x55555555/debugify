@@ -1,5 +1,4 @@
 require 'fileutils'
-require 'erb'
 require 'Pathname'
 
 SOURCE_ROOT = "../"

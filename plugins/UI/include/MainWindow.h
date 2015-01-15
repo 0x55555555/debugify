@@ -74,7 +74,8 @@ public:
 
   EditorNotifier *editorOpened() { return &_editorOpened; }
 
-  Editor *openFile(const QString &str);
+public slots:
+  Editor *openFile(const QString &str, int line = -1);
 
 private slots:
   void onError(const QString &str);

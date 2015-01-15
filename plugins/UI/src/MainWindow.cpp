@@ -241,7 +241,7 @@ void MainWindow::closeFile(int tab)
   ui->tabWidget->removeTab(tab);
   }
 
-Editor *MainWindow::openFile(const QString &file)
+Editor *MainWindow::openFile(const QString &file, int line)
   {
   if (auto editor = _editors.value(FileEditor::makeKey(file), nullptr))
     {
@@ -251,6 +251,12 @@ Editor *MainWindow::openFile(const QString &file)
 
   auto editor = new FileEditor(file);
   addEditor(editor);
+
+  if (line != -1)
+    {
+    editor->focusOnLine(line);
+    }
+
   return editor;
   }
 
@@ -277,6 +283,7 @@ void MainWindow::openType(const QString &type)
     auto editor = new TypeEditor(_types, type);
 
     connect(editor, SIGNAL(selectType(QString)), this, SLOT(openType(QString)));
+    connect(editor, SIGNAL(selectFile(QString,int)), this, SLOT(openFile(QString,int)));
     addEditor(editor);
     }
   catch (const NoSuchTypeException &)
