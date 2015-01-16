@@ -1,14 +1,25 @@
 require 'fileutils'
 require 'Pathname'
 
-SOURCE_ROOT = "../"
-BUNDLE = 'Debugify.app'
+THIS_DIR = File.dirname(__FILE__)
+
+SOURCE_ROOT = "#{THIS_DIR}/../"
+BUNDLE_NAME = 'Debugify.app'
+BUNDLE = "#{THIS_DIR}/#{BUNDLE_NAME}"
 CONTENTS = "#{BUNDLE}/Contents/"
 CONTENTS_MACOS = "#{CONTENTS}MacOS/"
 CONTENTS_MACOS_APP = "#{CONTENTS_MACOS}App/"
 INFO_PLIST = "#{CONTENTS}Info.plist"
 EXE_NAME = 'Debugify'
 ROOT_EXE = "#{CONTENTS_MACOS}/#{EXE_NAME}" 
+
+BUILD_ROOT = "#{THIS_DIR}/../../"
+LLVM_VARIANT = "Debug+Asserts"
+LLVM_BUILD_ROOT= "#{BUILD_ROOT}/llvm-build/#{LLVM_VARIANT}/"
+BUILD_ID = "Desktop_Qt_5_4_0_clang_64bit"
+BUILD_VARIANT = "qtc_#{BUILD_ID}"
+DEBUGGER_BUILD_ROOT = "#{BUILD_ROOT}/build-debugger-#{BUILD_ID}-Debug/#{BUILD_VARIANT}-debug/"
+
 ENTRY = '<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -54,6 +65,21 @@ def installAll(glob, dest)
   end
 end
 
+def installAllWithPrefix(src, dest, glob)
+  srcPath = Pathname.new(src)
+  Dir.glob(src + "/" + glob).each do |item|
+    next if item == '.' or item == '..'
+    # do work on real items
+
+    path = Pathname.new(item)
+    relativeDir = File.dirname(path.relative_path_from(srcPath))
+
+    destDir = dest + relativeDir
+    FileUtils.mkdir_p(destDir)
+    install(item, destDir)
+  end
+end
+
 cleanup(BUNDLE)
 FileUtils.mkdir_p(BUNDLE)
 FileUtils.mkdir_p(CONTENTS_MACOS)
@@ -67,18 +93,32 @@ File.open(INFO_PLIST, 'w') do |f|
     :CFBundlePackageType => "APPL",
     :CFBundleIconFile => "Debugify",
     :CFBundleSignature => "dbfy",
-    :CFBundleExecutable => EXE_NAME,
+    :CFBundleExecutable => "App/#{EXE_NAME}",
     :LSMinimumSystemVersion => "10.10",
     :NSHumanReadableCopyright => "Copyright © 20014-2015 Debugify",
     :CFBundleShortVersionString => "Build 1"
   }))
 end
 
-File.open(ROOT_EXE, 'w') do |f|
-  f.write("#!/bin/bash\n$( cd \"$( dirname \"${BASH_SOURCE[0]}\" )\" && pwd )/App/Debugify")
+File.open("#{CONTENTS_MACOS_APP}/initEnvironment.sh", 'w') do |f|
+  f.write('DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+export LLDB_DEBUGSERVER_PATH=$DIR/debugserver
+export DYLD_LIBRARY_PATH=$DIR:$DYLD_LIBRARY_PATH')
 end
-FileUtils.chmod("+x", ROOT_EXE)
 
-install("#{SOURCE_ROOT}/App/initEnvironment.sh", CONTENTS_MACOS_APP)
 install("#{SOURCE_ROOT}/App/Debugify", CONTENTS_MACOS_APP)
 installAll("#{SOURCE_ROOT}/App/*.rb", CONTENTS_MACOS_APP)
+installAllWithPrefix(SOURCE_ROOT, CONTENTS_MACOS, "plugins/DebugifyBindings/ruby/**/*.rb")
+installAllWithPrefix(SOURCE_ROOT, CONTENTS_MACOS, "plugins/UIBindings/ruby/**/*.rb")
+installAll("#{DEBUGGER_BUILD_ROOT}/**/*.dylib", CONTENTS_MACOS_APP)
+install("#{LLVM_BUILD_ROOT}/lib/liblldb.dylib", CONTENTS_MACOS_APP)
+install("#{LLVM_BUILD_ROOT}/bin/debugserver", CONTENTS_MACOS_APP)
+
+RenamableScriptBundles = [
+  "DebugifyBindings",
+  "UIBindings"
+]
+
+RenamableScriptBundles.each do |lib|
+  FileUtils.mv("#{CONTENTS_MACOS_APP}/lib#{lib}.dylib", "#{CONTENTS_MACOS}/plugins/#{lib}/ruby/#{lib}.bundle")
+end
