@@ -131,23 +131,22 @@ void CodeEditor::highlightLines()
 
     selection.format.setBackground(col);
     selection.format.setProperty(QTextFormat::FullWidthSelection, true);
-    selection.cursor = QTextCursor(document()->findBlockByLineNumber(line));
+    selection.cursor = QTextCursor(document()->findBlockByLineNumber(line-1));
     selection.cursor.clearSelection();
     extraSelections.append(selection);
     };
-
-  if (_currentLine != -1)
-    {
-
-    QColor lineColour = QColor(Qt::yellow).lighter(160);
-
-    highlightLine(_currentLine, lineColour);
-    }
 
   QColor activeColour = QColor(Qt::darkGray).lighter(160);
   xForeach(auto l, _activelines)
     {
     highlightLine(l, activeColour);
+    }
+    
+  if (_currentLine != -1)
+    {
+    QColor lineColour = QColor(Qt::yellow).lighter(160);
+      
+    highlightLine(_currentLine, lineColour);
     }
 
   setExtraSelections(extraSelections);

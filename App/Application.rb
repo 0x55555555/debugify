@@ -10,6 +10,7 @@ module App
   class Application
     def initialize()
       @editors = { }
+      @activeEditors = [ ]
 
       @application = UI::Application.new()
       @mainwindow = UI::MainWindow.new()
@@ -28,6 +29,7 @@ module App
 
       @debugger.ready.listen do |process|
         loadCurrentSource()
+        highlightSources()
       end
 
       @mainwindow.editorOpened.listen do |editor|
@@ -61,6 +63,7 @@ module App
       end
 
       @editors[path] = editor
+      highlightSources()
     end
 
     def syncEditorBreakpoints()
@@ -87,6 +90,33 @@ module App
       line = frame.lineNumber
       if (file.length > 0)
         editor = @mainwindow.openFile(file, line)
+      end
+    end
+
+    def highlightSources()
+      @activeEditors.each do |e|
+        e.clearMarkers(UI::FileEditor::MarkerType[:ActiveLine])
+        e.clearMarkers(UI::FileEditor::MarkerType[:CurrentLine])
+      end
+      @activeEditors.clear()
+
+      @mainwindow.process.threads.each do |t|
+        frame = t.selectedFrame
+
+        if (frame.hasLineNumber)
+          current = t.isCurrent
+
+          line = frame.lineNumber
+          file =  frame.filename
+
+          editor = @editors[file]
+          @activeEditors << editor
+          if (editor)
+            type = current ? UI::FileEditor::MarkerType[:CurrentLine] :
+              UI::FileEditor::MarkerType[:ActiveLine]
+            editor.addMarker(type, line)
+          end
+        end
       end
     end
 
