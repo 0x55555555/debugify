@@ -1,4 +1,3 @@
-require_relative 'DebuggerTerminal'
 require_relative 'Debugger'
 require_relative 'Console'
 require_relative 'CallStack'
@@ -8,13 +7,16 @@ require_relative 'Breakpoints'
 module App
 
   class Application
-    def initialize()
+    def initialize(debug)
       @editors = { }
       @activeEditors = [ ]
 
       @application = UI::Application.new()
       @mainwindow = UI::MainWindow.new()
-      @debugTerminal = App::DebuggerTerminal.new(@mainwindow)
+      if (debug)
+        require_relative 'DebuggerTerminal'
+        @debugTerminal = App::DebuggerTerminal.new(@mainwindow)
+      end
 
       @debugger = App::Debugger.new(@mainwindow)
 

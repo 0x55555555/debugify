@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'date'
 
 THIS_DIR = File.dirname(__FILE__)
 
@@ -16,23 +17,25 @@ DEBUGGER_BUILD_ROOT = "#{BUILD_ROOT}/build-debugger-#{BUILD_ID}-Debug/#{BUILD_VA
 
 class BundleBuilder
   ENTRY = '<?xml version="1.0" encoding="UTF-8"?>
-  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-  <plist version="1.0">
-  <dict>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
 
-  '
+'
   EXIT = '
 
-  </dict>
-  </plist>'
+</dict>
+</plist>'
 
   CONTENTS = "Contents/"
   CONTENTS_MACOS = "#{CONTENTS}MacOS/"
+  CONTENTS_RESOURCES = "#{CONTENTS}Resources/"
 
   def initialize(name, plistKeys)
     @root = name
     FileUtils.mkdir_p(BUNDLE)
     FileUtils.mkdir_p("#{BUNDLE}/#{CONTENTS_MACOS}")
+    FileUtils.mkdir_p("#{BUNDLE}/#{CONTENTS_RESOURCES}")
 
     File.open("#{name}/#{CONTENTS}Info.plist", 'w') do |f|
       f.write(makePlist(plistKeys))
@@ -53,8 +56,12 @@ class BundleBuilder
     FileUtils.mv("#{@root}/#{CONTENTS_MACOS}/#{src}", "#{@root}/#{CONTENTS_MACOS}/#{dest}")
   end
 
+  def path(file)
+    return "#{@root}/#{CONTENTS_MACOS}#{file}"
+  end
+
   def open(file)
-    File.open("#{@root}/#{CONTENTS_MACOS}#{file}", 'w') do |f|
+    File.open(path(file), 'w') do |f|
       yield(f)
     end
   end
@@ -66,6 +73,10 @@ class BundleBuilder
     destPath = "#{@root}/#{CONTENTS_MACOS}/#{dest}/#{name}"
 
     FileUtils.cp(srcPath, destPath)
+  end
+
+  def installFolder(src, dest)
+    FileUtils.cp_r(src, "#{@root}/#{CONTENTS_MACOS}/#{dest}")
   end
 
   def installAll(glob, dest)
@@ -92,6 +103,17 @@ class BundleBuilder
     end
   end
 
+  def setIcon(file)
+    name = ""
+    if (name == nil)
+      name = File.basename(srcPath)
+    end
+    
+    destPath = "#{@root}/#{CONTENTS_RESOURCES}/#{name}"
+
+    FileUtils.cp(file, destPath)
+  end
+
 private
   def makePlist(keys)
     tags = keys.map { |k, v| makePlistEntry(k, v) }.join("\n\n") 
@@ -104,29 +126,42 @@ private
   end
 end
 
-def makeDebugifyBundle(tag)
+def makeDebugifyBundle(version)
+  versionStr = "#{version[:major]}.#{version[:minor]}.#{version[:revision]}"
   BundleBuilder.cleanup(BUNDLE)
   bundle = BundleBuilder.new(BUNDLE, {
       :CFBundleName => "Debugify",
-      :CFBundleVersion => 1,
-      :CFBundleIdentifier => "com.debugify.1",
+      :CFBundleVersion => versionStr,
+      :CFBundleIdentifier => "com.debugify.#{version[:major]}",
       :CFBundlePackageType => "APPL",
-      :CFBundleIconFile => "Debugify",
+      :CFBundleIconFile => "Debugify.icns",
       :CFBundleSignature => "dbfy",
-      :CFBundleExecutable => "App/#{EXE_NAME}",
+      :CFBundleExecutable => "#{EXE_NAME}",
       :LSMinimumSystemVersion => "10.10",
-      :NSHumanReadableCopyright => "Copyright © 2014-2015 Debugify",
-      :CFBundleShortVersionString => "Build 1"
+      :NSHumanReadableCopyright => "Copyright © 2014-#{Date.today.strftime("%Y")} Debugify",
+      :CFBundleShortVersionString => "Build #{versionStr} (#{version[:version_control]})"
     })
 
   bundle.mkdir("App")
 
+  bundle.open(EXE_NAME) do |f|
+    f.write('#!/bin/bash
+echo "test"
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+$DIR/App/Debugify'
+)
+  end
+  FileUtils.chmod("+x", bundle.path(EXE_NAME))
+
   bundle.open("App/initEnvironment.sh") do |f|
-    f.write('DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+    f.write('#!/bin/bash
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+export PATH=$DIR/../ruby/bin/:$PATH
 export LLDB_DEBUGSERVER_PATH=$DIR/debugserver
-export DYLD_LIBRARY_PATH=$DIR:$DYLD_LIBRARY_PATH')
+export DYLD_LIBRARY_PATH=$DIR/../ruby/lib:$DIR:$DYLD_LIBRARY_PATH')
   end
 
+  bundle.setIcon("build/Resources/Debugify.icns")
   bundle.install("#{SOURCE_ROOT}/App/Debugify", "App")
   bundle.installAll("#{SOURCE_ROOT}/App/*.rb", "App")
   bundle.installAllWithPrefix(SOURCE_ROOT, "", "plugins/DebugifyBindings/ruby/**/*.rb")
@@ -134,6 +169,7 @@ export DYLD_LIBRARY_PATH=$DIR:$DYLD_LIBRARY_PATH')
   bundle.installAll("#{DEBUGGER_BUILD_ROOT}/**/*.dylib", "App")
   bundle.install("#{LLVM_BUILD_ROOT}/lib/liblldb.dylib", "App")
   bundle.install("#{LLVM_BUILD_ROOT}/bin/debugserver", "App")
+  bundle.installFolder(File.expand_path("~/.rvm/rubies/ruby-2.2.0"), "ruby")
 
   renamableScriptBundles = [
     "DebugifyBindings",
