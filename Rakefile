@@ -14,4 +14,11 @@ task :bundle do |task|
   makeDebugifyBundle(version)
 end
 
-task :default => :bundle
+# Build dmg
+task :dmg do |task|
+  puts "Building a dmg for '#{version[:version_control]}'"
+
+  makeDebugifyDmg(version)
+end
+
+task :default => :dmg

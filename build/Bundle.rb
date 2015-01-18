@@ -4,16 +4,8 @@ require 'date'
 THIS_DIR = File.dirname(__FILE__)
 
 SOURCE_ROOT = "#{THIS_DIR}/../"
-BUNDLE_NAME = 'Debugify.app'
-BUNDLE = "#{THIS_DIR}/#{BUNDLE_NAME}"
 EXE_NAME = 'Debugify'
-
 BUILD_ROOT = "#{THIS_DIR}/../../"
-LLVM_VARIANT = "Debug+Asserts"
-LLVM_BUILD_ROOT= "#{BUILD_ROOT}/llvm-build/#{LLVM_VARIANT}/"
-BUILD_ID = "Desktop_Qt_5_4_0_clang_64bit"
-BUILD_VARIANT = "qtc_#{BUILD_ID}"
-DEBUGGER_BUILD_ROOT = "#{BUILD_ROOT}/build-debugger-#{BUILD_ID}-Debug/#{BUILD_VARIANT}-debug/"
 
 class BundleBuilder
   ENTRY = '<?xml version="1.0" encoding="UTF-8"?>
@@ -33,9 +25,9 @@ class BundleBuilder
 
   def initialize(name, plistKeys)
     @root = name
-    FileUtils.mkdir_p(BUNDLE)
-    FileUtils.mkdir_p("#{BUNDLE}/#{CONTENTS_MACOS}")
-    FileUtils.mkdir_p("#{BUNDLE}/#{CONTENTS_RESOURCES}")
+    FileUtils.mkdir_p(name)
+    FileUtils.mkdir_p("#{name}/#{CONTENTS_MACOS}")
+    FileUtils.mkdir_p("#{name}/#{CONTENTS_RESOURCES}")
 
     File.open("#{name}/#{CONTENTS}Info.plist", 'w') do |f|
       f.write(makePlist(plistKeys))
@@ -126,10 +118,28 @@ private
   end
 end
 
-def makeDebugifyBundle(version)
+class DmgBuilder
+  def build(source, dest)
+    puts "size is #{`File.size(source)`}"
+  end
+end
+
+BUILD_ID = "Desktop_Qt_5_4_0_clang_64bit"
+BUILD_VARIANT = "qtc_#{BUILD_ID}"
+DEBUGGER_BUILD_ROOT = "#{BUILD_ROOT}/build-debugger-#{BUILD_ID}-Debug/#{BUILD_VARIANT}-debug/"
+
+def makeDebugifyBundle(version, options = {})
+  llvmVariant = options[:llvm_variant]
+  llvmVariant ||= "Debug+Asserts"
+  llvmBuildRoot = "#{BUILD_ROOT}/llvm-build/#{llvmVariant}/"
+
   versionStr = "#{version[:major]}.#{version[:minor]}.#{version[:revision]}"
-  BundleBuilder.cleanup(BUNDLE)
-  bundle = BundleBuilder.new(BUNDLE, {
+
+  bundleName = options[:path]
+  bundleName ||= "#{THIS_DIR}/#{EXE_NAME}_#{versionStr}.app"
+
+  BundleBuilder.cleanup(bundleName)
+  bundle = BundleBuilder.new(bundleName, {
       :CFBundleName => "Debugify",
       :CFBundleVersion => versionStr,
       :CFBundleIdentifier => "com.debugify.#{version[:major]}",
@@ -157,7 +167,7 @@ $DIR/App/Debugify'
     f.write('#!/bin/bash
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 export PATH=$DIR/../ruby/bin/:$PATH
-export LLDB_DEBUGSERVER_PATH=$DIR/debugserver
+export LLDB_DEBUGSERVER_PATH="/Applications/Xcode.app/Contents/SharedFrameworks/LLDB.framework/Versions/A/Resources/debugserver"
 export DYLD_LIBRARY_PATH=$DIR/../ruby/lib:$DIR:$DYLD_LIBRARY_PATH')
   end
 
@@ -167,8 +177,7 @@ export DYLD_LIBRARY_PATH=$DIR/../ruby/lib:$DIR:$DYLD_LIBRARY_PATH')
   bundle.installAllWithPrefix(SOURCE_ROOT, "", "plugins/DebugifyBindings/ruby/**/*.rb")
   bundle.installAllWithPrefix(SOURCE_ROOT, "", "plugins/UIBindings/ruby/**/*.rb")
   bundle.installAll("#{DEBUGGER_BUILD_ROOT}/**/*.dylib", "App")
-  bundle.install("#{LLVM_BUILD_ROOT}/lib/liblldb.dylib", "App")
-  bundle.install("#{LLVM_BUILD_ROOT}/bin/debugserver", "App")
+  bundle.install("#{llvmBuildRoot}/lib/liblldb.dylib", "App")
   bundle.installFolder(File.expand_path("~/.rvm/rubies/ruby-2.2.0"), "ruby")
 
   renamableScriptBundles = [
@@ -178,5 +187,28 @@ export DYLD_LIBRARY_PATH=$DIR/../ruby/lib:$DIR:$DYLD_LIBRARY_PATH')
 
   renamableScriptBundles.each do |lib|
     bundle.mv("App/lib#{lib}.dylib", "plugins/#{lib}/ruby/#{lib}.bundle")
+  end
+end
+
+def makeDebugifyDmg(version, options = {})
+  output = "#{THIS_DIR}/#{EXE_NAME}.dmg"
+  path = "#{THIS_DIR}/tmp"
+
+  if (File.exist?(path))
+    FileUtils.rm_r(path)
+  end
+  
+  location = "#{path}/#{EXE_NAME}.app"
+  FileUtils.mkdir_p(path)
+
+  bundleOptions = options.clone
+  bundleOptions[:path] = location
+  makeDebugifyBundle(version, bundleOptions)
+
+  dmgSize = `du -sm #{path}`.split[0].to_i + 10
+  puts `hdiutil create -volname #{EXE_NAME} -srcfolder #{path} -size #{dmgSize}m #{output} -ov`
+
+  if (options[:keep_bundle] != true)
+    FileUtils.rm_r(path) 
   end
 end
