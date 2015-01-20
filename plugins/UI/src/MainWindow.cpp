@@ -1,7 +1,5 @@
 #include "MainWindow.h"
 #include "ui_mainwindow.h"
-#include "TargetToolbar.h"
-#include "ProcessToolbar.h"
 #include "ModuleExplorer.h"
 #include "Error.h"
 #include "QDebug"
@@ -11,7 +9,9 @@
 #include "FileEditor.h"
 #include "TypeEditor.h"
 #include "Terminal.h"
+#include "ToolBar.h"
 #include "EditableTextWindow.h"
+#include <array>
 
 namespace UI
 {
@@ -20,7 +20,8 @@ MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
   ui(new Ui::MainWindow),
   _targetToolbar(nullptr),
-  _processToolbar(nullptr)
+  _processToolbar(nullptr),
+  _processState(Process::State::Invalid)
   {
   ui->setupUi(this);
   connect(ui->tabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(closeFile(int)));
@@ -28,21 +29,6 @@ MainWindow::MainWindow(QWidget *parent) :
   qRegisterMetaType<Module::Pointer>();
 
   _debugger = Debugger::create();
-
-  _targetToolbar = new TargetToolbar();
-  _targetToolbar->setVisible(false);
-  connect(_targetToolbar, SIGNAL(error(QString)), this, SLOT(onError(QString)));
-  connect(_targetToolbar, SIGNAL(processStarted(Process::Pointer)), this, SLOT(onProcessStarted(Process::Pointer)));
-  addToolBar(_targetToolbar);
-
-  _processToolbar = new ProcessToolbar();
-  _processToolbar->setVisible(false);
-  connect(_processToolbar, SIGNAL(error(QString)), this, SLOT(onError(QString)));
-  connect(_processToolbar, SIGNAL(statusUpdate(QString)), this, SLOT(setStatusText(QString)));
-  connect(_processToolbar, SIGNAL(stateChanged(Process::State)), this, SLOT(processStateChanged(Process::State)));
-  connect(_processToolbar, SIGNAL(processOutput(QString)), this, SLOT(onPrcocessOutput(QString)));
-  connect(_processToolbar, SIGNAL(processError(QString)), this, SLOT(onPrcocessError(QString)));
-  addToolBar(_processToolbar);
 
   _types = new TypeManager();
 
@@ -97,6 +83,10 @@ MainWindow::MainWindow(QWidget *parent) :
         });
       }
     });
+
+
+  connect(&_timer, SIGNAL(timeout()), this, SLOT(timerTick()));
+  _timer.start(100);
   }
 
 MainWindow::~MainWindow()
@@ -140,6 +130,15 @@ EditableTextWindow *MainWindow::addEditor(const QString &name)
   return editor;
   }
 
+ToolBar *MainWindow::addToolBar(const QString &n)
+  {
+  auto toolbar = new ToolBar;
+  toolbar->setObjectName(n);
+
+  QMainWindow::addToolBar(Qt::TopToolBarArea, toolbar);
+  return toolbar;
+  }
+
 void MainWindow::showDock(QWidget *w)
   {
   if (auto dock = qobject_cast<QDockWidget *>(w->parent()))
@@ -174,33 +173,19 @@ Process::Pointer MainWindow::process() const
 
 void MainWindow::setTarget(const Target::Pointer &tar)
   {
-  _targetToolbar->setVisible(false);
-
   _moduleExplorer->setTarget(tar);
   _types->setTarget(tar);
 
   _target = tar;
   _targetNotifier(_target);
-
-  if (tar)
-    {
-    _targetToolbar->setTarget(tar);
-    _targetToolbar->setVisible(true);
-    }
   }
 
 void MainWindow::setProcess(const Process::Pointer &ptr)
   {
-  _processToolbar->setVisible(false);
-
   _process = ptr;
   _processNotifier(_process);
 
-  if (ptr)
-    {
-    _processToolbar->setProcess(ptr);
-    _processToolbar->setVisible(true);
-    }
+  syncState(_process ? _process->currentState() : Process::State::Invalid);
   }
 
 void MainWindow::onError(const QString &str)
@@ -219,14 +204,8 @@ void MainWindow::processStateChanged(Process::State state)
 
   if (state == Process::State::Invalid)
     {
-    _processToolbar->setVisible(false);
     setProcess(nullptr);
     }
-  }
-
-void MainWindow::onProcessStarted(const Process::Pointer &process)
-  {
-  setProcess(process);
   }
 
 void MainWindow::closeFile(int tab)
@@ -292,14 +271,78 @@ void MainWindow::openType(const QString &type)
     }
   }
 
-void MainWindow::onPrcocessOutput(const QString &str)
+void MainWindow::onProcessOutput(const QString &str)
   {
   _stdout(str);
   }
 
-void MainWindow::onPrcocessError(const QString &str)
+void MainWindow::onProcessError(const QString &str)
   {
   _stderr(str);
+  }
+
+void MainWindow::timerTick()
+  {
+  if (!_process)
+    {
+    syncState(Process::State::Invalid);
+    return;
+    }
+
+  _process->processEvents();
+
+  auto newState = _process->currentState();
+  bool postStateChange =
+      newState == Process::State::Stopped ||
+      newState == Process::State::Crashed ||
+      newState == Process::State::Detached ||
+      newState == Process::State::Exited ||
+      newState == Process::State::Suspended;
+  if (!postStateChange)
+    {
+    syncState(newState);
+    }
+
+  auto forwardOutput = [this](auto type, const auto &send)
+  {
+    std::array<char, 256> output;
+    while (size_t read = _process->getOutput(type, output.data(), output.size()-1))
+      {
+      xAssert(read <= (output.size()-1));
+      output[read] = '\0';
+      send(output.data());
+      }
+    };
+
+  forwardOutput(Process::OutputType::Output, [this](auto str) { onProcessOutput(str); });
+  forwardOutput(Process::OutputType::Error, [this](auto str) { onProcessError(str); });
+
+  if (postStateChange)
+    {
+    syncState(newState);
+    }
+  }
+
+void MainWindow::syncState(Process::State type)
+  {
+  if (_processState == type)
+    {
+    return;
+    }
+
+  if (_process)
+    {
+    emit setStatusText(
+      QString("Process %1 [%2 %3]")
+        .arg(_process->target()->path().data())
+        .arg(_process ? _process->processID() : 0)
+        .arg(Process::getStateString(type).data())
+      );
+    }
+
+  _processState = type;
+
+  processStateChanged(type);
   }
 
 void MainWindow::checkError(const Error &err)

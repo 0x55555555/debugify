@@ -4,8 +4,8 @@ Eks.Library {
   files: [
         "include/**/*.h",
         "src/**/*.cpp",
-        "forms/**/*.ui"
-  ]
+        "forms/**/*.ui",
+    ]
 
   Depends { name: "Qt.core" }
   Depends { name: "Qt.gui" }

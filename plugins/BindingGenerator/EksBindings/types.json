@@ -8,5 +8,16 @@
     "name": "String",
     "parent": null,
     "filename": "include/Containers/XStringSimple.h"
+  },
+  "::Eks::TypedAllocator": {
+    "name": "TypedAllocator",
+    "parent": null,
+    "filename": "include/Memory/XTypedAllocator.h"
+  },
+  "::Eks::Vector": {
+    "name": "Vector",
+    "parent": null,
+    "filename": "include/Containers/XVector.h",
+    "templateArgumentsToSatisfy": [ 0 ]
   }
 }

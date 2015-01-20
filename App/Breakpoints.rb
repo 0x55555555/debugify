@@ -12,7 +12,9 @@ module App
       @mainwindow = mainWindow
 
       @mainwindow.targetChanged.listen do |t|
-        t.breakpointsChanged.listen { |_| updateBreakpoints() }
+        if (t)
+          t.breakpointsChanged.listen { |_| updateBreakpoints() }
+        end
       end
 
       @widget.clicked.listen do |f|

@@ -5,6 +5,12 @@
     "filename": "QtWidgets.h",
     "derivable": true
   },
+  "::QAction": {
+    "name": "QAction",
+    "parent": null,
+    "filename": "QtWidgets.h",
+    "derivable": true
+  },
   "::QWidget": {
     "name": "QWidget",
     "parent": null,
@@ -26,6 +32,12 @@
   "::QTextEdit": {
     "name": "QTextEdit",
     "parent": "::QAbstractScrollArea",
+    "filename": "QtWidgets.h",
+    "derivable": true
+  },
+  "::QToolBar": {
+    "name": "QToolBar",
+    "parent": "::QWidget",
     "filename": "QtWidgets.h",
     "derivable": true
   },

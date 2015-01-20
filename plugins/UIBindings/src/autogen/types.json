@@ -30,6 +30,12 @@
     "parent": null,
     "filename": "include/MainWindow.h"
   },
+  "::UI::ToolBar": {
+    "name": "ToolBar",
+    "parent": "::QToolBar",
+    "filename": "include/ToolBar.h",
+    "derivable": true
+  },
   "::UI::MarginClickNotifier": {
     "name": "MarginClickNotifier",
     "parent": null,

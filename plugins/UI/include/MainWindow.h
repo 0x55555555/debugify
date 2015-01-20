@@ -25,6 +25,7 @@ class Editor;
 class TargetToolbar;
 class ProcessToolbar;
 class ModuleExplorer;
+class ToolBar;
 
 /// \expose unmanaged
 X_DECLARE_NOTIFIER(TargetNotifier, std::function<void (Target::Pointer)>);
@@ -59,12 +60,15 @@ public:
   Console *addConsole(const QString &n);
   EditableTextWindow *addEditor(const QString &n);
 
+  ToolBar *addToolBar(const QString &n);
+
   void showDock(QWidget *w);
   void hideDock(QWidget *w);
 
   TargetNotifier *targetChanged() { return &_targetNotifier; }
   Target::Pointer target() const;
 
+  void setProcess(const Process::Pointer &);
   ProcessNotifier *processChanged() { return &_processNotifier; }
   ProcessStateNotifier *processStateChanged() { return &_processStateNotifier; }
   Process::Pointer process() const;
@@ -82,24 +86,25 @@ private slots:
   void setStatusText(const QString &str);
   void processStateChanged(Process::State);
 
-  void onProcessStarted(const Process::Pointer &);
-
   void closeFile(int tab);
   void openFile(const Module::Pointer &ptr, const QString &);
   void openType(const Module::Pointer &ptr, const QString &);
   void openType(const QString &);
 
-  void onPrcocessOutput(const QString &);
-  void onPrcocessError(const QString &);
+  void onProcessOutput(const QString &);
+  void onProcessError(const QString &);
+
+  void timerTick();
 
 private:
   void checkError(const Error &err);
 
   void setTarget(const Target::Pointer &tar);
-  void setProcess(const Process::Pointer &tar);
 
   void addEditor(Editor *editor);
   void focusEditor(Editor *editor);
+
+  void syncState(Process::State type);
 
   Ui::MainWindow *ui;
 
@@ -118,11 +123,14 @@ private:
   ProcessStateNotifier _processStateNotifier;
   ProcessNotifier _processNotifier;
   Process::Pointer _process;
+  Process::State _processState;
 
   OutputNotifier _stdout;
   OutputNotifier _stderr;
 
   EditorNotifier _editorOpened;
+
+  QTimer _timer;
   };
 
 }

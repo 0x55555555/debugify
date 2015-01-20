@@ -4,6 +4,9 @@ module App
 
   class Debugger
     def initialize(mw)
+      # Move this here at some point
+      #@debugger = LldbDriver::Debugger.create()
+
       @ready = RubyNotifier.new
       @running = RubyNotifier.new
 
@@ -22,6 +25,20 @@ module App
     end
 
     attr_reader :ready, :running
+
+    def launch(args = [], env = [])
+      err = LldbDriver::Error.new()
+      target = @mainwindow.target
+      raise "No target to launch" unless target
+      process = @mainwindow.target.launch(args, env, err)
+
+      if (err.hasError())
+        raise err.error()
+      end
+
+      @mainwindow.setProcess(process)
+      return process
+    end
 
     def update()
       @ready.call(@mainwindow.process)

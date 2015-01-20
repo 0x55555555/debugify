@@ -13,12 +13,33 @@ module App
 
       @application = UI::Application.new()
       @mainwindow = UI::MainWindow.new()
+      @debugger = App::Debugger.new(@mainwindow)
+
       if (debug)
         require_relative 'DebuggerTerminal'
         @debugTerminal = App::DebuggerTerminal.new(@mainwindow)
       end
 
-      @debugger = App::Debugger.new(@mainwindow)
+      @targetToolbar = @mainwindow.addToolBar("Target")
+      @targetToolbar.addAction("Run", Proc.new {
+        @debugger.launch()
+      })
+      @targetToolbar.hide()
+
+      @processToolbar = @mainwindow.addToolBar("Process")
+      @processToolbar.addAction("Kill", Proc.new {
+        @mainwindow.process.kill()
+      })
+      @actions = { }
+      @actions[:pause_continue] = @processToolbar.addAction("", Proc.new {
+        if (@mainwindow.process.currentState == LldbDriver::Process::State[:Stopped])
+          @mainwindow.process.continueExecution()
+        else
+          @mainwindow.process.pauseExecution()
+        end
+      })
+      @processToolbar.hide()
+
 
       @callStack = App::CallStack.new(@mainwindow, @debugger)
       @threads = App::Threads.new(@mainwindow, @debugger)
@@ -43,7 +64,26 @@ module App
       @mainwindow.targetChanged.listen do |t|
         if (t != nil)
           t.breakpointsChanged.listen { |_| syncEditorBreakpoints() }
+          @targetToolbar.show()
+        else
+          @targetToolbar.hide()
         end
+      end
+
+      @mainwindow.processChanged.listen do |p|
+        if (p != nil)
+          @processToolbar.show()
+        else
+          @processToolbar.hide()
+        end
+      end
+
+      @debugger.running.listen do |p|
+        @actions[:pause_continue].setText("Pause")
+        clearSourceHighlight()
+      end
+      @debugger.ready.listen do |p|
+        @actions[:pause_continue].setText("Continue")
       end
     end
 
@@ -95,13 +135,17 @@ module App
       end
     end
 
-    def highlightSources()
+    def clearSourceHighlight()
       @activeEditors.each do |e|
         e.clearMarkers(UI::FileEditor::MarkerType[:ActiveLine])
         e.clearMarkers(UI::FileEditor::MarkerType[:CurrentLine])
       end
       @activeEditors.clear()
+    end
 
+    def highlightSources()
+      clearSourceHighlight()
+      
       @mainwindow.process.threads.each do |t|
         frame = t.selectedFrame
 

@@ -25,6 +25,9 @@ class Target
   # \param[out] 1 outBrk the found breakpoint
   # \param[out] 2 outLoc the found breakpoint location
 
+  # std::__1::shared_ptr Target#launch(Eks::Vector args, Eks::Vector env, LldbDriver::Error err)
+  # \brief 
+
   # std::__1::shared_ptr Target#moduleAt(number index)
   # \brief 
 

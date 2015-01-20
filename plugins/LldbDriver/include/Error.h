@@ -5,6 +5,7 @@
 namespace LldbDriver
 {
 
+/// \expose
 class Error
   {
 public:

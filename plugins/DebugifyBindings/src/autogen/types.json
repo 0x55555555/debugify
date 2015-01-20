@@ -35,6 +35,11 @@
     "parent": null,
     "filename": "include/Thread.h"
   },
+  "::LldbDriver::Error": {
+    "name": "Error",
+    "parent": null,
+    "filename": "include/Error.h"
+  },
   "::LldbDriver::Debugger": {
     "name": "Debugger",
     "parent": null,

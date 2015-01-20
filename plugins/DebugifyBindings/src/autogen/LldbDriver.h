@@ -7,6 +7,7 @@
 #include "FunctionMember.h"
 #include "Frame.h"
 #include "Thread.h"
+#include "Error.h"
 #include "Debugger.h"
 #include "CompileUnit.h"
 #include "Type.h"
@@ -28,6 +29,7 @@ BONDAGE_EXPOSED_ENUM(EXPORT_DEBUGIFY, ::LldbDriver::Process::State)
 BONDAGE_EXPOSED_CLASS_COPYABLE(EXPORT_DEBUGIFY, ::LldbDriver::FunctionMember)
 BONDAGE_EXPOSED_CLASS_COPYABLE(EXPORT_DEBUGIFY, ::LldbDriver::Frame)
 BONDAGE_EXPOSED_CLASS_SHARED_POINTER(EXPORT_DEBUGIFY, ::LldbDriver::Thread)
+BONDAGE_EXPOSED_CLASS_COPYABLE(EXPORT_DEBUGIFY, ::LldbDriver::Error)
 BONDAGE_EXPOSED_CLASS_SHARED_POINTER(EXPORT_DEBUGIFY, ::LldbDriver::Debugger)
 BONDAGE_EXPOSED_CLASS_SHARED_POINTER(EXPORT_DEBUGIFY, ::LldbDriver::CompileUnit)
 BONDAGE_EXPOSED_CLASS_COPYABLE(EXPORT_DEBUGIFY, ::LldbDriver::Type)

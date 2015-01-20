@@ -28,6 +28,7 @@ public:
 
   Eks::String path() const;
 
+  /// \expose
   std::shared_ptr<Process> launch(
     const Eks::Vector<Eks::StringRef> &args,
     const Eks::Vector<Eks::StringRef> &env,

@@ -21,6 +21,9 @@ class MainWindow < Qt::QMainWindow
   # UI::Terminal MainWindow#addTerminal(QString n)
   # \brief 
 
+  # UI::ToolBar MainWindow#addToolBar(QString n)
+  # \brief 
+
   # UI::EditorNotifier MainWindow#editorOpened()
   # \brief 
 
@@ -43,6 +46,9 @@ class MainWindow < Qt::QMainWindow
   # \brief 
 
   # UI::ProcessStateNotifier MainWindow#processStateChanged()
+  # \brief 
+
+  # nil MainWindow#setProcess(std::__1::shared_ptr arg1)
   # \brief 
 
   # nil MainWindow#showDock(QWidget w)

@@ -5,3 +5,5 @@
 #include "QFrame"
 #include "QAbstractScrollArea"
 #include "QTextEdit"
+#include "QToolBar"
+#include "QAction"

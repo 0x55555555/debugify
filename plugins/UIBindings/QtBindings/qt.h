@@ -4,6 +4,8 @@
 #include "QMainWindow"
 #include "QTextEdit"
 #include "QApplication"
+#include "QToolBar"
+#include "QAction"
 #include "bondage/RuntimeHelpers.h"
 
 namespace Qt
@@ -11,11 +13,13 @@ namespace Qt
 EXPORT_DEBUGIFY const bondage::Library &bindings();
 }
 
+BONDAGE_EXPOSED_CLASS_DERIVABLE_UNMANAGED(EXPORT_DEBUGIFY, ::QAction)
 BONDAGE_EXPOSED_CLASS_DERIVABLE_UNMANAGED(EXPORT_DEBUGIFY, ::QWidget)
 BONDAGE_EXPOSED_CLASS_DERIVED_UNMANAGED(EXPORT_DEBUGIFY, ::QMainWindow, ::QWidget, ::QWidget)
 BONDAGE_EXPOSED_CLASS_DERIVED_UNMANAGED(EXPORT_DEBUGIFY, ::QFrame, ::QWidget, ::QWidget)
 BONDAGE_EXPOSED_CLASS_DERIVED_UNMANAGED(EXPORT_DEBUGIFY, ::QAbstractScrollArea, ::QFrame, ::QWidget)
 BONDAGE_EXPOSED_CLASS_DERIVED_UNMANAGED(EXPORT_DEBUGIFY, ::QTextEdit, ::QAbstractScrollArea, ::QWidget)
+BONDAGE_EXPOSED_CLASS_DERIVED_UNMANAGED(EXPORT_DEBUGIFY, ::QToolBar, ::QWidget, ::QWidget)
 BONDAGE_EXPOSED_CLASS_UNMANAGED(EXPORT_DEBUGIFY, ::QApplication)
 
 template <> class bondage::Ruby::Caster<QString &>
