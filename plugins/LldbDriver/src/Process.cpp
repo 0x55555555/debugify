@@ -73,6 +73,22 @@ Error Process::continueExecution()
   return Error::Helper::makeError(err);
   }
 
+int Process::exitStatus() const
+  {
+  return _impl->process.GetExitStatus();
+  }
+
+Eks::String Process::exitDescription() const
+  {
+  auto desc = _impl->process.GetExitDescription();
+  if (!desc)
+    {
+    return Eks::String();
+    }
+
+  return desc;
+  }
+
 void Process::processEvents()
   {
   lldb::SBEvent ev;

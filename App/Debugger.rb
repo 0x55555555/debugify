@@ -9,6 +9,7 @@ module App
 
       @ready = RubyNotifier.new
       @running = RubyNotifier.new
+      @exited = RubyNotifier.new
 
       @mainwindow = mw
 
@@ -21,10 +22,14 @@ module App
         if (p == Debugify::Process::State[:Running])
           @running.call(process)
         end
+
+        if (p == Debugify::Process::State[:Exited])
+          @exited.call(process)
+        end
       end
     end
 
-    attr_reader :ready, :running
+    attr_reader :ready, :running, :exited
 
     def launch(args = [], env = [])
       err = LldbDriver::Error.new()
@@ -38,6 +43,10 @@ module App
 
       @mainwindow.setProcess(process)
       return process
+    end
+
+    def end()
+      @mainwindow.setProcess(nil)
     end
 
     def update()

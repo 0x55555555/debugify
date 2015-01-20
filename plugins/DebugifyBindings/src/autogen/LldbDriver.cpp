@@ -124,6 +124,8 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
 // Exposing class ::LldbDriver::Process
 struct LldbDriver_Process_continueExecution_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::Error(::LldbDriver::Process::*)() >, &::LldbDriver::Process::continueExecution, bondage::FunctionCaller> { };
 struct LldbDriver_Process_currentState_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::Process::State(::LldbDriver::Process::*)() const >, &::LldbDriver::Process::currentState, bondage::FunctionCaller> { };
+struct LldbDriver_Process_exitDescription_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Eks::String(::LldbDriver::Process::*)() const >, &::LldbDriver::Process::exitDescription, bondage::FunctionCaller> { };
+struct LldbDriver_Process_exitStatus_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< int(::LldbDriver::Process::*)() const >, &::LldbDriver::Process::exitStatus, bondage::FunctionCaller> { };
 struct LldbDriver_Process_getStateString_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Eks::String(*)(LldbDriver::Process::State) >, &::LldbDriver::Process::getStateString, bondage::FunctionCaller> { };
 struct LldbDriver_Process_kill_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::Error(::LldbDriver::Process::*)() >, &::LldbDriver::Process::kill, bondage::FunctionCaller> { };
 struct LldbDriver_Process_pauseExecution_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::Error(::LldbDriver::Process::*)() >, &::LldbDriver::Process::pauseExecution, bondage::FunctionCaller> { };
@@ -142,6 +144,12 @@ const bondage::Function LldbDriver_Process_methods[] = {
   bondage::FunctionBuilder::build<
     LldbDriver_Process_currentState_overload0_t
     >("currentState"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Process_exitDescription_overload0_t
+    >("exitDescription"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Process_exitStatus_overload0_t
+    >("exitStatus"),
   bondage::FunctionBuilder::build<
     LldbDriver_Process_getStateString_overload0_t
     >("getStateString"),
@@ -182,7 +190,7 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
   Process,
   void,
   LldbDriver_Process_methods,
-  12);
+  14);
 
 
 

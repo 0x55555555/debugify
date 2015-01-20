@@ -81,9 +81,19 @@ module App
       @debugger.running.listen do |p|
         @actions[:pause_continue].setText("Pause")
         clearSourceHighlight()
+        log "Process running"
       end
       @debugger.ready.listen do |p|
         @actions[:pause_continue].setText("Continue")
+        log "Process ready to debug"
+      end
+      @debugger.exited.listen do |p|
+        log "Process exited with code #{p.exitStatus}"
+        desc = p.exitDescription
+        if (desc)
+          log "  " + desc
+        end
+        @debugger.end()
       end
     end
 
@@ -174,6 +184,10 @@ module App
           @mainwindow.hideDock(w.widget)
         end
       end
+    end
+
+    def log(s)
+      @console.append(s)
     end
   end
 end

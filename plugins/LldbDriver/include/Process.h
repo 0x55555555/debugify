@@ -57,6 +57,9 @@ public:
   Error pauseExecution();
   Error continueExecution();
 
+  int exitStatus() const;
+  Eks::String exitDescription() const;
+
   size_t threadCount();
   std::shared_ptr<Thread> threadAt(size_t index);
 

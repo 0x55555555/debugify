@@ -51,7 +51,8 @@ template <typename T> struct TypeResolver<Eks::Vector<T>>
 
     static void pack(bondage::Ruby::Boxer *, VALUE *v, const Eks::String &result)
       {
-      *v = rb_str_new2(result.data());
+      auto d = result.data();
+      *v = rb_str_new2(d ? d : "");
       }
     };
 
