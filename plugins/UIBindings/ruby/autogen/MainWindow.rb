@@ -45,9 +45,6 @@ class MainWindow < Qt::QMainWindow
   # UI::ProcessNotifier MainWindow#processChanged()
   # \brief 
 
-  # UI::ProcessStateNotifier MainWindow#processStateChanged()
-  # \brief 
-
   # nil MainWindow#setProcess(std::__1::shared_ptr arg1)
   # \brief 
 

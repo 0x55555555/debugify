@@ -6,14 +6,25 @@ require_relative 'Breakpoints'
 
 module App
 
+  class Logger
+
+    attr_writer :console
+
+    def log(s)
+      @console.append(s)
+    end
+  end
+
   class Application
     def initialize(debug)
       @editors = { }
       @activeEditors = [ ]
 
+      @log = Logger.new
+
       @application = UI::Application.new()
       @mainwindow = UI::MainWindow.new()
-      @debugger = App::Debugger.new(@mainwindow)
+      @debugger = App::Debugger.new(@mainwindow, @log)
 
       if (debug)
         require_relative 'DebuggerTerminal'
@@ -32,7 +43,7 @@ module App
       })
       @actions = { }
       @actions[:pause_continue] = @processToolbar.addAction("", Proc.new {
-        if (@mainwindow.process.currentState == LldbDriver::Process::State[:Stopped])
+        if (@mainwindow.process.currentState == LldbDriver::ProcessState[:Stopped])
           @mainwindow.process.continueExecution()
         else
           @mainwindow.process.pauseExecution()
@@ -40,11 +51,24 @@ module App
       })
       @processToolbar.hide()
 
+      @currentThreadToolbar = @mainwindow.addToolBar("Current Thread")
+      @currentThreadToolbar.addAction("Step Into", Proc.new {
+        @mainwindow.process.selectedThread.stepInto()
+      })
+      @currentThreadToolbar.addAction("Step Over", Proc.new {
+        @mainwindow.process.selectedThread.stepOver()
+      })
+      @currentThreadToolbar.addAction("Step Out", Proc.new {
+        @mainwindow.process.selectedThread.stepOut()
+      })
+      @currentThreadToolbar.hide()
+
 
       @callStack = App::CallStack.new(@mainwindow, @debugger)
       @threads = App::Threads.new(@mainwindow, @debugger)
       @breakpoints = App::Breakpoints.new(@mainwindow, @debugger)
       @console = App::Console.new(@mainwindow)
+      @log.console = @console
       @processWindows = [ @threads, @callStack ]
 
       processChanged(nil)
@@ -53,6 +77,7 @@ module App
       @debugger.ready.listen do |process|
         loadCurrentSource()
         highlightSources()
+        @currentThreadToolbar.show()
       end
 
       @mainwindow.editorOpened.listen do |editor|
@@ -81,17 +106,18 @@ module App
       @debugger.running.listen do |p|
         @actions[:pause_continue].setText("Pause")
         clearSourceHighlight()
-        log "Process running"
+        @currentThreadToolbar.hide()
+        @log.log "Process running"
       end
       @debugger.ready.listen do |p|
         @actions[:pause_continue].setText("Continue")
-        log "Process ready to debug"
+        @log.log "Process ready to debug"
       end
       @debugger.exited.listen do |p|
-        log "Process exited with code #{p.exitStatus}"
+        @log.log "Process exited with code #{p.exitStatus}"
         desc = p.exitDescription
         if (desc)
-          log "  " + desc
+          @log.log "  " + desc
         end
         @debugger.end()
       end
@@ -166,11 +192,13 @@ module App
           file =  frame.filename
 
           editor = @editors[file]
-          @activeEditors << editor
           if (editor)
+            @activeEditors << editor
             type = current ? UI::FileEditor::MarkerType[:CurrentLine] :
               UI::FileEditor::MarkerType[:ActiveLine]
             editor.addMarker(type, line)
+          else
+            puts "unable to display file #{file} #{line} #{LldbDriver::ProcessState[@mainwindow.process.currentState]}"
           end
         end
       end
@@ -184,10 +212,6 @@ module App
           @mainwindow.hideDock(w.widget)
         end
       end
-    end
-
-    def log(s)
-      @console.append(s)
     end
   end
 end

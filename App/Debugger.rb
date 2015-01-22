@@ -3,28 +3,27 @@ require_relative 'RubyNotifier'
 module App
 
   class Debugger
-    def initialize(mw)
+    def initialize(mw, log)
       # Move this here at some point
       #@debugger = LldbDriver::Debugger.create()
 
+      @log = log
+
+      @isReady = false
       @ready = RubyNotifier.new
       @running = RubyNotifier.new
       @exited = RubyNotifier.new
 
       @mainwindow = mw
+      @process = nil
 
-      mw.processStateChanged.listen do |p|
-        process = mw.process
-        if (p == Debugify::Process::State[:Stopped])
-          @ready.call(process)
-        end
+      mw.processChanged.listen do |p|
+        @process = p
 
-        if (p == Debugify::Process::State[:Running])
-          @running.call(process)
-        end
-
-        if (p == Debugify::Process::State[:Exited])
-          @exited.call(process)
+        if (@process)
+          @process.stateChanged.listen do |state|
+            processStateChanged(state)
+          end
         end
       end
     end
@@ -50,7 +49,46 @@ module App
     end
 
     def update()
+      if (@process)
+        @process.processEvents()
+      end
       @ready.call(@mainwindow.process)
+    end
+
+  private
+    def processStateChanged(state)
+      if (state == Debugify::ProcessState[:Stopped])
+        @isReady = true
+
+        puts "Process Stopped"
+        @process.threads.each do |t|
+          reason = Debugify::Thread::StopReason[t.stopReason()]
+          if (reason != :None)
+            @log.log("Thread 0x#{t.id.to_s(16)} stopped with #{reason}")
+
+            if (reason == :Breakpoint)
+              brkpt, location = t.stopBreakpoint()
+
+              @log.log "  at #{brkpt.id}.#{location.id} #{File.basename(location.file)}, #{location.line}"
+            end
+          end
+        end
+
+        @ready.call(@process)
+      end
+
+      if (state == Debugify::ProcessState[:Running])
+        @isReady = false
+        @running.call(@process)
+      end
+
+      if (state == Debugify::ProcessState[:Exited])
+        @isReady = false
+        # need to ensure callbacks are aware ready is false
+        @running.call(@process)
+        @exited.call(@process)
+        @process = nil
+      end
     end
   end
 

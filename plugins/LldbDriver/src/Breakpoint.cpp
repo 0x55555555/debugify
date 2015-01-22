@@ -8,11 +8,15 @@ namespace LldbDriver
 {
 
 BreakpointLocation::BreakpointLocation()
+  : _id(0),
+    _line(0),
+    _resolved(false)
   {
   }
 
-BreakpointLocation::BreakpointLocation(const char *file, size_t line, bool resolved)
-    : _file(file),
+BreakpointLocation::BreakpointLocation(int id, const char *file, size_t line, bool resolved)
+    : _id(id),
+      _file(file),
       _line(line),
       _resolved(resolved)
   {
@@ -82,7 +86,7 @@ BreakpointLocation Breakpoint::locationAt(size_t i) const
     line = parentBlock.GetInlinedCallSiteLine();
     }
 
-  return BreakpointLocation{ fileSpecAsString(fileSpec).data(), line, loc.IsResolved() };
+  return BreakpointLocation{ loc.GetID(), fileSpecAsString(fileSpec).data(), line, loc.IsResolved() };
   }
 
 bool Breakpoint::findLocation(const Eks::String &file, size_t line, BreakpointLocation *outLoc)

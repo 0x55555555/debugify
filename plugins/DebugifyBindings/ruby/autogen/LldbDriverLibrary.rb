@@ -6,6 +6,8 @@ require_relative '../BindingsInternal'
 require_relative 'TypeMember'
 require_relative 'BreakpointNotifier'
 require_relative 'Process'
+require_relative 'ProcessEndedNotifier'
+require_relative 'ProcessStateChangeNotifier'
 require_relative 'FunctionMember'
 require_relative 'Frame'
 require_relative 'Thread'
@@ -19,7 +21,20 @@ require_relative 'BreakpointLocation'
 require_relative 'Target'
 
 module LldbDriver
-
+ProcessState = Enum.new({
+  :Invalid => 0,
+  :Unloaded => 1,
+  :Connected => 2,
+  :Attaching => 3,
+  :Launching => 4,
+  :Stopped => 5,
+  :Running => 6,
+  :Stepping => 7,
+  :Crashed => 8,
+  :Detached => 9,
+  :Exited => 10,
+  :Suspended => 11,
+})
 
 end
 

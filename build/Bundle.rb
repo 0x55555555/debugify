@@ -191,7 +191,9 @@ export DYLD_LIBRARY_PATH=$DIR/../ruby/lib:$DIR:$DYLD_LIBRARY_PATH')
 end
 
 def makeDebugifyDmg(version, options = {})
-  output = "#{THIS_DIR}/#{EXE_NAME}.dmg"
+  versionStr = "#{version[:major]}.#{version[:minor]}.#{version[:revision]}"
+
+  output = "#{THIS_DIR}/#{EXE_NAME}_#{versionStr}.dmg"
   path = "#{THIS_DIR}/tmp"
 
   if (File.exist?(path))

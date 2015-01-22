@@ -73,7 +73,6 @@ struct UI_MainWindow_openFile_overload0_t : Reflect::FunctionCall<Reflect::Funct
 struct UI_MainWindow_output_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::OutputNotifier *(::UI::MainWindow::*)() >, &::UI::MainWindow::output, bondage::FunctionCaller> { };
 struct UI_MainWindow_process_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Process::Pointer(::UI::MainWindow::*)() const >, &::UI::MainWindow::process, bondage::FunctionCaller> { };
 struct UI_MainWindow_processChanged_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::ProcessNotifier *(::UI::MainWindow::*)() >, &::UI::MainWindow::processChanged, bondage::FunctionCaller> { };
-struct UI_MainWindow_processStateChanged_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::ProcessStateNotifier *(::UI::MainWindow::*)() >, &::UI::MainWindow::processStateChanged, bondage::FunctionCaller> { };
 struct UI_MainWindow_setProcess_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::MainWindow::*)(const Process::Pointer &) >, &::UI::MainWindow::setProcess, bondage::FunctionCaller> { };
 struct UI_MainWindow_showDock_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::MainWindow::*)(QWidget *) >, &::UI::MainWindow::showDock, bondage::FunctionCaller> { };
 struct UI_MainWindow_target_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Target::Pointer(::UI::MainWindow::*)() const >, &::UI::MainWindow::target, bondage::FunctionCaller> { };
@@ -139,9 +138,6 @@ const bondage::Function UI_MainWindow_methods[] = {
     UI_MainWindow_processChanged_overload0_t
     >("processChanged"),
   bondage::FunctionBuilder::build<
-    UI_MainWindow_processStateChanged_overload0_t
-    >("processStateChanged"),
-  bondage::FunctionBuilder::build<
     UI_MainWindow_setProcess_overload0_t
     >("setProcess"),
   bondage::FunctionBuilder::build<
@@ -165,7 +161,7 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
   MainWindow,
   ::QMainWindow,
   UI_MainWindow_methods,
-  19);
+  18);
 
 
 
@@ -215,31 +211,6 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
   OutputNotifier,
   void,
   UI_OutputNotifier_methods,
-  2);
-
-
-
-// Exposing class ::UI::ProcessStateNotifier
-struct UI_ProcessStateNotifier_listen_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< int(::UI::ProcessStateNotifier::*)(std::function<void (Process::State)> &&) >, &::UI::ProcessStateNotifier::listen, bondage::FunctionCaller> { };
-struct UI_ProcessStateNotifier_remove_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::ProcessStateNotifier::*)(int) >, &::UI::ProcessStateNotifier::remove, bondage::FunctionCaller> { };
-
-const bondage::Function UI_ProcessStateNotifier_methods[] = {
-  bondage::FunctionBuilder::build<
-    UI_ProcessStateNotifier_listen_overload0_t
-    >("listen"),
-  bondage::FunctionBuilder::build<
-    UI_ProcessStateNotifier_remove_overload0_t
-    >("remove")
-};
-
-
-BONDAGE_IMPLEMENT_EXPOSED_CLASS(
-  UI_ProcessStateNotifier,
-  g_bondage_library_UI,
-  ::UI,
-  ProcessStateNotifier,
-  void,
-  UI_ProcessStateNotifier_methods,
   2);
 
 

@@ -14,13 +14,15 @@ public:
   /// \noexpose
   BreakpointLocation();
   /// \noexpose
-  BreakpointLocation(const char *file, size_t line, bool resolved);
+  BreakpointLocation(int id, const char *file, size_t line, bool resolved);
 
+  int id() const { return _id; }
   Eks::String file() const { return _file; }
   size_t line() const { return _line; }
   bool resolved() const { return _resolved; }
 
 private:
+  int _id;
   Eks::String _file;
   size_t _line;
   bool _resolved;

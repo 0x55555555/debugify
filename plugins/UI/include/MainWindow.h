@@ -34,9 +34,6 @@ X_DECLARE_NOTIFIER(TargetNotifier, std::function<void (Target::Pointer)>);
 X_DECLARE_NOTIFIER(ProcessNotifier, std::function<void (Process::Pointer)>);
 
 /// \expose unmanaged
-X_DECLARE_NOTIFIER(ProcessStateNotifier, std::function<void (Process::State)>);
-
-/// \expose unmanaged
 X_DECLARE_NOTIFIER(OutputNotifier, std::function<void (QString)>);
 
 /// \expose unmanaged
@@ -70,7 +67,6 @@ public:
 
   void setProcess(const Process::Pointer &);
   ProcessNotifier *processChanged() { return &_processNotifier; }
-  ProcessStateNotifier *processStateChanged() { return &_processStateNotifier; }
   Process::Pointer process() const;
 
   OutputNotifier *output() { return &_stdout; }
@@ -84,7 +80,6 @@ public slots:
 private slots:
   void onError(const QString &str);
   void setStatusText(const QString &str);
-  void processStateChanged(Process::State);
 
   void closeFile(int tab);
   void openFile(const Module::Pointer &ptr, const QString &);
@@ -104,8 +99,6 @@ private:
   void addEditor(Editor *editor);
   void focusEditor(Editor *editor);
 
-  void syncState(Process::State type);
-
   Ui::MainWindow *ui;
 
   Debugger::Pointer _debugger;
@@ -120,10 +113,8 @@ private:
   TargetNotifier _targetNotifier;
   Target::Pointer _target;
 
-  ProcessStateNotifier _processStateNotifier;
   ProcessNotifier _processNotifier;
   Process::Pointer _process;
-  Process::State _processState;
 
   OutputNotifier _stdout;
   OutputNotifier _stderr;

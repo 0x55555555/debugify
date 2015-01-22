@@ -14,11 +14,15 @@
     "parent": null,
     "filename": "include/Process.h"
   },
-  "::LldbDriver::Process::State": {
-    "name": "State",
+  "::LldbDriver::ProcessEndedNotifier": {
+    "name": "ProcessEndedNotifier",
     "parent": null,
-    "filename": "include/Process.h",
-    "type": "enum"
+    "filename": "include/Process.h"
+  },
+  "::LldbDriver::ProcessStateChangeNotifier": {
+    "name": "ProcessStateChangeNotifier",
+    "parent": null,
+    "filename": "include/Process.h"
   },
   "::LldbDriver::FunctionMember": {
     "name": "FunctionMember",
@@ -34,6 +38,12 @@
     "name": "Thread",
     "parent": null,
     "filename": "include/Thread.h"
+  },
+  "::LldbDriver::Thread::StopReason": {
+    "name": "StopReason",
+    "parent": null,
+    "filename": "include/Thread.h",
+    "type": "enum"
   },
   "::LldbDriver::Error": {
     "name": "Error",
@@ -74,5 +84,11 @@
     "name": "Target",
     "parent": null,
     "filename": "include/Target.h"
+  },
+  "::LldbDriver::ProcessState": {
+    "name": "ProcessState",
+    "parent": null,
+    "filename": "include/Process.h",
+    "type": "enum"
   }
 }

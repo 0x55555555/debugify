@@ -9,9 +9,9 @@
 #include "Thread.h"
 #include "FunctionMember.h"
 #include "Frame.h"
+#include "Breakpoint.h"
 #include "../../../Eks/EksCore/include/Utilities/XStringRef.h"
 #include "Type.h"
-#include "Breakpoint.h"
 #include "../../../Eks/EksCore/include/Containers/XStringSimple.h"
 #include "../../../Eks/EksCore/include/Containers/XVector.h"
 #include "../../../Eks/EksCore/include/Memory/XTypedAllocator.h"
@@ -123,16 +123,18 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
 
 // Exposing class ::LldbDriver::Process
 struct LldbDriver_Process_continueExecution_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::Error(::LldbDriver::Process::*)() >, &::LldbDriver::Process::continueExecution, bondage::FunctionCaller> { };
-struct LldbDriver_Process_currentState_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::Process::State(::LldbDriver::Process::*)() const >, &::LldbDriver::Process::currentState, bondage::FunctionCaller> { };
+struct LldbDriver_Process_currentState_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::ProcessState(::LldbDriver::Process::*)() const >, &::LldbDriver::Process::currentState, bondage::FunctionCaller> { };
+struct LldbDriver_Process_ended_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::ProcessEndedNotifier *(::LldbDriver::Process::*)() >, &::LldbDriver::Process::ended, bondage::FunctionCaller> { };
 struct LldbDriver_Process_exitDescription_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Eks::String(::LldbDriver::Process::*)() const >, &::LldbDriver::Process::exitDescription, bondage::FunctionCaller> { };
 struct LldbDriver_Process_exitStatus_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< int(::LldbDriver::Process::*)() const >, &::LldbDriver::Process::exitStatus, bondage::FunctionCaller> { };
-struct LldbDriver_Process_getStateString_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Eks::String(*)(LldbDriver::Process::State) >, &::LldbDriver::Process::getStateString, bondage::FunctionCaller> { };
+struct LldbDriver_Process_getStateString_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Eks::String(*)(LldbDriver::ProcessState) >, &::LldbDriver::Process::getStateString, bondage::FunctionCaller> { };
 struct LldbDriver_Process_kill_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::Error(::LldbDriver::Process::*)() >, &::LldbDriver::Process::kill, bondage::FunctionCaller> { };
 struct LldbDriver_Process_pauseExecution_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::Error(::LldbDriver::Process::*)() >, &::LldbDriver::Process::pauseExecution, bondage::FunctionCaller> { };
 struct LldbDriver_Process_processEvents_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::LldbDriver::Process::*)() >, &::LldbDriver::Process::processEvents, bondage::FunctionCaller> { };
 struct LldbDriver_Process_processID_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< size_t(::LldbDriver::Process::*)() const >, &::LldbDriver::Process::processID, bondage::FunctionCaller> { };
 struct LldbDriver_Process_selectThread_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::LldbDriver::Process::*)(const std::shared_ptr<Thread> &) >, &::LldbDriver::Process::selectThread, bondage::FunctionCaller> { };
 struct LldbDriver_Process_selectedThread_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< std::shared_ptr<Thread>(::LldbDriver::Process::*)() >, &::LldbDriver::Process::selectedThread, bondage::FunctionCaller> { };
+struct LldbDriver_Process_stateChanged_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::ProcessStateChangeNotifier *(::LldbDriver::Process::*)() >, &::LldbDriver::Process::stateChanged, bondage::FunctionCaller> { };
 struct LldbDriver_Process_target_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< std::shared_ptr<Target>(::LldbDriver::Process::*)() >, &::LldbDriver::Process::target, bondage::FunctionCaller> { };
 struct LldbDriver_Process_threadAt_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< std::shared_ptr<Thread>(::LldbDriver::Process::*)(size_t) >, &::LldbDriver::Process::threadAt, bondage::FunctionCaller> { };
 struct LldbDriver_Process_threadCount_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< size_t(::LldbDriver::Process::*)() >, &::LldbDriver::Process::threadCount, bondage::FunctionCaller> { };
@@ -144,6 +146,9 @@ const bondage::Function LldbDriver_Process_methods[] = {
   bondage::FunctionBuilder::build<
     LldbDriver_Process_currentState_overload0_t
     >("currentState"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Process_ended_overload0_t
+    >("ended"),
   bondage::FunctionBuilder::build<
     LldbDriver_Process_exitDescription_overload0_t
     >("exitDescription"),
@@ -172,6 +177,9 @@ const bondage::Function LldbDriver_Process_methods[] = {
     LldbDriver_Process_selectedThread_overload0_t
     >("selectedThread"),
   bondage::FunctionBuilder::build<
+    LldbDriver_Process_stateChanged_overload0_t
+    >("stateChanged"),
+  bondage::FunctionBuilder::build<
     LldbDriver_Process_target_overload0_t
     >("target"),
   bondage::FunctionBuilder::build<
@@ -190,7 +198,57 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
   Process,
   void,
   LldbDriver_Process_methods,
-  14);
+  16);
+
+
+
+// Exposing class ::LldbDriver::ProcessEndedNotifier
+struct LldbDriver_ProcessEndedNotifier_listen_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< int(::LldbDriver::ProcessEndedNotifier::*)(std::function<void ()> &&) >, &::LldbDriver::ProcessEndedNotifier::listen, bondage::FunctionCaller> { };
+struct LldbDriver_ProcessEndedNotifier_remove_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::LldbDriver::ProcessEndedNotifier::*)(int) >, &::LldbDriver::ProcessEndedNotifier::remove, bondage::FunctionCaller> { };
+
+const bondage::Function LldbDriver_ProcessEndedNotifier_methods[] = {
+  bondage::FunctionBuilder::build<
+    LldbDriver_ProcessEndedNotifier_listen_overload0_t
+    >("listen"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_ProcessEndedNotifier_remove_overload0_t
+    >("remove")
+};
+
+
+BONDAGE_IMPLEMENT_EXPOSED_CLASS(
+  LldbDriver_ProcessEndedNotifier,
+  g_bondage_library_LldbDriver,
+  ::LldbDriver,
+  ProcessEndedNotifier,
+  void,
+  LldbDriver_ProcessEndedNotifier_methods,
+  2);
+
+
+
+// Exposing class ::LldbDriver::ProcessStateChangeNotifier
+struct LldbDriver_ProcessStateChangeNotifier_listen_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< int(::LldbDriver::ProcessStateChangeNotifier::*)(std::function<void (ProcessState)> &&) >, &::LldbDriver::ProcessStateChangeNotifier::listen, bondage::FunctionCaller> { };
+struct LldbDriver_ProcessStateChangeNotifier_remove_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::LldbDriver::ProcessStateChangeNotifier::*)(int) >, &::LldbDriver::ProcessStateChangeNotifier::remove, bondage::FunctionCaller> { };
+
+const bondage::Function LldbDriver_ProcessStateChangeNotifier_methods[] = {
+  bondage::FunctionBuilder::build<
+    LldbDriver_ProcessStateChangeNotifier_listen_overload0_t
+    >("listen"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_ProcessStateChangeNotifier_remove_overload0_t
+    >("remove")
+};
+
+
+BONDAGE_IMPLEMENT_EXPOSED_CLASS(
+  LldbDriver_ProcessStateChangeNotifier,
+  g_bondage_library_LldbDriver,
+  ::LldbDriver,
+  ProcessStateChangeNotifier,
+  void,
+  LldbDriver_ProcessStateChangeNotifier_methods,
+  2);
 
 
 
@@ -302,6 +360,14 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
 
 
 // Exposing class ::LldbDriver::Thread
+std::tuple< LldbDriver::Breakpoint, LldbDriver::BreakpointLocation > LldbDriver_Thread_stopBreakpoint_overload0(::LldbDriver::Thread & inputArg0)
+{
+  std::tuple< LldbDriver::Breakpoint, LldbDriver::BreakpointLocation > result;
+
+  std::get<0>(result) = inputArg0.stopBreakpoint(&std::get<1>(result));
+  return result;
+}
+
 struct LldbDriver_Thread_frameAt_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::Frame(::LldbDriver::Thread::*)(size_t) >, &::LldbDriver::Thread::frameAt, bondage::FunctionCaller> { };
 struct LldbDriver_Thread_frameCount_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< size_t(::LldbDriver::Thread::*)() const >, &::LldbDriver::Thread::frameCount, bondage::FunctionCaller> { };
 struct LldbDriver_Thread_id_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< size_t(::LldbDriver::Thread::*)() const >, &::LldbDriver::Thread::id, bondage::FunctionCaller> { };
@@ -310,6 +376,11 @@ struct LldbDriver_Thread_name_overload0_t : Reflect::FunctionCall<Reflect::Funct
 struct LldbDriver_Thread_process_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< std::shared_ptr<Process>(::LldbDriver::Thread::*)() >, &::LldbDriver::Thread::process, bondage::FunctionCaller> { };
 struct LldbDriver_Thread_selectFrame_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::LldbDriver::Thread::*)(const LldbDriver::Frame &) >, &::LldbDriver::Thread::selectFrame, bondage::FunctionCaller> { };
 struct LldbDriver_Thread_selectedFrame_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::Frame(::LldbDriver::Thread::*)() >, &::LldbDriver::Thread::selectedFrame, bondage::FunctionCaller> { };
+struct LldbDriver_Thread_stepInto_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::LldbDriver::Thread::*)() >, &::LldbDriver::Thread::stepInto, bondage::FunctionCaller> { };
+struct LldbDriver_Thread_stepOut_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::LldbDriver::Thread::*)() >, &::LldbDriver::Thread::stepOut, bondage::FunctionCaller> { };
+struct LldbDriver_Thread_stepOver_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::LldbDriver::Thread::*)() >, &::LldbDriver::Thread::stepOver, bondage::FunctionCaller> { };
+struct LldbDriver_Thread_stopBreakpoint_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< std::tuple< LldbDriver::Breakpoint, LldbDriver::BreakpointLocation >(*)(::LldbDriver::Thread &) >, &LldbDriver_Thread_stopBreakpoint_overload0, Reflect::MethodInjectorBuilder<bondage::FunctionCaller>> { };
+struct LldbDriver_Thread_stopReason_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::Thread::StopReason(::LldbDriver::Thread::*)() const >, &::LldbDriver::Thread::stopReason, bondage::FunctionCaller> { };
 
 const bondage::Function LldbDriver_Thread_methods[] = {
   bondage::FunctionBuilder::build<
@@ -335,7 +406,22 @@ const bondage::Function LldbDriver_Thread_methods[] = {
     >("selectFrame"),
   bondage::FunctionBuilder::build<
     LldbDriver_Thread_selectedFrame_overload0_t
-    >("selectedFrame")
+    >("selectedFrame"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Thread_stepInto_overload0_t
+    >("stepInto"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Thread_stepOut_overload0_t
+    >("stepOut"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Thread_stepOver_overload0_t
+    >("stepOver"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Thread_stopBreakpoint_overload0_t
+    >("stopBreakpoint"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Thread_stopReason_overload0_t
+    >("stopReason")
 };
 
 
@@ -346,7 +432,7 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
   Thread,
   void,
   LldbDriver_Thread_methods,
-  8);
+  13);
 
 
 
@@ -676,6 +762,7 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
 
 // Exposing class ::LldbDriver::BreakpointLocation
 struct LldbDriver_BreakpointLocation_file_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Eks::String(::LldbDriver::BreakpointLocation::*)() const >, &::LldbDriver::BreakpointLocation::file, bondage::FunctionCaller> { };
+struct LldbDriver_BreakpointLocation_id_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< int(::LldbDriver::BreakpointLocation::*)() const >, &::LldbDriver::BreakpointLocation::id, bondage::FunctionCaller> { };
 struct LldbDriver_BreakpointLocation_line_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< size_t(::LldbDriver::BreakpointLocation::*)() const >, &::LldbDriver::BreakpointLocation::line, bondage::FunctionCaller> { };
 struct LldbDriver_BreakpointLocation_resolved_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< bool(::LldbDriver::BreakpointLocation::*)() const >, &::LldbDriver::BreakpointLocation::resolved, bondage::FunctionCaller> { };
 
@@ -683,6 +770,9 @@ const bondage::Function LldbDriver_BreakpointLocation_methods[] = {
   bondage::FunctionBuilder::build<
     LldbDriver_BreakpointLocation_file_overload0_t
     >("file"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_BreakpointLocation_id_overload0_t
+    >("id"),
   bondage::FunctionBuilder::build<
     LldbDriver_BreakpointLocation_line_overload0_t
     >("line"),
@@ -699,7 +789,7 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
   BreakpointLocation,
   void,
   LldbDriver_BreakpointLocation_methods,
-  3);
+  4);
 
 
 

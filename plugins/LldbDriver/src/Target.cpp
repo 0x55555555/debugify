@@ -75,6 +75,7 @@ Process::Pointer Target::launch(
         lldb::eLaunchFlagNone,
         false,
         error);
+  process->_impl->processState = process->_impl->process.GetState();
 
   err = Error::Helper::makeError(error);
   return process;

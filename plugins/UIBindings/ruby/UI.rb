@@ -5,7 +5,6 @@ module UI
 NotifierExtensions.install([
   InputNotifier,
   TargetNotifier,
-  ProcessStateNotifier,
   ProcessNotifier,
   OutputNotifier,
   ClickNotifier,

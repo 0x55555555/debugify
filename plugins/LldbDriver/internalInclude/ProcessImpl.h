@@ -24,6 +24,9 @@ public:
   std::weak_ptr<LldbDriver::Process> myself;
   Target::Pointer target;
   lldb::SBProcess process;
+  lldb::StateType processState;
+  ProcessStateChangeNotifier stateChanged;
+  ProcessEndedNotifier ended;
   lldb::SBListener listener;
 
   std::shared_ptr<LldbDriver::Thread> wrapThread(const lldb::SBThread &thr)

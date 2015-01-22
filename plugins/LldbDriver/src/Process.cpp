@@ -8,7 +8,7 @@
 
 namespace LldbDriver
 {
-xCompileTimeAssert((int)Process::State::Suspended == 11);
+xCompileTimeAssert((int)ProcessState::Suspended == 11);
 
 Process::Process()
   {
@@ -29,14 +29,12 @@ size_t Process::processID() const
   return _impl->process.GetProcessID();
   }
 
-Process::State Process::currentState() const
+ProcessState Process::currentState() const
   {
-  auto state = _impl->process.GetState();
-
-  return (Process::State)state;
+  return (ProcessState)_impl->processState;
   }
 
-Eks::String Process::getStateString(Process::State s)
+Eks::String Process::getStateString(ProcessState s)
   {
   return lldb::SBDebugger::StateAsCString((lldb::StateType)s);
   }
@@ -94,7 +92,28 @@ void Process::processEvents()
   lldb::SBEvent ev;
   while (_impl->listener.GetNextEvent(ev))
     {
+    if (lldb::SBProcess::EventIsProcessEvent(ev) &&
+        lldb::SBProcess::GetStateFromEvent(ev) != _impl->processState)
+      {
+      _impl->processState = _impl->process.GetState();
+
+      _impl->stateChanged((ProcessState)_impl->processState);
+      if (currentState() == ProcessState::Invalid)
+        {
+        _impl->ended();
+        }
+      }
     }
+  }
+
+ProcessStateChangeNotifier *Process::stateChanged()
+  {
+  return &_impl->stateChanged;
+  }
+
+ProcessEndedNotifier *Process::ended()
+  {
+  return &_impl->ended;
   }
 
 size_t Process::threadCount()

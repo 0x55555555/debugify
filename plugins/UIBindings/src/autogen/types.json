@@ -15,11 +15,6 @@
     "parent": null,
     "filename": "include/MainWindow.h"
   },
-  "::UI::ProcessStateNotifier": {
-    "name": "ProcessStateNotifier",
-    "parent": null,
-    "filename": "include/MainWindow.h"
-  },
   "::UI::ProcessNotifier": {
     "name": "ProcessNotifier",
     "parent": null,

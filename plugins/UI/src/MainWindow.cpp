@@ -20,8 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
   ui(new Ui::MainWindow),
   _targetToolbar(nullptr),
-  _processToolbar(nullptr),
-  _processState(Process::State::Invalid)
+  _processToolbar(nullptr)
   {
   ui->setupUi(this);
   connect(ui->tabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(closeFile(int)));
@@ -185,7 +184,14 @@ void MainWindow::setProcess(const Process::Pointer &ptr)
   _process = ptr;
   _processNotifier(_process);
 
-  syncState(_process ? _process->currentState() : Process::State::Invalid);
+  if (_process)
+    {
+    _process->ended()->listen([this]()
+      {
+      setProcess(nullptr);
+      });
+    }
+
   }
 
 void MainWindow::onError(const QString &str)
@@ -196,16 +202,6 @@ void MainWindow::onError(const QString &str)
 void MainWindow::setStatusText(const QString &str)
   {
   ui->statusbar->showMessage(str);
-  }
-
-void MainWindow::processStateChanged(Process::State state)
-  {
-  _processStateNotifier(state);
-
-  if (state == Process::State::Invalid)
-    {
-    setProcess(nullptr);
-    }
   }
 
 void MainWindow::closeFile(int tab)
@@ -285,24 +281,16 @@ void MainWindow::timerTick()
   {
   if (!_process)
     {
-    syncState(Process::State::Invalid);
     return;
     }
 
   _process->processEvents();
-
-  auto newState = _process->currentState();
-  bool postStateChange =
-      newState == Process::State::Stopped ||
-      newState == Process::State::Crashed ||
-      newState == Process::State::Detached ||
-      newState == Process::State::Exited ||
-      newState == Process::State::Suspended;
-  if (!postStateChange)
+        // process may end during the above call
+  if (!_process)
     {
-    syncState(newState);
+    return;
     }
-
+    
   auto forwardOutput = [this](auto type, const auto &send)
   {
     std::array<char, 256> output;
@@ -317,32 +305,6 @@ void MainWindow::timerTick()
   forwardOutput(Process::OutputType::Output, [this](auto str) { onProcessOutput(str); });
   forwardOutput(Process::OutputType::Error, [this](auto str) { onProcessError(str); });
 
-  if (postStateChange)
-    {
-    syncState(newState);
-    }
-  }
-
-void MainWindow::syncState(Process::State type)
-  {
-  if (_processState == type)
-    {
-    return;
-    }
-
-  if (_process)
-    {
-    emit setStatusText(
-      QString("Process %1 [%2 %3]")
-        .arg(_process->target()->path().data())
-        .arg(_process ? _process->processID() : 0)
-        .arg(Process::getStateString(type).data())
-      );
-    }
-
-  _processState = type;
-
-  processStateChanged(type);
   }
 
 void MainWindow::checkError(const Error &err)

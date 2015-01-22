@@ -6,6 +6,8 @@ namespace LldbDriver
 
 class Process;
 class Frame;
+class Breakpoint;
+class BreakpointLocation;
 
 /// \expose sharedpointer
 class Thread
@@ -31,6 +33,31 @@ public:
 
   void selectFrame(const Frame &);
   Frame selectedFrame();
+
+  void stepInto();
+  void stepOver();
+  void stepOut();
+
+  /// \expose
+  enum class StopReason
+  {
+      Invalid = 0,
+      None,
+      Trace,
+      Breakpoint,
+      Watchpoint,
+      Signal,
+      Exception,
+      Exec,
+      PlanComplete,
+      ThreadExiting,
+      Instrumentation
+  };
+
+  StopReason stopReason() const;
+
+  /// \param[out] location
+  Breakpoint stopBreakpoint(BreakpointLocation *location) const;
 
 
   friend class Process;
