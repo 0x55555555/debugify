@@ -62,6 +62,7 @@ struct MainWindow_MainWindow_overload : Reflect::FunctionArgumentCountSelector<
     MainWindow_MainWindow_overload_0,
     MainWindow_MainWindow_overload_1
     > { };
+struct UI_MainWindow_aboutToClose_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::AboutToCloseNotifier *(::UI::MainWindow::*)() >, &::UI::MainWindow::aboutToClose, bondage::FunctionCaller> { };
 struct UI_MainWindow_addConsole_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::Console *(::UI::MainWindow::*)(const QString &) >, &::UI::MainWindow::addConsole, bondage::FunctionCaller> { };
 struct UI_MainWindow_addEditor_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::EditableTextWindow *(::UI::MainWindow::*)(const QString &) >, &::UI::MainWindow::addEditor, bondage::FunctionCaller> { };
 struct UI_MainWindow_addTerminal_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::Terminal *(::UI::MainWindow::*)(const QString &) >, &::UI::MainWindow::addTerminal, bondage::FunctionCaller> { };
@@ -104,6 +105,9 @@ struct MainWindow_trUtf8_overload : Reflect::FunctionArgumentCountSelector<
 
 const bondage::Function UI_MainWindow_methods[] = {
   bondage::FunctionBuilder::buildOverload< MainWindow_MainWindow_overload >("MainWindow"),
+  bondage::FunctionBuilder::build<
+    UI_MainWindow_aboutToClose_overload0_t
+    >("aboutToClose"),
   bondage::FunctionBuilder::build<
     UI_MainWindow_addConsole_overload0_t
     >("addConsole"),
@@ -161,7 +165,32 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
   MainWindow,
   ::QMainWindow,
   UI_MainWindow_methods,
-  18);
+  19);
+
+
+
+// Exposing class ::UI::AboutToCloseNotifier
+struct UI_AboutToCloseNotifier_listen_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< int(::UI::AboutToCloseNotifier::*)(std::function<void ()> &&) >, &::UI::AboutToCloseNotifier::listen, bondage::FunctionCaller> { };
+struct UI_AboutToCloseNotifier_remove_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::AboutToCloseNotifier::*)(int) >, &::UI::AboutToCloseNotifier::remove, bondage::FunctionCaller> { };
+
+const bondage::Function UI_AboutToCloseNotifier_methods[] = {
+  bondage::FunctionBuilder::build<
+    UI_AboutToCloseNotifier_listen_overload0_t
+    >("listen"),
+  bondage::FunctionBuilder::build<
+    UI_AboutToCloseNotifier_remove_overload0_t
+    >("remove")
+};
+
+
+BONDAGE_IMPLEMENT_EXPOSED_CLASS(
+  UI_AboutToCloseNotifier,
+  g_bondage_library_UI,
+  ::UI,
+  AboutToCloseNotifier,
+  void,
+  UI_AboutToCloseNotifier_methods,
+  2);
 
 
 

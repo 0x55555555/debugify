@@ -330,4 +330,10 @@ void MainWindow::focusEditor(Editor *editor)
   ui->tabWidget->setCurrentWidget(editor);
   }
 
+void MainWindow::closeEvent(QCloseEvent *event)
+  {
+  _aboutToClose();
+
+  event->accept();
+  }
 }

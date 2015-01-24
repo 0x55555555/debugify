@@ -4,6 +4,7 @@
 require_relative '../BindingsInternal'
 
 require_relative 'MainWindow'
+require_relative 'AboutToCloseNotifier'
 require_relative 'EditorNotifier'
 require_relative 'OutputNotifier'
 require_relative 'ProcessNotifier'

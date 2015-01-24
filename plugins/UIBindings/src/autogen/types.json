@@ -5,6 +5,11 @@
     "filename": "include/MainWindow.h",
     "derivable": true
   },
+  "::UI::AboutToCloseNotifier": {
+    "name": "AboutToCloseNotifier",
+    "parent": null,
+    "filename": "include/MainWindow.h"
+  },
   "::UI::EditorNotifier": {
     "name": "EditorNotifier",
     "parent": null,

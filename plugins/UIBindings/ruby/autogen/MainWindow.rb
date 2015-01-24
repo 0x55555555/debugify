@@ -12,6 +12,9 @@ class MainWindow < Qt::QMainWindow
   # nil MainWindow::MainWindow(QWidget parent)
   # \brief 
 
+  # UI::AboutToCloseNotifier MainWindow#aboutToClose()
+  # \brief 
+
   # UI::Console MainWindow#addConsole(QString n)
   # \brief 
 

@@ -3,6 +3,7 @@ require_relative 'Console'
 require_relative 'CallStack'
 require_relative 'Threads'
 require_relative 'Breakpoints'
+require_relative 'Project'
 
 module App
 
@@ -17,6 +18,7 @@ module App
 
   class Application
     def initialize(debug)
+      @project = DebuggerProject.new(nil)
       @editors = { }
       @activeEditors = [ ]
 
@@ -24,6 +26,10 @@ module App
 
       @application = UI::Application.new()
       @mainwindow = UI::MainWindow.new()
+      @mainwindow.aboutToClose.listen do
+        @project.close()
+      end
+
       @debugger = App::Debugger.new(@mainwindow, @log)
 
       if (debug)
@@ -66,7 +72,7 @@ module App
 
       @callStack = App::CallStack.new(@mainwindow, @debugger)
       @threads = App::Threads.new(@mainwindow, @debugger)
-      @breakpoints = App::Breakpoints.new(@mainwindow, @debugger)
+      @breakpoints = App::Breakpoints.new(@mainwindow, @debugger, @project)
       @console = App::Console.new(@mainwindow)
       @log.console = @console
       @processWindows = [ @threads, @callStack ]
@@ -87,6 +93,7 @@ module App
       end
 
       @mainwindow.targetChanged.listen do |t|
+        @project.reset(t.path)
         if (t != nil)
           t.breakpointsChanged.listen { |_| syncEditorBreakpoints() }
           @targetToolbar.show()
@@ -142,6 +149,7 @@ module App
 
       @editors[path] = editor
       highlightSources()
+      syncEditorBreakpoints()
     end
 
     def syncEditorBreakpoints()
@@ -181,6 +189,10 @@ module App
 
     def highlightSources()
       clearSourceHighlight()
+
+      if (@mainwindow.process == nil)
+        return
+      end
       
       @mainwindow.process.threads.each do |t|
         frame = t.selectedFrame
@@ -197,8 +209,6 @@ module App
             type = current ? UI::FileEditor::MarkerType[:CurrentLine] :
               UI::FileEditor::MarkerType[:ActiveLine]
             editor.addMarker(type, line)
-          else
-            puts "unable to display file #{file} #{line} #{LldbDriver::ProcessState[@mainwindow.process.currentState]}"
           end
         end
       end

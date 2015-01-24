@@ -1,4 +1,5 @@
 require_relative 'build/Bundle.rb'
+require 'rspec/core/rake_task'
 
 version = {
   :major => 0,
@@ -20,5 +21,11 @@ task :dmg do |task|
 
   makeDebugifyDmg(version)
 end
+
+RSpec::Core::RakeTask.new(:spec) do |task|
+  task.pattern = 'spec/**{,/*/**}/*.spec.rb'
+  task.rspec_opts = ['--color', '--format', 'progress']
+end
+
 
 task :default => :dmg

@@ -39,6 +39,9 @@ X_DECLARE_NOTIFIER(OutputNotifier, std::function<void (QString)>);
 /// \expose unmanaged
 X_DECLARE_NOTIFIER(EditorNotifier, std::function<void (Editor *)>);
 
+/// \expose unmanaged
+X_DECLARE_NOTIFIER(AboutToCloseNotifier, std::function<void ()>);
+
 /// \expose managed
 class MainWindow : public QMainWindow
   {
@@ -68,6 +71,8 @@ public:
   void setProcess(const Process::Pointer &);
   ProcessNotifier *processChanged() { return &_processNotifier; }
   Process::Pointer process() const;
+
+  AboutToCloseNotifier *aboutToClose() { return &_aboutToClose; }
 
   OutputNotifier *output() { return &_stdout; }
   OutputNotifier *errors() { return &_stderr; }
@@ -99,6 +104,8 @@ private:
   void addEditor(Editor *editor);
   void focusEditor(Editor *editor);
 
+  void closeEvent(QCloseEvent *event) X_OVERRIDE;
+
   Ui::MainWindow *ui;
 
   Debugger::Pointer _debugger;
@@ -120,6 +127,8 @@ private:
   OutputNotifier _stderr;
 
   EditorNotifier _editorOpened;
+
+  AboutToCloseNotifier _aboutToClose;
 
   QTimer _timer;
   };
