@@ -10,6 +10,7 @@
 #include "TypeEditor.h"
 #include "Terminal.h"
 #include "ToolBar.h"
+#include "Menu.h"
 #include "EditableTextWindow.h"
 #include <array>
 
@@ -18,16 +19,12 @@ namespace UI
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
-  ui(new Ui::MainWindow),
-  _targetToolbar(nullptr),
-  _processToolbar(nullptr)
+  ui(new Ui::MainWindow)
   {
   ui->setupUi(this);
   connect(ui->tabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(closeFile(int)));
     
   qRegisterMetaType<Module::Pointer>();
-
-  _debugger = Debugger::create();
 
   _types = new TypeManager();
 
@@ -39,50 +36,6 @@ MainWindow::MainWindow(QWidget *parent) :
   addDockWidget(Qt::LeftDockWidgetArea, dock);
   connect(_moduleExplorer, SIGNAL(sourceFileActivated(Module::Pointer,QString)), this, SLOT(openFile(Module::Pointer,QString)));
   connect(_moduleExplorer, SIGNAL(dataTypeActivated(Module::Pointer,QString)), this, SLOT(openType(Module::Pointer,QString)));
-
-  connect(ui->actionLoad_Target, &QAction::triggered, [this]()
-    {
-    QString fileName = QFileDialog::getOpenFileName(this, "Load Executable Target");
-    if (fileName.isEmpty())
-      {
-      return;
-      }
-
-    QSettings settings;
-    QStringList files = settings.value("recentTargets").toStringList();
-    files.removeAll(fileName);
-    files.prepend(fileName);
-    while (files.size() > MaxRecentFiles)
-      {
-      files.removeLast();
-      }
-    settings.setValue("recentTargets", files);
-
-    setTarget(_debugger->loadTarget(fileName.toUtf8().data()));
-    });
-
-  QMenu *recentMenu = new QMenu;
-  ui->actionRecent_Targets->setMenu(recentMenu);
-
-  connect(recentMenu, &QMenu::aboutToShow, [this, recentMenu]()
-    {
-    QSettings settings;
-    QStringList files = settings.value("recentTargets").toStringList();
-
-    recentMenu->setEnabled(!files.isEmpty());
-    recentMenu->clear();
-
-    QFontMetrics metric(font());
-    xForeach(auto recent, files)
-      {
-      auto act = recentMenu->addAction(metric.elidedText(recent, Qt::ElideLeft, 250));
-      connect(act, &QAction::triggered, [this, recent]
-        {
-        setTarget(_debugger->loadTarget(recent.toUtf8().data()));
-        });
-      }
-    });
-
 
   connect(&_timer, SIGNAL(timeout()), this, SLOT(timerTick()));
   _timer.start(100);
@@ -138,6 +91,20 @@ ToolBar *MainWindow::addToolBar(const QString &n)
   return toolbar;
   }
 
+QString MainWindow::getOpenFilename(const QString &caption, const QString &filter)
+  {
+  return QFileDialog::getOpenFileName(this, caption, QString(), filter);
+  }
+
+Menu *MainWindow::addMenu(const QString &name)
+  {
+  auto menu = new Menu;
+  menu->setTitle(name);
+
+  ui->menubar->addMenu(menu);
+  return menu;
+  }
+
 void MainWindow::showDock(QWidget *w)
   {
   if (auto dock = qobject_cast<QDockWidget *>(w->parent()))
@@ -176,22 +143,11 @@ void MainWindow::setTarget(const Target::Pointer &tar)
   _types->setTarget(tar);
 
   _target = tar;
-  _targetNotifier(_target);
   }
 
 void MainWindow::setProcess(const Process::Pointer &ptr)
   {
   _process = ptr;
-  _processNotifier(_process);
-
-  if (_process)
-    {
-    _process->ended()->listen([this]()
-      {
-      setProcess(nullptr);
-      });
-    }
-
   }
 
 void MainWindow::onError(const QString &str)

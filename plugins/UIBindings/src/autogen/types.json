@@ -1,4 +1,9 @@
 {
+  "::UI::AboutToShowNotifier": {
+    "name": "AboutToShowNotifier",
+    "parent": null,
+    "filename": "include/Menu.h"
+  },
   "::UI::MainWindow": {
     "name": "MainWindow",
     "parent": "::QMainWindow",
@@ -20,15 +25,11 @@
     "parent": null,
     "filename": "include/MainWindow.h"
   },
-  "::UI::ProcessNotifier": {
-    "name": "ProcessNotifier",
-    "parent": null,
-    "filename": "include/MainWindow.h"
-  },
-  "::UI::TargetNotifier": {
-    "name": "TargetNotifier",
-    "parent": null,
-    "filename": "include/MainWindow.h"
+  "::UI::Menu": {
+    "name": "Menu",
+    "parent": "::QMenu",
+    "filename": "include/Menu.h",
+    "derivable": true
   },
   "::UI::ToolBar": {
     "name": "ToolBar",

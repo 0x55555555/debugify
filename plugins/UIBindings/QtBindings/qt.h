@@ -5,6 +5,7 @@
 #include "QTextEdit"
 #include "QApplication"
 #include "QToolBar"
+#include "QMenu"
 #include "QAction"
 #include "bondage/RuntimeHelpers.h"
 
@@ -20,6 +21,7 @@ BONDAGE_EXPOSED_CLASS_DERIVED_UNMANAGED(EXPORT_DEBUGIFY, ::QFrame, ::QWidget, ::
 BONDAGE_EXPOSED_CLASS_DERIVED_UNMANAGED(EXPORT_DEBUGIFY, ::QAbstractScrollArea, ::QFrame, ::QWidget)
 BONDAGE_EXPOSED_CLASS_DERIVED_UNMANAGED(EXPORT_DEBUGIFY, ::QTextEdit, ::QAbstractScrollArea, ::QWidget)
 BONDAGE_EXPOSED_CLASS_DERIVED_UNMANAGED(EXPORT_DEBUGIFY, ::QToolBar, ::QWidget, ::QWidget)
+BONDAGE_EXPOSED_CLASS_DERIVED_UNMANAGED(EXPORT_DEBUGIFY, ::QMenu, ::QWidget, ::QWidget)
 BONDAGE_EXPOSED_CLASS_UNMANAGED(EXPORT_DEBUGIFY, ::QApplication)
 
 template <> class bondage::Ruby::Caster<QString &>

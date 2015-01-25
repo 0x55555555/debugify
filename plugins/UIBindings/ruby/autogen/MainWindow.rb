@@ -21,6 +21,9 @@ class MainWindow < Qt::QMainWindow
   # UI::EditableTextWindow MainWindow#addEditor(QString n)
   # \brief 
 
+  # UI::Menu MainWindow#addMenu(QString name)
+  # \brief 
+
   # UI::Terminal MainWindow#addTerminal(QString n)
   # \brief 
 
@@ -31,6 +34,10 @@ class MainWindow < Qt::QMainWindow
   # \brief 
 
   # UI::OutputNotifier MainWindow#errors()
+  # \brief 
+
+  # QString MainWindow#getOpenFilename(QString caption)
+  # QString MainWindow#getOpenFilename(QString caption, QString filter)
   # \brief 
 
   # nil MainWindow#hideDock(QWidget w)
@@ -45,19 +52,16 @@ class MainWindow < Qt::QMainWindow
   # std::__1::shared_ptr MainWindow#process()
   # \brief 
 
-  # UI::ProcessNotifier MainWindow#processChanged()
+  # nil MainWindow#setProcess(std::__1::shared_ptr arg1)
   # \brief 
 
-  # nil MainWindow#setProcess(std::__1::shared_ptr arg1)
+  # nil MainWindow#setTarget(std::__1::shared_ptr tar)
   # \brief 
 
   # nil MainWindow#showDock(QWidget w)
   # \brief 
 
   # std::__1::shared_ptr MainWindow#target()
-  # \brief 
-
-  # UI::TargetNotifier MainWindow#targetChanged()
   # \brief 
 
   # QString MainWindow::tr(string s)

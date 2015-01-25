@@ -7,13 +7,12 @@ module App
     attr_reader :widget
 
     def initialize(mainWindow, debugger, project)
+      @debugger = debugger
       @widget = mainWindow.addEditor("Breakpoints")
 
       project.install_handler(:breakpoints, self)
 
-      @mainwindow = mainWindow
-
-      @mainwindow.targetChanged.listen do |t|
+      @debugger.targetChanged.listen do |t|
         if (t)
           t.breakpointsChanged.listen { |_| updateBreakpoints() }
         end
@@ -35,7 +34,7 @@ module App
     end
 
     def updateBreakpoints()
-      target = @mainwindow.target
+      target = @debugger.target
       if (target == nil)
         @widget.setContents("")
         return
@@ -67,14 +66,14 @@ module App
       if (handler.has_value(:breakpoints))
         brks = handler.value(:breakpoints)
         brks.each do |b|
-          @mainwindow.target.addBreakpoint(b["file"], b["line"])
+          @debugger.target.addBreakpoint(b["file"], b["line"])
         end
       end
     end
 
     def serialise(handler)
       brks = []
-      target = @mainwindow.target
+      target = @debugger.target
       if (target != nil)
         brk = { }
         brks << brk

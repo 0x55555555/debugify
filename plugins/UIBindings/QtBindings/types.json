@@ -41,6 +41,12 @@
     "filename": "QtWidgets.h",
     "derivable": true
   },
+  "::QMenu": {
+    "name": "QMenu",
+    "parent": "::QWidget",
+    "filename": "QtWidgets.h",
+    "derivable": true
+  },
   "::QApplication": {
     "name": "QApplication",
     "parent": null,

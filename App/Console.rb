@@ -5,7 +5,7 @@ module App
 
     attr_reader :widget
 
-    def initialize(mainWindow)
+    def initialize(mainWindow, debugger)
       @widget = mainWindow.addConsole("Console")
 
       mainWindow.output.listen do |p|
@@ -16,7 +16,7 @@ module App
         @widget.append(p)
       end
 
-      mainWindow.processChanged.listen do |p|
+      debugger.processBegin.listen do |p|
         if (p != nil)
           @widget.clear()
         end

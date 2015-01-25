@@ -4,8 +4,7 @@ module App
 
   class Debugger
     def initialize(mw, log)
-      # Move this here at some point
-      #@debugger = LldbDriver::Debugger.create()
+      @debugger = LldbDriver::Debugger.create()
 
       @log = log
 
@@ -13,39 +12,38 @@ module App
       @ready = RubyNotifier.new
       @running = RubyNotifier.new
       @exited = RubyNotifier.new
+      @processBegin = RubyNotifier.new
+      @processEnd = RubyNotifier.new
+      @targetChanged = RubyNotifier.new
 
       @mainwindow = mw
       @process = nil
-
-      mw.processChanged.listen do |p|
-        @process = p
-
-        if (@process)
-          @process.stateChanged.listen do |state|
-            processStateChanged(state)
-          end
-        end
-      end
     end
 
-    attr_reader :ready, :running, :exited
+    attr_reader :ready, :running, :exited, :processBegin, :processEnd, :targetChanged
+    attr_reader :target, :process
+
+    def load(t)
+      @target = @debugger.loadTarget(t)
+      @mainwindow.setTarget(@target)
+      @targetChanged.call(@target)
+    end
 
     def launch(args = [], env = [])
       err = LldbDriver::Error.new()
-      target = @mainwindow.target
-      raise "No target to launch" unless target
-      process = @mainwindow.target.launch(args, env, err)
+      raise "No target to launch" unless @target
+      process = @target.launch(args, env, err)
 
       if (err.hasError())
         raise err.error()
       end
 
-      @mainwindow.setProcess(process)
+      setProcess(process)
       return process
     end
 
     def end()
-      @mainwindow.setProcess(nil)
+      setProcess(nil)
     end
 
     def update()
@@ -56,6 +54,20 @@ module App
     end
 
   private
+    def setProcess(p)
+      @mainwindow.setProcess(p)
+      @process = p
+
+      if (@process)
+        @processBegin.call(p)
+        @process.stateChanged.listen do |state|
+          processStateChanged(state)
+        end
+      else
+        @processEnd.call(p)
+      end
+    end
+
     def processStateChanged(state)
       if (state == Debugify::ProcessState[:Stopped])
         @isReady = true

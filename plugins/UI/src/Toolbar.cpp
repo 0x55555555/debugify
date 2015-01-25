@@ -6,12 +6,10 @@ namespace UI
 
 ToolBar::ToolBar()
   {
-
   }
 
 ToolBar::~ToolBar()
   {
-
   }
 
 QAction *ToolBar::addAction(const QString &str, const std::function<void()> &clicked)

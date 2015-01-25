@@ -3,12 +3,12 @@
 
 require_relative '../BindingsInternal'
 
+require_relative 'AboutToShowNotifier'
 require_relative 'MainWindow'
 require_relative 'AboutToCloseNotifier'
 require_relative 'EditorNotifier'
 require_relative 'OutputNotifier'
-require_relative 'ProcessNotifier'
-require_relative 'TargetNotifier'
+require_relative 'Menu'
 require_relative 'ToolBar'
 require_relative 'MarginClickNotifier'
 require_relative 'Editor'

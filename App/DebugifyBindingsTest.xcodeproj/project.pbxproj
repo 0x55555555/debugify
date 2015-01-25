@@ -9,7 +9,6 @@
 /* Begin PBXFileReference section */
 		0866AA081A5C90EC003FAAB8 /* Console.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Console.h; sourceTree = "<group>"; };
 		0866AA091A5C90EC003FAAB8 /* EditableTextWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditableTextWindow.h; sourceTree = "<group>"; };
-		0866AA0A1A5C90EC003FAAB8 /* Notifier.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Notifier.h; sourceTree = "<group>"; };
 		0866AA0D1A5C90F5003FAAB8 /* Console.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Console.cpp; sourceTree = "<group>"; };
 		0866AA0E1A5C90F5003FAAB8 /* EditableTextWindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EditableTextWindow.cpp; sourceTree = "<group>"; };
 		0866AA141A67173F003FAAB8 /* Breakpoint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Breakpoint.h; sourceTree = "<group>"; };
@@ -22,6 +21,10 @@
 		0866AA1B1A671750003FAAB8 /* FrameImpl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FrameImpl.h; sourceTree = "<group>"; };
 		0866AA1C1A671750003FAAB8 /* ThreadImpl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThreadImpl.h; sourceTree = "<group>"; };
 		0866AA1D1A671750003FAAB8 /* Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
+		0866AA1E1A745A51003FAAB8 /* Menu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Menu.h; sourceTree = "<group>"; };
+		0866AA1F1A745A51003FAAB8 /* ToolBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ToolBar.h; sourceTree = "<group>"; };
+		0866AA201A745A5A003FAAB8 /* Menu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Menu.cpp; sourceTree = "<group>"; };
+		0866AA211A745A5A003FAAB8 /* Toolbar.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Toolbar.cpp; sourceTree = "<group>"; };
 		08D13C541A55864400436C54 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		08D13C551A55864400436C54 /* .gitmodules */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitmodules; sourceTree = "<group>"; };
 		08D13C561A55864400436C54 /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
@@ -897,8 +900,6 @@
 		08D1407B1A55864500436C54 /* FileEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileEditor.h; sourceTree = "<group>"; };
 		08D1407C1A55864500436C54 /* MainWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainWindow.h; sourceTree = "<group>"; };
 		08D1407D1A55864500436C54 /* ModuleExplorer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleExplorer.h; sourceTree = "<group>"; };
-		08D1407E1A55864500436C54 /* ProcessToolbar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProcessToolbar.h; sourceTree = "<group>"; };
-		08D1407F1A55864500436C54 /* TargetToolbar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TargetToolbar.h; sourceTree = "<group>"; };
 		08D140801A55864500436C54 /* TypeEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TypeEditor.h; sourceTree = "<group>"; };
 		08D140811A55864500436C54 /* TypeManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TypeManager.h; sourceTree = "<group>"; };
 		08D140821A55864500436C54 /* UiGlobal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UiGlobal.h; sourceTree = "<group>"; };
@@ -906,8 +907,6 @@
 		08D140851A55864500436C54 /* FileEditor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FileEditor.cpp; sourceTree = "<group>"; };
 		08D140861A55864500436C54 /* MainWindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MainWindow.cpp; sourceTree = "<group>"; };
 		08D140871A55864500436C54 /* ModuleExplorer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ModuleExplorer.cpp; sourceTree = "<group>"; };
-		08D140881A55864500436C54 /* ProcessToolbar.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ProcessToolbar.cpp; sourceTree = "<group>"; };
-		08D140891A55864500436C54 /* TargetToolbar.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TargetToolbar.cpp; sourceTree = "<group>"; };
 		08D1408A1A55864500436C54 /* TypeEditor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TypeEditor.cpp; sourceTree = "<group>"; };
 		08D1408B1A55864500436C54 /* TypeManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TypeManager.cpp; sourceTree = "<group>"; };
 		08D1408C1A55864500436C54 /* UI.qbs */ = {isa = PBXFileReference; lastKnownFileType = text; path = UI.qbs; sourceTree = "<group>"; };
@@ -3266,16 +3265,15 @@
 		08D140781A55864500436C54 /* include */ = {
 			isa = PBXGroup;
 			children = (
+				0866AA1E1A745A51003FAAB8 /* Menu.h */,
+				0866AA1F1A745A51003FAAB8 /* ToolBar.h */,
 				0866AA081A5C90EC003FAAB8 /* Console.h */,
 				0866AA091A5C90EC003FAAB8 /* EditableTextWindow.h */,
-				0866AA0A1A5C90EC003FAAB8 /* Notifier.h */,
 				08D140791A55864500436C54 /* Application.h */,
 				08D1407A1A55864500436C54 /* Editor.h */,
 				08D1407B1A55864500436C54 /* FileEditor.h */,
 				08D1407C1A55864500436C54 /* MainWindow.h */,
 				08D1407D1A55864500436C54 /* ModuleExplorer.h */,
-				08D1407E1A55864500436C54 /* ProcessToolbar.h */,
-				08D1407F1A55864500436C54 /* TargetToolbar.h */,
 				08D140801A55864500436C54 /* TypeEditor.h */,
 				08D140811A55864500436C54 /* TypeManager.h */,
 				08D140821A55864500436C54 /* UiGlobal.h */,
@@ -3286,14 +3284,14 @@
 		08D140831A55864500436C54 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				0866AA201A745A5A003FAAB8 /* Menu.cpp */,
+				0866AA211A745A5A003FAAB8 /* Toolbar.cpp */,
 				0866AA0D1A5C90F5003FAAB8 /* Console.cpp */,
 				0866AA0E1A5C90F5003FAAB8 /* EditableTextWindow.cpp */,
 				08D140841A55864500436C54 /* Application.cpp */,
 				08D140851A55864500436C54 /* FileEditor.cpp */,
 				08D140861A55864500436C54 /* MainWindow.cpp */,
 				08D140871A55864500436C54 /* ModuleExplorer.cpp */,
-				08D140881A55864500436C54 /* ProcessToolbar.cpp */,
-				08D140891A55864500436C54 /* TargetToolbar.cpp */,
 				08D1408A1A55864500436C54 /* TypeEditor.cpp */,
 				08D1408B1A55864500436C54 /* TypeManager.cpp */,
 			);

@@ -14,7 +14,7 @@ class Project
     end
 
     def write()
-      data = JSON.generate(@contents)
+      data = JSON.pretty_generate(@contents)
 
       FileUtils.mkdir_p(File.dirname(@path))
       File.open(@path, 'w') do |f|

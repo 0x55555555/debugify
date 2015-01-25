@@ -4,13 +4,12 @@ module UI
 
 NotifierExtensions.install([
   InputNotifier,
-  TargetNotifier,
-  ProcessNotifier,
   OutputNotifier,
   ClickNotifier,
   EditorNotifier,
   MarginClickNotifier,
   AboutToCloseNotifier,
+  AboutToShowNotifier,
 ])
 
 class Console < Qt::QWidget

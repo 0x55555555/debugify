@@ -17,6 +17,8 @@ module App
   end
 
   class Application
+    RecentTargetCount = 10
+
     def initialize(debug)
       @project = DebuggerProject.new(nil)
       @editors = { }
@@ -37,6 +39,83 @@ module App
         @debugTerminal = App::DebuggerTerminal.new(@mainwindow)
       end
 
+      buildToolbars()
+      buildMenus()
+
+
+      @callStack = App::CallStack.new(@mainwindow, @debugger)
+      @threads = App::Threads.new(@mainwindow, @debugger)
+      @breakpoints = App::Breakpoints.new(@mainwindow, @debugger, @project)
+      @console = App::Console.new(@mainwindow, @debugger)
+      @log.console = @console
+      @processWindows = [ @threads, @callStack ]
+
+      processChanged(nil)
+      @debugger.processBegin.listen { |p| processChanged(p) }
+      @debugger.processEnd.listen { |p| processChanged(nil) }
+
+      @debugger.ready.listen do |process|
+        loadCurrentSource()
+        highlightSources()
+        @currentThreadToolbar.show()
+      end
+
+      @mainwindow.editorOpened.listen do |editor|
+        if (editor.class == UI::FileEditor)
+          setupFileEditor(editor)
+        end
+      end
+
+      @debugger.targetChanged.listen do |t|
+        @project.reset(t.path)
+        if (t != nil)
+          t.breakpointsChanged.listen { |_| syncEditorBreakpoints() }
+          @targetToolbar.show()
+        else
+          @targetToolbar.hide()
+        end
+      end
+
+      @debugger.running.listen do |p|
+        @actions[:pause_continue].setText("Pause")
+        clearSourceHighlight()
+        @currentThreadToolbar.hide()
+        @log.log "Process running"
+      end
+      @debugger.ready.listen do |p|
+        @actions[:pause_continue].setText("Continue")
+        @log.log "Process ready to debug"
+      end
+      @debugger.exited.listen do |p|
+        @log.log "Process exited with code #{p.exitStatus}"
+        desc = p.exitDescription
+        if (desc)
+          @log.log "  " + desc
+        end
+        @debugger.end()
+      end
+    end
+
+    def execute()
+      @mainwindow.show()
+      @application.execute()
+    end
+
+    def loadTarget(target)
+      recents = @project.value(:recents, [])
+      recents.delete(target)
+      if (recents.length > RecentTargetCount)
+        recents.shift
+      end
+      recents << target
+
+      @project.set_value(:recents, recents, :user)
+
+      @debugger.load(target)
+    end
+
+  private
+    def buildToolbars()
       @targetToolbar = @mainwindow.addToolBar("Target")
       @targetToolbar.addAction("Run", Proc.new {
         @debugger.launch()
@@ -68,74 +147,38 @@ module App
         @mainwindow.process.selectedThread.stepOut()
       })
       @currentThreadToolbar.hide()
+    end
 
+    def buildMenus()
+      menu = @mainwindow.addMenu("File")
 
-      @callStack = App::CallStack.new(@mainwindow, @debugger)
-      @threads = App::Threads.new(@mainwindow, @debugger)
-      @breakpoints = App::Breakpoints.new(@mainwindow, @debugger, @project)
-      @console = App::Console.new(@mainwindow)
-      @log.console = @console
-      @processWindows = [ @threads, @callStack ]
-
-      processChanged(nil)
-      @mainwindow.processChanged.listen { |p| processChanged(p) }
-
-      @debugger.ready.listen do |process|
-        loadCurrentSource()
-        highlightSources()
-        @currentThreadToolbar.show()
-      end
-
-      @mainwindow.editorOpened.listen do |editor|
-        if (editor.class == UI::FileEditor)
-          setupFileEditor(editor)
+      menu.addAction("Load", Proc.new {
+        target = @mainwindow.getOpenFilename("Load Target")
+        if (target.length > 0)
+          loadTarget(target)
         end
-      end
+      })
 
-      @mainwindow.targetChanged.listen do |t|
-        @project.reset(t.path)
-        if (t != nil)
-          t.breakpointsChanged.listen { |_| syncEditorBreakpoints() }
-          @targetToolbar.show()
-        else
-          @targetToolbar.hide()
-        end
-      end
+      targets = menu.addMenu("Recent Targets")
+      targets.aboutToShow.listen do
+        targets.clear()
+        recents = @project.value(:recents, [])
+        recents.reverse_each do |r|
+          path = r
+          if (r.length > 50)
+            path = "...#{r.chars.last(50).join}"
+          end
 
-      @mainwindow.processChanged.listen do |p|
-        if (p != nil)
-          @processToolbar.show()
-        else
-          @processToolbar.hide()
-        end
-      end
+          basename = File.basename(r)
+          text = "#{basename} (#{path})"
 
-      @debugger.running.listen do |p|
-        @actions[:pause_continue].setText("Pause")
-        clearSourceHighlight()
-        @currentThreadToolbar.hide()
-        @log.log "Process running"
-      end
-      @debugger.ready.listen do |p|
-        @actions[:pause_continue].setText("Continue")
-        @log.log "Process ready to debug"
-      end
-      @debugger.exited.listen do |p|
-        @log.log "Process exited with code #{p.exitStatus}"
-        desc = p.exitDescription
-        if (desc)
-          @log.log "  " + desc
+          targets.addAction(text, Proc.new {
+            loadTarget(r)
+          })
         end
-        @debugger.end()
       end
     end
 
-    def execute()
-      @mainwindow.show()
-      @application.execute()
-    end
-
-  private
     def setupFileEditor(editor)
       path = editor.path()
       editor.marginClicked.listen do |line|
@@ -221,6 +264,12 @@ module App
         else
           @mainwindow.hideDock(w.widget)
         end
+      end
+
+      if (p != nil)
+        @processToolbar.show()
+      else
+        @processToolbar.hide()
       end
     end
   end

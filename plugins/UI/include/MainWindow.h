@@ -26,12 +26,7 @@ class TargetToolbar;
 class ProcessToolbar;
 class ModuleExplorer;
 class ToolBar;
-
-/// \expose unmanaged
-X_DECLARE_NOTIFIER(TargetNotifier, std::function<void (Target::Pointer)>);
-
-/// \expose unmanaged
-X_DECLARE_NOTIFIER(ProcessNotifier, std::function<void (Process::Pointer)>);
+class Menu;
 
 /// \expose unmanaged
 X_DECLARE_NOTIFIER(OutputNotifier, std::function<void (QString)>);
@@ -62,14 +57,17 @@ public:
 
   ToolBar *addToolBar(const QString &n);
 
+  QString getOpenFilename(const QString &caption, const QString &filter = QString());
+
+  Menu *addMenu(const QString &name);
+
   void showDock(QWidget *w);
   void hideDock(QWidget *w);
 
-  TargetNotifier *targetChanged() { return &_targetNotifier; }
+  void setTarget(const Target::Pointer &tar);
   Target::Pointer target() const;
 
   void setProcess(const Process::Pointer &);
-  ProcessNotifier *processChanged() { return &_processNotifier; }
   Process::Pointer process() const;
 
   AboutToCloseNotifier *aboutToClose() { return &_aboutToClose; }
@@ -99,7 +97,6 @@ private slots:
 private:
   void checkError(const Error &err);
 
-  void setTarget(const Target::Pointer &tar);
 
   void addEditor(Editor *editor);
   void focusEditor(Editor *editor);
@@ -108,19 +105,13 @@ private:
 
   Ui::MainWindow *ui;
 
-  Debugger::Pointer _debugger;
-
   QHash<QString, Editor *> _editors;
-
-  TargetToolbar *_targetToolbar;
-  ProcessToolbar *_processToolbar;
+;
   TypeManager *_types;
   ModuleExplorer *_moduleExplorer;
 
-  TargetNotifier _targetNotifier;
   Target::Pointer _target;
 
-  ProcessNotifier _processNotifier;
   Process::Pointer _process;
 
   OutputNotifier _stdout;

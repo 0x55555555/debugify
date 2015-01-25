@@ -41,6 +41,18 @@ class DebuggerProject
       @project.install_handler(id, cls)
     end
   end
+
+  def value(key, default = nil)
+    if (@project.has_value(key))
+      return @project.value(key)
+    end
+
+    return default
+  end
+
+  def set_value(key, val, location)
+    @project.set_value(key, val, location)
+  end
 end
 
 end 
