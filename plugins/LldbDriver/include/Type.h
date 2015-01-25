@@ -73,6 +73,7 @@ public:
 private:
   friend class CompileUnit;
   friend class TypeMember;
+  friend class Value;
   friend class FunctionMember;
   };
 

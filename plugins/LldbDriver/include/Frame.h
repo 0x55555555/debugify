@@ -1,9 +1,11 @@
 #pragma once
 #include "Global.h"
+#include "Containers/XVector.h"
 
 namespace LldbDriver
 {
 
+class Value;
 class Thread;
 
 /// \expose
@@ -29,6 +31,9 @@ public:
   size_t lineNumber() const;
 
   bool isCurrent() const;
+
+  Eks::Vector<Value> arguments() const;
+  Eks::Vector<Value> locals() const;
 
   friend class Thread;
   };

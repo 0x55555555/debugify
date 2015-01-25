@@ -10,6 +10,7 @@
 #include "FunctionMember.h"
 #include "Frame.h"
 #include "Breakpoint.h"
+#include "Value.h"
 #include "../../../Eks/EksCore/include/Utilities/XStringRef.h"
 #include "Type.h"
 #include "../../../Eks/EksCore/include/Containers/XStringSimple.h"
@@ -315,15 +316,20 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
 
 
 // Exposing class ::LldbDriver::Frame
+struct LldbDriver_Frame_arguments_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Eks::Vector<Value>(::LldbDriver::Frame::*)() const >, &::LldbDriver::Frame::arguments, bondage::FunctionCaller> { };
 struct LldbDriver_Frame_filename_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Eks::String(::LldbDriver::Frame::*)() const >, &::LldbDriver::Frame::filename, bondage::FunctionCaller> { };
 struct LldbDriver_Frame_functionName_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Eks::String(::LldbDriver::Frame::*)() const >, &::LldbDriver::Frame::functionName, bondage::FunctionCaller> { };
 struct LldbDriver_Frame_hasLineNumber_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< bool(::LldbDriver::Frame::*)() const >, &::LldbDriver::Frame::hasLineNumber, bondage::FunctionCaller> { };
 struct LldbDriver_Frame_id_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< size_t(::LldbDriver::Frame::*)() const >, &::LldbDriver::Frame::id, bondage::FunctionCaller> { };
 struct LldbDriver_Frame_isCurrent_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< bool(::LldbDriver::Frame::*)() const >, &::LldbDriver::Frame::isCurrent, bondage::FunctionCaller> { };
 struct LldbDriver_Frame_lineNumber_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< size_t(::LldbDriver::Frame::*)() const >, &::LldbDriver::Frame::lineNumber, bondage::FunctionCaller> { };
+struct LldbDriver_Frame_locals_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Eks::Vector<Value>(::LldbDriver::Frame::*)() const >, &::LldbDriver::Frame::locals, bondage::FunctionCaller> { };
 struct LldbDriver_Frame_thread_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< std::shared_ptr<Thread>(::LldbDriver::Frame::*)() >, &::LldbDriver::Frame::thread, bondage::FunctionCaller> { };
 
 const bondage::Function LldbDriver_Frame_methods[] = {
+  bondage::FunctionBuilder::build<
+    LldbDriver_Frame_arguments_overload0_t
+    >("arguments"),
   bondage::FunctionBuilder::build<
     LldbDriver_Frame_filename_overload0_t
     >("filename"),
@@ -343,6 +349,9 @@ const bondage::Function LldbDriver_Frame_methods[] = {
     LldbDriver_Frame_lineNumber_overload0_t
     >("lineNumber"),
   bondage::FunctionBuilder::build<
+    LldbDriver_Frame_locals_overload0_t
+    >("locals"),
+  bondage::FunctionBuilder::build<
     LldbDriver_Frame_thread_overload0_t
     >("thread")
 };
@@ -355,7 +364,7 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
   Frame,
   void,
   LldbDriver_Frame_methods,
-  7);
+  9);
 
 
 
@@ -433,6 +442,47 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
   void,
   LldbDriver_Thread_methods,
   13);
+
+
+
+// Exposing class ::LldbDriver::Value
+struct LldbDriver_Value_changed_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< bool(::LldbDriver::Value::*)() const >, &::LldbDriver::Value::changed, bondage::FunctionCaller> { };
+struct LldbDriver_Value_inScope_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< bool(::LldbDriver::Value::*)() const >, &::LldbDriver::Value::inScope, bondage::FunctionCaller> { };
+struct LldbDriver_Value_name_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Eks::String(::LldbDriver::Value::*)() const >, &::LldbDriver::Value::name, bondage::FunctionCaller> { };
+struct LldbDriver_Value_operatore_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::Value &(::LldbDriver::Value::*)(const LldbDriver::Value &) >, &::LldbDriver::Value::operator=, bondage::FunctionCaller> { };
+struct LldbDriver_Value_type_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::Type(::LldbDriver::Value::*)() const >, &::LldbDriver::Value::type, bondage::FunctionCaller> { };
+struct LldbDriver_Value_value_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Eks::String(::LldbDriver::Value::*)() const >, &::LldbDriver::Value::value, bondage::FunctionCaller> { };
+
+const bondage::Function LldbDriver_Value_methods[] = {
+  bondage::FunctionBuilder::build<
+    LldbDriver_Value_changed_overload0_t
+    >("changed"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Value_inScope_overload0_t
+    >("inScope"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Value_name_overload0_t
+    >("name"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Value_operatore_overload0_t
+    >("operator="),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Value_type_overload0_t
+    >("type"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Value_value_overload0_t
+    >("value")
+};
+
+
+BONDAGE_IMPLEMENT_EXPOSED_CLASS(
+  LldbDriver_Value,
+  g_bondage_library_LldbDriver,
+  ::LldbDriver,
+  Value,
+  void,
+  LldbDriver_Value_methods,
+  6);
 
 
 

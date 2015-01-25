@@ -13,7 +13,8 @@ module App
       @widget.clicked.listen do |f|
         thread = mainWindow.process.selectedThread
 
-        thread.selectFrame(thread.frames[f.to_i])
+        newFrame = thread.frames[f.to_i]
+        thread.selectFrame(newFrame)
         debugger.update()
       end
 

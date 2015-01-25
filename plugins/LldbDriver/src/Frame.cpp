@@ -1,5 +1,7 @@
 #include "Frame.h"
 #include "FrameImpl.h"
+#include "Value.h"
+#include "ValueImpl.h"
 #include "Math/XMathHelpers.h"
 #include "Containers/XStringSimple.h"
 #include "Containers/XStringBuilder.h"
@@ -62,5 +64,35 @@ size_t Frame::lineNumber() const
 bool Frame::isCurrent() const
   {
   return _impl->frame == _impl->thread->selectedFrame()._impl->frame;
+  }
+
+Eks::Vector<Value> Frame::arguments() const
+  {
+  Eks::Vector<Value> result(Eks::Core::defaultAllocator());
+
+  auto var = _impl->frame.GetVariables(true, false, false, false, lldb::eDynamicCanRunTarget);
+  result.resize(var.GetSize());
+
+  for (size_t i = 0; i < var.GetSize(); ++i)
+    {
+    result[i] = Value::Impl::make(var.GetValueAtIndex(i));
+    }
+
+  return result;
+  }
+
+Eks::Vector<Value> Frame::locals() const
+  {
+  Eks::Vector<Value> result(Eks::Core::defaultAllocator());
+
+  auto var = _impl->frame.GetVariables(false, true, false, false, lldb::eDynamicCanRunTarget);
+  result.resize(var.GetSize());
+
+  for (size_t i = 0; i < var.GetSize(); ++i)
+    {
+    result[i] = Value::Impl::make(var.GetValueAtIndex(i));
+    }
+
+  return result;
   }
 }

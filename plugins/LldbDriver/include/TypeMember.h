@@ -9,7 +9,7 @@ class Type;
 /// \expose
 class TypeMember
   {
-  PIMPL_CLASS(TypeMember, 64);
+  PIMPL_CLASS(TypeMember, sizeof(void*)*16);
 
 public:
   TypeMember();

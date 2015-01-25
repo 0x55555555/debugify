@@ -45,6 +45,11 @@
     "filename": "include/Thread.h",
     "type": "enum"
   },
+  "::LldbDriver::Value": {
+    "name": "Value",
+    "parent": null,
+    "filename": "include/Value.h"
+  },
   "::LldbDriver::Error": {
     "name": "Error",
     "parent": null,

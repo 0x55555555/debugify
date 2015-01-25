@@ -9,6 +9,7 @@ module App
     def initialize(mainWindow, debugger, project)
       @debugger = debugger
       @widget = mainWindow.addEditor("Breakpoints")
+      @mainwindow = mainWindow
 
       project.install_handler(:breakpoints, self)
 
@@ -19,12 +20,12 @@ module App
       end
 
       @widget.clicked.listen do |f|
-        target = @mainwindow.target
+        target = @debugger.target
         if (target != nil)
           target.breakpoints.each do |b|
             if (b.id == f.to_i && b.locations.length)
               loc = b.locations[0]
-              @mainwindow.openFile(loc.file, loc.disline)
+              @mainwindow.openFile(loc.file, loc.line)
             end
           end
         end
