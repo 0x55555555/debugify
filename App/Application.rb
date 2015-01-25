@@ -4,6 +4,7 @@ require_relative 'CallStack'
 require_relative 'Threads'
 require_relative 'Breakpoints'
 require_relative 'Project'
+require_relative 'Values'
 
 module App
 
@@ -29,8 +30,10 @@ module App
       @application = UI::Application.new()
       @mainwindow = UI::MainWindow.new()
       @mainwindow.aboutToClose.listen do
+        @project.set_value(:application_geometry, @mainwindow.geometry(), :user)
         @project.close()
       end
+
 
       @debugger = App::Debugger.new(@mainwindow, @log)
 
@@ -42,13 +45,13 @@ module App
       buildToolbars()
       buildMenus()
 
-
       @callStack = App::CallStack.new(@mainwindow, @debugger)
       @threads = App::Threads.new(@mainwindow, @debugger)
+      @values = App::Values.new(@mainwindow, @debugger)
       @breakpoints = App::Breakpoints.new(@mainwindow, @debugger, @project)
       @console = App::Console.new(@mainwindow, @debugger)
       @log.console = @console
-      @processWindows = [ @threads, @callStack ]
+      @processWindows = [ @threads, @callStack, @values ]
 
       processChanged(nil)
       @debugger.processBegin.listen { |p| processChanged(p) }
@@ -97,6 +100,9 @@ module App
     end
 
     def execute()
+      val = @project.value(:application_geometry, "")
+      @mainwindow.setGeometry(val)
+
       @mainwindow.show()
       @application.execute()
     end

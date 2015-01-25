@@ -46,6 +46,33 @@ MainWindow::~MainWindow()
   delete ui;
   }
 
+QString MainWindow::geometry() const
+  {
+  QByteArray out;
+    {
+    QDataStream str(&out, QIODevice::ReadWrite);
+    str << saveGeometry() << saveState();
+    }
+
+  return out.toBase64();
+  }
+
+bool MainWindow::setGeometry(const QString &g)
+  {
+  QByteArray geo, state;
+    {
+    auto data = QByteArray::fromBase64(g.toUtf8());
+    QDataStream str(&data, QIODevice::ReadWrite);
+
+    str >> geo >> state;
+    }
+
+  bool res1 = restoreGeometry(geo);
+  bool res2 = restoreState(state);
+
+  return res1 && res2;
+  }
+
 Terminal *MainWindow::addTerminal(const QString &name)
   {
   auto terminal = new Terminal();

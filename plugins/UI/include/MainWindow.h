@@ -51,6 +51,9 @@ public:
   explicit MainWindow(QWidget *parent = 0);
   ~MainWindow();
 
+  QString geometry() const;
+  bool setGeometry(const QString &g);
+
   Terminal *addTerminal(const QString &n);
   Console *addConsole(const QString &n);
   EditableTextWindow *addEditor(const QString &n);

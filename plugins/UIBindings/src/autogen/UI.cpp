@@ -102,6 +102,7 @@ struct UI_MainWindow_addTerminal_overload0_t : Reflect::FunctionCall<Reflect::Fu
 struct UI_MainWindow_addToolBar_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::ToolBar *(::UI::MainWindow::*)(const QString &) >, &::UI::MainWindow::addToolBar, bondage::FunctionCaller> { };
 struct UI_MainWindow_editorOpened_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::EditorNotifier *(::UI::MainWindow::*)() >, &::UI::MainWindow::editorOpened, bondage::FunctionCaller> { };
 struct UI_MainWindow_errors_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::OutputNotifier *(::UI::MainWindow::*)() >, &::UI::MainWindow::errors, bondage::FunctionCaller> { };
+struct UI_MainWindow_geometry_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(::UI::MainWindow::*)() const >, &::UI::MainWindow::geometry, bondage::FunctionCaller> { };
 struct UI_MainWindow_getOpenFilename_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(::UI::MainWindow &, const QString &) >, &UI_MainWindow_getOpenFilename_overload0, Reflect::MethodInjectorBuilder<bondage::FunctionCaller>> { };
 struct UI_MainWindow_getOpenFilename_overload1_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(::UI::MainWindow::*)(const QString &, const QString &) >, &::UI::MainWindow::getOpenFilename, bondage::FunctionCaller> { };
 struct MainWindow_getOpenFilename_overload_2 : Reflect::FunctionArgCountSelectorBlock<2,
@@ -118,6 +119,7 @@ struct UI_MainWindow_hideDock_overload0_t : Reflect::FunctionCall<Reflect::Funct
 struct UI_MainWindow_openFile_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::Editor *(::UI::MainWindow::*)(const QString &, int) >, &::UI::MainWindow::openFile, bondage::FunctionCaller> { };
 struct UI_MainWindow_output_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::OutputNotifier *(::UI::MainWindow::*)() >, &::UI::MainWindow::output, bondage::FunctionCaller> { };
 struct UI_MainWindow_process_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Process::Pointer(::UI::MainWindow::*)() const >, &::UI::MainWindow::process, bondage::FunctionCaller> { };
+struct UI_MainWindow_setGeometry_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< bool(::UI::MainWindow::*)(const QString &) >, &::UI::MainWindow::setGeometry, bondage::FunctionCaller> { };
 struct UI_MainWindow_setProcess_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::MainWindow::*)(const Process::Pointer &) >, &::UI::MainWindow::setProcess, bondage::FunctionCaller> { };
 struct UI_MainWindow_setTarget_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::MainWindow::*)(const Target::Pointer &) >, &::UI::MainWindow::setTarget, bondage::FunctionCaller> { };
 struct UI_MainWindow_showDock_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::MainWindow::*)(QWidget *) >, &::UI::MainWindow::showDock, bondage::FunctionCaller> { };
@@ -173,6 +175,9 @@ const bondage::Function UI_MainWindow_methods[] = {
   bondage::FunctionBuilder::build<
     UI_MainWindow_errors_overload0_t
     >("errors"),
+  bondage::FunctionBuilder::build<
+    UI_MainWindow_geometry_overload0_t
+    >("geometry"),
   bondage::FunctionBuilder::buildOverload< MainWindow_getOpenFilename_overload >("getOpenFilename"),
   bondage::FunctionBuilder::build<
     UI_MainWindow_hideDock_overload0_t
@@ -186,6 +191,9 @@ const bondage::Function UI_MainWindow_methods[] = {
   bondage::FunctionBuilder::build<
     UI_MainWindow_process_overload0_t
     >("process"),
+  bondage::FunctionBuilder::build<
+    UI_MainWindow_setGeometry_overload0_t
+    >("setGeometry"),
   bondage::FunctionBuilder::build<
     UI_MainWindow_setProcess_overload0_t
     >("setProcess"),
@@ -210,7 +218,7 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
   MainWindow,
   ::QMainWindow,
   UI_MainWindow_methods,
-  20);
+  22);
 
 
 

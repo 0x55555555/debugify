@@ -36,6 +36,9 @@ class MainWindow < Qt::QMainWindow
   # UI::OutputNotifier MainWindow#errors()
   # \brief 
 
+  # QString MainWindow#geometry()
+  # \brief 
+
   # QString MainWindow#getOpenFilename(QString caption)
   # QString MainWindow#getOpenFilename(QString caption, QString filter)
   # \brief 
@@ -50,6 +53,9 @@ class MainWindow < Qt::QMainWindow
   # \brief 
 
   # std::__1::shared_ptr MainWindow#process()
+  # \brief 
+
+  # boolean MainWindow#setGeometry(QString g)
   # \brief 
 
   # nil MainWindow#setProcess(std::__1::shared_ptr arg1)
