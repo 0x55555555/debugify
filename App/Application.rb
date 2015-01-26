@@ -53,57 +53,29 @@ module App
       @log.console = @console
       @processWindows = [ @threads, @callStack, @values ]
 
-      processChanged(nil)
-      @debugger.processBegin.listen { |p| processChanged(p) }
-      @debugger.processEnd.listen { |p| processChanged(nil) }
-
-      @debugger.ready.listen do |process|
-        loadCurrentSource()
-        highlightSources()
-        @currentThreadToolbar.show()
-      end
+      @debugger.processBegin.listen { |p| onProcessChanged(p) }
+      @debugger.processEnd.listen { |p| onProcessChanged(nil) }
+      @debugger.targetChanged.listen { |t| onTargetChanged(t) }
+      @debugger.running.listen { |p| onRunning(p) }
+      @debugger.ready.listen { |p| onReady(p) }
+      @debugger.exited.listen { |p| onExited(p) }
 
       @mainwindow.editorOpened.listen do |editor|
         if (editor.class == UI::FileEditor)
           setupFileEditor(editor)
         end
       end
-
-      @debugger.targetChanged.listen do |t|
-        @project.reset(t.path)
-        if (t != nil)
-          t.breakpointsChanged.listen { |_| syncEditorBreakpoints() }
-          @targetToolbar.show()
-        else
-          @targetToolbar.hide()
-        end
-      end
-
-      @debugger.running.listen do |p|
-        @actions[:pause_continue].setText("Pause")
-        clearSourceHighlight()
-        @currentThreadToolbar.hide()
-        @log.log "Process running"
-      end
-      @debugger.ready.listen do |p|
-        @actions[:pause_continue].setText("Continue")
-        @log.log "Process ready to debug"
-      end
-      @debugger.exited.listen do |p|
-        @log.log "Process exited with code #{p.exitStatus}"
-        desc = p.exitDescription
-        if (desc)
-          @log.log "  " + desc
-        end
-        @debugger.end()
-      end
     end
 
     def execute()
       val = @project.value(:application_geometry, "")
       @mainwindow.setGeometry(val)
+      onTargetChanged(nil)
+      onProcessChanged(nil)
 
       @mainwindow.show()
+      
+      puts "Debugger is up."
       @application.execute()
     end
 
@@ -126,7 +98,6 @@ module App
       @targetToolbar.addAction("Run", Proc.new {
         @debugger.launch()
       })
-      @targetToolbar.hide()
 
       @processToolbar = @mainwindow.addToolBar("Process")
       @processToolbar.addAction("Kill", Proc.new {
@@ -140,7 +111,6 @@ module App
           @mainwindow.process.pauseExecution()
         end
       })
-      @processToolbar.hide()
 
       @currentThreadToolbar = @mainwindow.addToolBar("Current Thread")
       @currentThreadToolbar.addAction("Step Into", Proc.new {
@@ -263,7 +233,18 @@ module App
       end
     end
 
-    def processChanged(p)
+    def onTargetChanged(t)
+      if (t != nil)
+        t.breakpointsChanged.listen { |_| syncEditorBreakpoints() }
+        @targetToolbar.show()
+        @project.reset(t.path)
+      else
+        @targetToolbar.hide()
+        @project.reset(nil)
+      end
+    end
+
+    def onProcessChanged(p)
       @processWindows.each do |w|
         if (p != nil)
           @mainwindow.showDock(w.widget)
@@ -276,6 +257,30 @@ module App
         @processToolbar.show()
       else
         @processToolbar.hide()
+        @currentThreadToolbar.hide()
+      end
+    end
+
+    def onRunning(p)
+      @actions[:pause_continue].setText("Pause")
+      clearSourceHighlight()
+      @currentThreadToolbar.hide()
+      @log.log "Process running"
+    end
+
+    def onReady(p)
+      @actions[:pause_continue].setText("Continue")
+      loadCurrentSource()
+      highlightSources()
+      @currentThreadToolbar.show()
+      @log.log "Process ready to debug"
+    end
+
+    def onExited(p)
+      @log.log "Process exited with code #{p.exitStatus}"
+      desc = p.exitDescription
+      if (desc)
+        @log.log "  " + desc
       end
     end
   end

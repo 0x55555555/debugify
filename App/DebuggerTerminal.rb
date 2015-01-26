@@ -57,7 +57,6 @@ module App
       end
 
       ENV['TERM']='ansi'
-      puts "Debugger is up."
       $stdout.prompt
     end
 

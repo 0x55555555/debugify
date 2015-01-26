@@ -23,6 +23,10 @@ module App
     attr_reader :ready, :running, :exited, :processBegin, :processEnd, :targetChanged
     attr_reader :target, :process
 
+    def notReady()
+      return running()
+    end
+
     def load(t)
       @target = @debugger.loadTarget(t)
       @mainwindow.setTarget(@target)
@@ -40,10 +44,6 @@ module App
 
       setProcess(process)
       return process
-    end
-
-    def end()
-      setProcess(nil)
     end
 
     def update()
@@ -72,7 +72,6 @@ module App
       if (state == Debugify::ProcessState[:Stopped])
         @isReady = true
 
-        puts "Process Stopped"
         @process.threads.each do |t|
           reason = Debugify::Thread::StopReason[t.stopReason()]
           if (reason != :None)
@@ -99,7 +98,7 @@ module App
         # need to ensure callbacks are aware ready is false
         @running.call(@process)
         @exited.call(@process)
-        @process = nil
+        setProcess(nil)
       end
     end
   end

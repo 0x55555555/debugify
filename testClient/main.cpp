@@ -8,6 +8,7 @@
 void foo()
   {
   int i = 0;
+  auto test = std::make_unique<Pork>();
 
   i = 1 + 3;
 

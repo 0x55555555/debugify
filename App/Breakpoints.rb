@@ -67,7 +67,9 @@ module App
       if (handler.has_value(:breakpoints))
         brks = handler.value(:breakpoints)
         brks.each do |b|
-          @debugger.target.addBreakpoint(b["file"], b["line"])
+          if (b.include?("file") && b.include?("line"))
+            @debugger.target.addBreakpoint(b["file"], b["line"])
+          end
         end
       end
     end
