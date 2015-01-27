@@ -8,7 +8,7 @@ module UI
 # \brief managed
 #
 class Application < Qt::QApplication
-  # nil Application::Application()
+  # nil Application::Application(QString location)
   # \brief 
 end
 

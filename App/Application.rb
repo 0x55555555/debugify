@@ -27,7 +27,7 @@ module App
 
       @log = Logger.new
 
-      @application = UI::Application.new()
+      @application = UI::Application.new(File.dirname(__FILE__))
       @mainwindow = UI::MainWindow.new()
       @mainwindow.aboutToClose.listen do
         @project.set_value(:application_geometry, @mainwindow.geometry(), :user)

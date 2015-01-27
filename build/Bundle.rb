@@ -6,6 +6,7 @@ THIS_DIR = File.dirname(__FILE__)
 SOURCE_ROOT = "#{THIS_DIR}/../"
 EXE_NAME = 'Debugify'
 BUILD_ROOT = "#{THIS_DIR}/../../"
+QT_FRAMEWORK_LOCATION = "/Applications/Qt/5.4/5.4/clang_64/"
 
 class BundleBuilder
   ENTRY = '<?xml version="1.0" encoding="UTF-8"?>
@@ -62,8 +63,10 @@ class BundleBuilder
     if (name == nil)
       name = File.basename(srcPath)
     end
-    destPath = "#{@root}/#{CONTENTS_MACOS}/#{dest}/#{name}"
+    destDir = "#{@root}/#{CONTENTS_MACOS}/#{dest}"
+    destPath = "#{destDir}/#{name}"
 
+    FileUtils.mkdir_p(destDir)
     FileUtils.cp(srcPath, destPath)
   end
 
@@ -153,11 +156,12 @@ def makeDebugifyBundle(version, options = {})
     })
 
   bundle.mkdir("App")
+  bundle.mkdir("Frameworks")
 
   bundle.open(EXE_NAME) do |f|
     f.write('#!/bin/bash
-echo "test"
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 $DIR/App/Debugify'
 )
   end
@@ -166,19 +170,46 @@ $DIR/App/Debugify'
   bundle.open("App/initEnvironment.sh") do |f|
     f.write('#!/bin/bash
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-export PATH=$DIR/../ruby/bin/:$PATH
 export LLDB_DEBUGSERVER_PATH="/Applications/Xcode.app/Contents/SharedFrameworks/LLDB.framework/Versions/A/Resources/debugserver"
-export DYLD_LIBRARY_PATH=$DIR/../ruby/lib:$DIR:$DYLD_LIBRARY_PATH')
+export DYLD_LIBRARY_PATH=$MY_RUBY_HOME/lib:$DIR:$DYLD_LIBRARY_PATH
+export DYLD_FRAMEWORK_PATH=$DIR/../Frameworks:$DYLD_FRAMEWORK_PATH
+')
   end
 
   bundle.setIcon("build/Resources/Debugify.icns")
   bundle.install("#{SOURCE_ROOT}/App/Debugify", "App")
-  bundle.installAll("#{SOURCE_ROOT}/App/*.rb", "App")
+  bundle.installAll("#{SOURCE_ROOT}/App/**.rb", "App")
+  bundle.installAll("#{SOURCE_ROOT}/App/Project/**.rb", "App/Project")
   bundle.installAllWithPrefix(SOURCE_ROOT, "", "plugins/DebugifyBindings/ruby/**/*.rb")
   bundle.installAllWithPrefix(SOURCE_ROOT, "", "plugins/UIBindings/ruby/**/*.rb")
   bundle.installAll("#{DEBUGGER_BUILD_ROOT}/**/*.dylib", "App")
   bundle.install("#{llvmBuildRoot}/lib/liblldb.dylib", "App")
-  bundle.installFolder(File.expand_path("~/.rvm/rubies/ruby-2.2.0"), "ruby")
+
+  qtLibs = [ "QtCore", "QtGui", "QtWidgets", "QtPrintSupport" ]
+  qtDependencies = [ "App/libUIBindings.dylib", "App/libUI.dylib", "App/platforms/libqcocoa.dylib" ]
+
+  bundle.install("#{QT_FRAMEWORK_LOCATION}/plugins/platforms/libqcocoa.dylib", "App/platforms")
+
+  `install_name_tool -id @executable_path/platforms/libqcocoa.dylib #{bundle.path(qtDependencies[2])}`
+
+  qtLibs.each do |l|
+    dest = "Frameworks/#{l}.framework"
+    bundleDest = bundle.path(dest)
+    fwLocation = "#{QT_FRAMEWORK_LOCATION}lib/#{l}.framework"
+    bundle.installFolder(fwLocation, dest)
+
+    relativeToFw = "Versions/5/#{l}"
+    newPath = "@executable_path/../Frameworks/#{l}.framework/#{relativeToFw}"
+    `install_name_tool -id #{newPath} #{bundleDest}/#{relativeToFw}`
+
+    qtDependencies.each do |l|
+      dylibPath = bundle.path(l)
+      `install_name_tool -change #{fwLocation}/#{relativeToFw} #{newPath} #{dylibPath}` 
+    end
+  end
+
+  # install_name_tool -id @executable_path/../Frameworks/QtCore.framework/Versions/5/QtCore Frameworks/QtCore.framework/Versions/5/QtCore
+  # install_name_tool -change /Applications/Qt/5.4/5.4/clang_64/lib/QtGui.framework/Versions/5/QtGui @executable_path/../Frameworks/QtGui.framework/Versions/5/QtGui App/libUIBindings.dylib 
 
   renamableScriptBundles = [
     "DebugifyBindings",
@@ -186,7 +217,12 @@ export DYLD_LIBRARY_PATH=$DIR/../ruby/lib:$DIR:$DYLD_LIBRARY_PATH')
   ]
 
   renamableScriptBundles.each do |lib|
-    bundle.mv("App/lib#{lib}.dylib", "plugins/#{lib}/ruby/#{lib}.bundle")
+    relativeBundle = "plugins/#{lib}/ruby/#{lib}.bundle"
+    relativeLib = "App/lib#{lib}.dylib"
+    oldLoc = bundle.path(relativeLib)
+    newLoc = bundle.path(relativeBundle)
+
+    FileUtils.ln_s("../../../" + relativeLib, newLoc)
   end
 end
 
@@ -207,10 +243,12 @@ def makeDebugifyDmg(version, options = {})
   bundleOptions[:path] = location
   makeDebugifyBundle(version, bundleOptions)
 
+  FileUtils.cp("#{THIS_DIR}/INSTALL.md", "#{path}/INSTALL.md")
+
   dmgSize = `du -sm #{path}`.split[0].to_i + 10
   puts `hdiutil create -volname #{EXE_NAME} -srcfolder #{path} -size #{dmgSize}m #{output} -ov`
 
   if (options[:keep_bundle] != true)
-    FileUtils.rm_r(path) 
+    #FileUtils.rm_r(path) 
   end
 end

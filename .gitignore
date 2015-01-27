@@ -4,3 +4,6 @@ ruby
 App/DebugifyBindingsTest.xcodeproj/project.xcworkspace
 build/Debugify.app
 Debugify_0.0.1.dmg
+build/Debugify_0.0.3.app
+build/tmp
+*.dmg

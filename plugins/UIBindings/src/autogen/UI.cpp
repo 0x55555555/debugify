@@ -898,13 +898,13 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
 
 
 // Exposing class ::UI::Application
-::UI::Application * UI_Application_Application_overload0()
+::UI::Application * UI_Application_Application_overload0(const QString & inputArg0)
 {
-  auto result = bondage::WrappedClassHelper< ::UI::Application >::create();
+  auto result = bondage::WrappedClassHelper< ::UI::Application >::create(std::forward<const QString &>(inputArg0));
   return result;
 }
 
-struct UI_Application_Application_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< ::UI::Application *(*)() >, &UI_Application_Application_overload0, bondage::FunctionCaller> { };
+struct UI_Application_Application_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< ::UI::Application *(*)(const QString &) >, &UI_Application_Application_overload0, bondage::FunctionCaller> { };
 
 const bondage::Function UI_Application_methods[] = {
   bondage::FunctionBuilder::build<

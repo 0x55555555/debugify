@@ -1,10 +1,11 @@
 require_relative 'build/Bundle.rb'
+require_relative 'App/Version.rb'
 require 'rspec/core/rake_task'
 
 version = {
-  :major => 0,
-  :minor => 0,
-  :revision => 1,
+  :major => App::Version::Major,
+  :minor => App::Version::Minor,
+  :revision => App::Version::Revision,
   :version_control => `git describe --tags`.chomp,
 }
 

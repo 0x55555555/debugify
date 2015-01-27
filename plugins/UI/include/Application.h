@@ -1,6 +1,7 @@
 #pragma once
 #include "QtWidgets/QApplication"
 #include "XCore.h"
+#include "Containers/XStringSimple.h"
 
 namespace UI
 {
@@ -9,7 +10,7 @@ namespace UI
 class Application : public QApplication
   {
 public:
-  Application();
+  Application(const QString &location);
   ~Application();
   };
 
