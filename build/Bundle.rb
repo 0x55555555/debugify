@@ -7,6 +7,7 @@ SOURCE_ROOT = "#{THIS_DIR}/../"
 EXE_NAME = 'Debugify'
 BUILD_ROOT = "#{THIS_DIR}/../../"
 QT_FRAMEWORK_LOCATION = "/Applications/Qt/5.4/5.4/clang_64/"
+RUBY_URL = "https://github.com/jorj1988/traveling-ruby/releases/download/2.2.0_dylib_osx/traveling-ruby-20141224-j-2.2.0-osx.tar.gz"
 
 class BundleBuilder
   ENTRY = '<?xml version="1.0" encoding="UTF-8"?>
@@ -151,7 +152,26 @@ BUILD_ID = "Desktop_Qt_5_4_0_clang_64bit"
 BUILD_VARIANT = "qtc_#{BUILD_ID}"
 DEBUGGER_BUILD_ROOT = "#{BUILD_ROOT}/build-debugger-#{BUILD_ID}-Debug/#{BUILD_VARIANT}-debug/"
 
+def ensureRubyExists()
+  rubyDir = "#{SOURCE_ROOT}/build/Resources/"
+  destname = "ruby"
+  destfolder = "#{rubyDir}#{destname}"
+  if (!Dir.exists?(destfolder))
+    outName = File.basename(RUBY_URL)
+
+    FileUtils.mkdir_p(destfolder)
+    download = "#{rubyDir}#{destname}.tar.gz"
+
+    `curl --fail -L -o #{download} '#{RUBY_URL}'`
+    `tar -xzvf #{download} -C #{destfolder}`
+    FileUtils.rm(download)
+  end
+end
+
 def makeDebugifyBundle(version, options = {})
+
+  ensureRubyExists()
+
   llvmVariant = options[:llvm_variant]
   llvmVariant ||= "Debug+Asserts"
   llvmBuildRoot = "#{BUILD_ROOT}/llvm-build/#{llvmVariant}/"
@@ -302,12 +322,10 @@ def makeDebugifyDmg(version, options = {})
   bundleOptions[:path] = location
   makeDebugifyBundle(version, bundleOptions)
 
-  FileUtils.cp("#{THIS_DIR}/INSTALL.md", "#{path}/INSTALL.md")
-
   dmgSize = `du -sm #{path}`.split[0].to_i + 10
   puts `hdiutil create -volname #{EXE_NAME} -srcfolder #{path} -size #{dmgSize}m #{output} -ov`
 
   if (options[:keep_bundle] != true)
-    #FileUtils.rm_r(path) 
+    FileUtils.rm_r(path) 
   end
 end
