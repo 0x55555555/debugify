@@ -26,6 +26,7 @@ class BundleBuilder
 
   def initialize(name, plistKeys)
     @root = name
+    @sources = { }
     FileUtils.mkdir_p(name)
     FileUtils.mkdir_p("#{name}/#{CONTENTS_MACOS}")
     FileUtils.mkdir_p("#{name}/#{CONTENTS_RESOURCES}")
@@ -39,6 +40,10 @@ class BundleBuilder
     if (File.directory?(file))
       FileUtils.rm_rf(file)
     end
+  end
+
+  def sourcePath(dst)
+    return @sources[dst]
   end
 
   def mkdir(name)
@@ -63,15 +68,30 @@ class BundleBuilder
     if (name == nil)
       name = File.basename(srcPath)
     end
-    destDir = "#{@root}/#{CONTENTS_MACOS}/#{dest}"
+    destDir = "#{@root}/#{CONTENTS_MACOS}#{dest}"
     destPath = "#{destDir}/#{name}"
 
     FileUtils.mkdir_p(destDir)
     FileUtils.cp(srcPath, destPath)
+    puts destPath if @debugging
+    @sources[destPath] = srcPath
+  end
+
+  def debug(on = true)
+    @debugging = on
   end
 
   def installFolder(src, dest)
-    FileUtils.cp_r(src, "#{@root}/#{CONTENTS_MACOS}/#{dest}")
+    destFolder = "#{@root}/#{CONTENTS_MACOS}#{dest}"
+    FileUtils.cp_r(src, destFolder)
+
+    root = Pathname.new(destFolder)
+    Dir["#{destFolder}/**/*"].each do |dest|
+      relative = Pathname.new(dest).relative_path_from(root)
+
+      puts dest if @debugging
+      @sources[dest] = "#{src}/#{relative}"
+    end
   end
 
   def installAll(glob, dest)
@@ -93,7 +113,7 @@ class BundleBuilder
       relativeDir = File.dirname(path.relative_path_from(srcPath))
 
       destDir = dest + relativeDir
-      FileUtils.mkdir_p("#{@root}/#{CONTENTS_MACOS}/#{destDir}")
+      FileUtils.mkdir_p("#{@root}/#{CONTENTS_MACOS}#{destDir}")
       install(item, destDir)
     end
   end
@@ -171,12 +191,17 @@ $DIR/App/Debugify'
     f.write('#!/bin/bash
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 export LLDB_DEBUGSERVER_PATH="/Applications/Xcode.app/Contents/SharedFrameworks/LLDB.framework/Versions/A/Resources/debugserver"
-export DYLD_LIBRARY_PATH=$MY_RUBY_HOME/lib:$DIR:$DYLD_LIBRARY_PATH
+export DYLD_LIBRARY_PATH=$DIR/../ruby/lib:$DIR:$DYLD_LIBRARY_PATH
+export PATH=$DIR/../ruby/bin:$PATH
 export DYLD_FRAMEWORK_PATH=$DIR/../Frameworks:$DYLD_FRAMEWORK_PATH
 ')
   end
 
-  bundle.setIcon("build/Resources/Debugify.icns")
+  rubyLocation = "#{SOURCE_ROOT}/build/Resources/ruby"
+  rubyTmp = "/tmp/ruby"
+  FileUtils.cp_r(rubyLocation, rubyTmp)
+
+  bundle.setIcon("#{SOURCE_ROOT}/build/Resources/Debugify.icns")
   bundle.install("#{SOURCE_ROOT}/App/Debugify", "App")
   bundle.installAll("#{SOURCE_ROOT}/App/**.rb", "App")
   bundle.installAll("#{SOURCE_ROOT}/App/Project/**.rb", "App/Project")
@@ -184,32 +209,66 @@ export DYLD_FRAMEWORK_PATH=$DIR/../Frameworks:$DYLD_FRAMEWORK_PATH
   bundle.installAllWithPrefix(SOURCE_ROOT, "", "plugins/UIBindings/ruby/**/*.rb")
   bundle.installAll("#{DEBUGGER_BUILD_ROOT}/**/*.dylib", "App")
   bundle.install("#{llvmBuildRoot}/lib/liblldb.dylib", "App")
-
-  qtLibs = [ "QtCore", "QtGui", "QtWidgets", "QtPrintSupport" ]
-  qtDependencies = [ "App/libUIBindings.dylib", "App/libUI.dylib", "App/platforms/libqcocoa.dylib" ]
-
+  bundle.installFolder(rubyTmp, "ruby")
   bundle.install("#{QT_FRAMEWORK_LOCATION}/plugins/platforms/libqcocoa.dylib", "App/platforms")
 
-  `install_name_tool -id @executable_path/platforms/libqcocoa.dylib #{bundle.path(qtDependencies[2])}`
+  exeToRoot = "@executable_path/../../"
 
+  qtLibs = [ "QtCore", "QtGui", "QtWidgets", "QtPrintSupport" ]
   qtLibs.each do |l|
     dest = "Frameworks/#{l}.framework"
-    bundleDest = bundle.path(dest)
     fwLocation = "#{QT_FRAMEWORK_LOCATION}lib/#{l}.framework"
     bundle.installFolder(fwLocation, dest)
+  end
 
-    relativeToFw = "Versions/5/#{l}"
-    newPath = "@executable_path/../Frameworks/#{l}.framework/#{relativeToFw}"
-    `install_name_tool -id #{newPath} #{bundleDest}/#{relativeToFw}`
+  exeFiles = [ 
+    [ bundle.path("ruby/bin.real/ruby") ],
+    Dir[bundle.path("**/*.dylib")],
+    Dir[bundle.path("**/*.bundle")]
+  ].flatten
 
-    qtDependencies.each do |l|
-      dylibPath = bundle.path(l)
-      `install_name_tool -change #{fwLocation}/#{relativeToFw} #{newPath} #{dylibPath}` 
+  sources = { }
+  exeFiles.each do |e|
+    path = bundle.sourcePath(e)
+    raise "Unknown source for #{e}" unless path != nil
+    sources[e] = path
+  end
+
+  qtLibs.each do |l|
+    path = bundle.path("Frameworks/#{l}.framework/Versions/5/#{l}")
+    exeFiles.push(path)
+    sources[path] = "#{QT_FRAMEWORK_LOCATION}lib/#{l}.framework/Versions/5/#{l}"
+  end
+
+  root = Pathname.new(bundle.path(""))
+  exeFiles.each do |f|
+    relPath = Pathname.new(f).relative_path_from(root)
+      
+    newPath = "#{exeToRoot}/#{relPath}"
+    source = Pathname.new(sources[f]).cleanpath.to_s
+    puts "Patching #{relPath}"
+    `install_name_tool -id #{newPath} #{f}`
+
+    exeFiles.each do |file|
+      if (file != f)
+        `install_name_tool -change #{source} #{newPath} #{file}`
+      end
     end
   end
 
-  # install_name_tool -id @executable_path/../Frameworks/QtCore.framework/Versions/5/QtCore Frameworks/QtCore.framework/Versions/5/QtCore
-  # install_name_tool -change /Applications/Qt/5.4/5.4/clang_64/lib/QtGui.framework/Versions/5/QtGui @executable_path/../Frameworks/QtGui.framework/Versions/5/QtGui App/libUIBindings.dylib 
+  extraChanges = [
+    {
+      :executable => bundle.path("App/libLldbDriver.dylib"),
+      :old_library => "@executable_path/../lib/liblldb.dylib",
+      :new_library => "#{exeToRoot}App/liblldb.dylib",
+    }
+  ]
+
+  extraChanges.each do |l|
+    `install_name_tool -change #{l[:old_library]} #{l[:new_library]} #{l[:executable]}`
+  end
+
+  FileUtils.rm_r(rubyTmp)
 
   renamableScriptBundles = [
     "DebugifyBindings",

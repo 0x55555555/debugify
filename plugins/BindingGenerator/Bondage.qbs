@@ -3,8 +3,8 @@ import "../../Eks/EksBuild" as Eks;
 Eks.Library {
   property path bondagePath: "bondage/"
   property path reflectPath: bondagePath + "runtime/Reflect/"
-  property string rubyPath: "/Users/jorj/.rvm/rubies/ruby-2.2.0/"
-  property string rubySystemPath: rubyPath + "include/ruby-2.2.0/x86_64-darwin14/"
+  property path rubyPath: "../../build/Resources/ruby/"
+  property path rubySystemPath: rubyPath + "include/ruby-2.2.0/x86_64-darwin14/"
 
   files: [
         "*.*",

@@ -9,7 +9,7 @@ namespace UI
 int g_argv = 0;
 int &dummy(const QString &location)
   {
-  QCoreApplication::setLibraryPaths(QStringList() << location + "/");
+  QCoreApplication::addLibraryPath(location + "/");
   return g_argv;
   }
 
@@ -19,7 +19,7 @@ Application::Application(const QString &location)
   static Eks::Core core;
 
   setOrganizationName("JSoft");
-  setApplicationName("Debugger");
+  setApplicationName("Debugify");
 
   auto style = QStyleFactory::create("fusion");
   setStyle(style);
