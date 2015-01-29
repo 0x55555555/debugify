@@ -4,7 +4,7 @@ module App
   module Version
     Major = 0
     Minor = 0
-    Revision = 3
+    Revision = 4
   end
 
 end
