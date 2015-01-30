@@ -7,7 +7,7 @@ SOURCE_ROOT = "#{THIS_DIR}/../"
 EXE_NAME = 'Debugify'
 BUILD_ROOT = "#{THIS_DIR}/../../"
 QT_FRAMEWORK_LOCATION = "/Applications/Qt/5.4/5.4/clang_64/"
-RUBY_URL = "https://github.com/jorj1988/traveling-ruby/releases/download/2.2.0_dylib_osx/traveling-ruby-20141224-j-2.2.0-osx.tar.gz"
+RUBY_URL = "https://github.com/jorj1988/traveling-ruby/releases/download/2.2.0_dylib_osx/traveling-ruby-20141224-j-2.2.0-osx.zip"
 
 class BundleBuilder
   ENTRY = '<?xml version="1.0" encoding="UTF-8"?>
@@ -163,7 +163,7 @@ def ensureRubyExists()
     download = "#{rubyDir}#{destname}.tar.gz"
 
     `curl --fail -L -o #{download} '#{RUBY_URL}'`
-    `tar -xzvf #{download} -C #{destfolder}`
+    `unzip #{download} -d #{destfolder}`
     FileUtils.rm(download)
   end
 end
@@ -176,7 +176,7 @@ def makeDebugifyBundle(version, options = {})
   llvmVariant ||= "Debug+Asserts"
   llvmBuildRoot = "#{BUILD_ROOT}/llvm-build/#{llvmVariant}/"
 
-  versionStr = "#{version[:major]}.#{version[:minor]}.#{version[:revision]}"
+  versionStr = version.to_safe_s
 
   bundleName = options[:path]
   bundleName ||= "#{THIS_DIR}/#{EXE_NAME}_#{versionStr}.app"
@@ -185,14 +185,14 @@ def makeDebugifyBundle(version, options = {})
   bundle = BundleBuilder.new(bundleName, {
       :CFBundleName => "Debugify",
       :CFBundleVersion => versionStr,
-      :CFBundleIdentifier => "com.debugify.#{version[:major]}",
+      :CFBundleIdentifier => "com.debugify.#{version.major}",
       :CFBundlePackageType => "APPL",
       :CFBundleIconFile => "Debugify.icns",
       :CFBundleSignature => "dbfy",
       :CFBundleExecutable => "#{EXE_NAME}",
       :LSMinimumSystemVersion => "10.10",
       :NSHumanReadableCopyright => "Copyright © 2014-#{Date.today.strftime("%Y")} Debugify",
-      :CFBundleShortVersionString => "Build #{versionStr} (#{version[:version_control]})"
+      :CFBundleShortVersionString => "Build #{version}"
     })
 
   bundle.mkdir("App")
@@ -219,6 +219,7 @@ export DYLD_FRAMEWORK_PATH=$DIR/../Frameworks:$DYLD_FRAMEWORK_PATH
 
   rubyLocation = "#{SOURCE_ROOT}/build/Resources/ruby"
   rubyTmp = "/tmp/ruby"
+  FileUtils.rm_r(rubyTmp) if Dir.exist?(rubyTmp)
   FileUtils.cp_r(rubyLocation, rubyTmp)
 
   bundle.setIcon("#{SOURCE_ROOT}/build/Resources/Debugify.icns")
@@ -306,9 +307,7 @@ export DYLD_FRAMEWORK_PATH=$DIR/../Frameworks:$DYLD_FRAMEWORK_PATH
 end
 
 def makeDebugifyDmg(version, options = {})
-  versionStr = "#{version[:major]}.#{version[:minor]}.#{version[:revision]}"
-
-  output = "#{THIS_DIR}/#{EXE_NAME}_#{versionStr}.dmg"
+  output = "#{THIS_DIR}/#{EXE_NAME}_#{version.to_safe_s}.dmg"
   path = "#{THIS_DIR}/tmp"
 
   if (File.exist?(path))
