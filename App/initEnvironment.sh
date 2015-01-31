@@ -6,7 +6,7 @@ DEBUGGER_BUILD_ROOT=$ROOT/build-debugger-$BUILD_ID-Debug/$BUILD_VARIANT-debug/
 PLUGINS_ROOT="../plugins/"
 
 export LLDB_DEBUGSERVER_PATH=$LLVM_BUILD_ROOT/bin/debugserver
-export DYLD_LIBRARY_PATH=$LLVM_BUILD_ROOT/lib/:$DEBUGGER_BUILD_ROOT/LldbDriver.qtc_Desktop:$DEBUGGER_BUILD_ROOT/UI.qtc_Desktop
+export DYLD_LIBRARY_PATH=../build/Resources/ruby/lib:$LLVM_BUILD_ROOT/lib/:$DEBUGGER_BUILD_ROOT/LldbDriver.qtc_Desktop:$DEBUGGER_BUILD_ROOT/UI.qtc_Desktop
 
 export DEBUGIFY_DEBUG=1
 
