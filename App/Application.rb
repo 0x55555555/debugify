@@ -5,6 +5,7 @@ require_relative 'Threads'
 require_relative 'Breakpoints'
 require_relative 'Project'
 require_relative 'Values'
+require_relative 'Editors'
 
 module App
 
@@ -22,8 +23,6 @@ module App
 
     def initialize(debug)
       @project = DebuggerProject.new(nil)
-      @editors = { }
-      @activeEditors = [ ]
 
       @log = Logger.new
 
@@ -35,16 +34,13 @@ module App
         @project = nil
       end
 
-      @debugger = App::Debugger.new(@mainwindow, @log)
-
       if (debug)
         require_relative 'DebuggerTerminal'
-        @debugTerminal = App::DebuggerTerminal.new(@mainwindow)
+        @debugTerminal = App::DebuggerTerminal.new(self)
       end
 
-      buildToolbars()
-      buildMenus()
-
+      @debugger = App::Debugger.new(@mainwindow, @log)
+      @editors = Editors.new(@mainwindow, @debugger, @project)
       @callStack = App::CallStack.new(@mainwindow, @debugger)
       @threads = App::Threads.new(@mainwindow, @debugger)
       @values = App::Values.new(@mainwindow, @debugger)
@@ -53,19 +49,18 @@ module App
       @log.console = @console
       @processWindows = [ @threads, @callStack, @values ]
 
+      buildToolbars()
+      buildMenus()
+
       @debugger.processBegin.listen { |p| onProcessChanged(p) }
       @debugger.processEnd.listen { |p| onProcessChanged(nil) }
       @debugger.targetChanged.listen { |t| onTargetChanged(t) }
       @debugger.running.listen { |p| onRunning(p) }
       @debugger.ready.listen { |p| onReady(p) }
       @debugger.exited.listen { |p| onExited(p) }
-
-      @mainwindow.editorOpened.listen do |editor|
-        if (editor.class == UI::FileEditor)
-          setupFileEditor(editor)
-        end
-      end
     end
+
+    attr_reader :mainwindow, :project, :editors
 
     def execute()
       val = @project.value(:application_geometry, "")
@@ -169,87 +164,9 @@ module App
       end
     end
 
-    def setupFileEditor(editor)
-      path = editor.path()
-      editor.marginClicked.listen do |line|
-        found, brk, loc = @mainwindow.target.findBreakpoint(path, line)
-        if (found)
-          @mainwindow.target.removeBreakpoint(brk)
-        else
-          @mainwindow.target.addBreakpoint(path, line)
-        end
-      end
-
-      @editors[path] = editor
-      highlightSources()
-      syncEditorBreakpoints()
-    end
-
-    def syncEditorBreakpoints()
-      @editors.each { |_, e| e.clearMarkers(UI::FileEditor::MarkerType[:Breakpoint]) }
-      target = @mainwindow.target
-      target.breakpoints.each do |br|
-        br.locations.each do |l|
-          addEditorBreakpoint(l.file, l.line)
-        end
-      end
-    end
-
-    def addEditorBreakpoint(file, line)
-      editor = @editors[file]
-
-      editor.addMarker(UI::FileEditor::MarkerType[:Breakpoint], line) if editor
-    end
-
-    def loadCurrentSource()
-      thread = @mainwindow.process.selectedThread
-      frame = thread.selectedFrame
-
-      file = frame.filename
-      line = frame.lineNumber
-      if (file.length > 0)
-        editor = @mainwindow.openFile(file, line)
-      end
-    end
-
-    def clearSourceHighlight()
-      @activeEditors.each do |e|
-        e.clearMarkers(UI::FileEditor::MarkerType[:ActiveLine])
-        e.clearMarkers(UI::FileEditor::MarkerType[:CurrentLine])
-      end
-      @activeEditors.clear()
-    end
-
-    def highlightSources()
-      clearSourceHighlight()
-
-      if (@mainwindow.process == nil)
-        return
-      end
-      
-      @mainwindow.process.threads.each do |t|
-        frame = t.selectedFrame
-
-        if (frame.hasLineNumber)
-          current = t.isCurrent
-
-          line = frame.lineNumber
-          file =  frame.filename
-
-          editor = @editors[file]
-          if (editor)
-            @activeEditors << editor
-            type = current ? UI::FileEditor::MarkerType[:CurrentLine] :
-              UI::FileEditor::MarkerType[:ActiveLine]
-            editor.addMarker(type, line)
-          end
-        end
-      end
-    end
-
     def onTargetChanged(t)
       if (t != nil)
-        t.breakpointsChanged.listen { |_| syncEditorBreakpoints() }
+        t.breakpointsChanged.listen { |_| @editors.syncEditorBreakpoints() }
         @targetToolbar.show()
         @project.reset(t.path)
       else
@@ -277,15 +194,15 @@ module App
 
     def onRunning(p)
       @actions[:pause_continue].setText("Pause")
-      clearSourceHighlight()
+      @editors.clearSourceHighlight()
       @currentThreadToolbar.hide()
       @log.log "Process running"
     end
 
     def onReady(p)
       @actions[:pause_continue].setText("Continue")
-      loadCurrentSource()
-      highlightSources()
+      @editors.loadCurrentSource(@debugger.process)
+      @editors.highlightSources()
       @currentThreadToolbar.show()
       @log.log "Process ready to debug"
     end

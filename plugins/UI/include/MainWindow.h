@@ -8,6 +8,7 @@
 #include "Target.h"
 #include "Process.h"
 #include "Module.h"
+#include "TypeManager.h"
 #include "Utilities/XNotifier.h"
 
 namespace Ui {
@@ -36,6 +37,9 @@ X_DECLARE_NOTIFIER(EditorNotifier, std::function<void (Editor *)>);
 
 /// \expose unmanaged
 X_DECLARE_NOTIFIER(AboutToCloseNotifier, std::function<void ()>);
+
+/// \expose unmanaged
+X_DECLARE_NOTIFIER(TypeNotifier, std::function<void (QString)>);
 
 /// \expose managed
 class MainWindow : public QMainWindow
@@ -79,18 +83,22 @@ public:
   OutputNotifier *errors() { return &_stderr; }
 
   EditorNotifier *editorOpened() { return &_editorOpened; }
+  EditorNotifier *editorClosed() { return &_editorClosed; }
+
+  TypeNotifier *typeAdded() { return &_typeAdded; }
 
 public slots:
   Editor *openFile(const QString &str, int line = -1);
+  Editor *openType(const QString &);
 
 private slots:
+  void typeAdded(const Module::Pointer &, const UI::CachedType::Pointer &);
   void onError(const QString &str);
   void setStatusText(const QString &str);
 
   void closeFile(int tab);
   void openFile(const Module::Pointer &ptr, const QString &);
   void openType(const Module::Pointer &ptr, const QString &);
-  void openType(const QString &);
 
   void onProcessOutput(const QString &);
   void onProcessError(const QString &);
@@ -121,6 +129,9 @@ private:
   OutputNotifier _stderr;
 
   EditorNotifier _editorOpened;
+  EditorNotifier _editorClosed;
+
+  TypeNotifier _typeAdded;
 
   AboutToCloseNotifier _aboutToClose;
 

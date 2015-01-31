@@ -100,6 +100,7 @@ struct UI_MainWindow_addEditor_overload0_t : Reflect::FunctionCall<Reflect::Func
 struct UI_MainWindow_addMenu_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::Menu *(::UI::MainWindow::*)(const QString &) >, &::UI::MainWindow::addMenu, bondage::FunctionCaller> { };
 struct UI_MainWindow_addTerminal_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::Terminal *(::UI::MainWindow::*)(const QString &) >, &::UI::MainWindow::addTerminal, bondage::FunctionCaller> { };
 struct UI_MainWindow_addToolBar_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::ToolBar *(::UI::MainWindow::*)(const QString &) >, &::UI::MainWindow::addToolBar, bondage::FunctionCaller> { };
+struct UI_MainWindow_editorClosed_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::EditorNotifier *(::UI::MainWindow::*)() >, &::UI::MainWindow::editorClosed, bondage::FunctionCaller> { };
 struct UI_MainWindow_editorOpened_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::EditorNotifier *(::UI::MainWindow::*)() >, &::UI::MainWindow::editorOpened, bondage::FunctionCaller> { };
 struct UI_MainWindow_errors_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::OutputNotifier *(::UI::MainWindow::*)() >, &::UI::MainWindow::errors, bondage::FunctionCaller> { };
 struct UI_MainWindow_geometry_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(::UI::MainWindow::*)() const >, &::UI::MainWindow::geometry, bondage::FunctionCaller> { };
@@ -117,6 +118,7 @@ struct MainWindow_getOpenFilename_overload : Reflect::FunctionArgumentCountSelec
     > { };
 struct UI_MainWindow_hideDock_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::MainWindow::*)(QWidget *) >, &::UI::MainWindow::hideDock, bondage::FunctionCaller> { };
 struct UI_MainWindow_openFile_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::Editor *(::UI::MainWindow::*)(const QString &, int) >, &::UI::MainWindow::openFile, bondage::FunctionCaller> { };
+struct UI_MainWindow_openType_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::Editor *(::UI::MainWindow::*)(const QString &) >, &::UI::MainWindow::openType, bondage::FunctionCaller> { };
 struct UI_MainWindow_output_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::OutputNotifier *(::UI::MainWindow::*)() >, &::UI::MainWindow::output, bondage::FunctionCaller> { };
 struct UI_MainWindow_process_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Process::Pointer(::UI::MainWindow::*)() const >, &::UI::MainWindow::process, bondage::FunctionCaller> { };
 struct UI_MainWindow_setGeometry_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< bool(::UI::MainWindow::*)(const QString &) >, &::UI::MainWindow::setGeometry, bondage::FunctionCaller> { };
@@ -148,6 +150,7 @@ struct MainWindow_trUtf8_overload : Reflect::FunctionArgumentCountSelector<
     MainWindow_trUtf8_overload_1,
     MainWindow_trUtf8_overload_3
     > { };
+struct UI_MainWindow_typeAdded_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::TypeNotifier *(::UI::MainWindow::*)() >, &::UI::MainWindow::typeAdded, bondage::FunctionCaller> { };
 
 const bondage::Function UI_MainWindow_methods[] = {
   bondage::FunctionBuilder::buildOverload< MainWindow_MainWindow_overload >("MainWindow"),
@@ -170,6 +173,9 @@ const bondage::Function UI_MainWindow_methods[] = {
     UI_MainWindow_addToolBar_overload0_t
     >("addToolBar"),
   bondage::FunctionBuilder::build<
+    UI_MainWindow_editorClosed_overload0_t
+    >("editorClosed"),
+  bondage::FunctionBuilder::build<
     UI_MainWindow_editorOpened_overload0_t
     >("editorOpened"),
   bondage::FunctionBuilder::build<
@@ -185,6 +191,9 @@ const bondage::Function UI_MainWindow_methods[] = {
   bondage::FunctionBuilder::build<
     UI_MainWindow_openFile_overload0_t
     >("openFile"),
+  bondage::FunctionBuilder::build<
+    UI_MainWindow_openType_overload0_t
+    >("openType"),
   bondage::FunctionBuilder::build<
     UI_MainWindow_output_overload0_t
     >("output"),
@@ -207,7 +216,10 @@ const bondage::Function UI_MainWindow_methods[] = {
     UI_MainWindow_target_overload0_t
     >("target"),
   bondage::FunctionBuilder::buildOverload< MainWindow_tr_overload >("tr"),
-  bondage::FunctionBuilder::buildOverload< MainWindow_trUtf8_overload >("trUtf8")
+  bondage::FunctionBuilder::buildOverload< MainWindow_trUtf8_overload >("trUtf8"),
+  bondage::FunctionBuilder::build<
+    UI_MainWindow_typeAdded_overload0_t
+    >("typeAdded")
 };
 
 
@@ -218,7 +230,32 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
   MainWindow,
   ::QMainWindow,
   UI_MainWindow_methods,
-  22);
+  25);
+
+
+
+// Exposing class ::UI::TypeNotifier
+struct UI_TypeNotifier_listen_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< int(::UI::TypeNotifier::*)(std::function<void (QString)> &&) >, &::UI::TypeNotifier::listen, bondage::FunctionCaller> { };
+struct UI_TypeNotifier_remove_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::TypeNotifier::*)(int) >, &::UI::TypeNotifier::remove, bondage::FunctionCaller> { };
+
+const bondage::Function UI_TypeNotifier_methods[] = {
+  bondage::FunctionBuilder::build<
+    UI_TypeNotifier_listen_overload0_t
+    >("listen"),
+  bondage::FunctionBuilder::build<
+    UI_TypeNotifier_remove_overload0_t
+    >("remove")
+};
+
+
+BONDAGE_IMPLEMENT_EXPOSED_CLASS(
+  UI_TypeNotifier,
+  g_bondage_library_UI,
+  ::UI,
+  TypeNotifier,
+  void,
+  UI_TypeNotifier_methods,
+  2);
 
 
 

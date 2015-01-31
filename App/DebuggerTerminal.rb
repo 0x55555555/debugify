@@ -42,13 +42,13 @@ module App
       end
     end
 
-    def initialize(mainWindow)
-      @widget = mainWindow.addTerminal("Debugify Debug Console")
+    def initialize(application)
+      @widget = application.mainwindow.addTerminal("Debugify Debug Console")
 
       $stdout = IOWrapper.new(@widget, $stdout)
       $stderr = IOWrapper.new(@widget, $stderr)
 
-      @pry = initPry($stdout)
+      @pry = initPry(application, $stdout)
       $stdout.pry = @pry
 
       @widget.input.listen do |inp|
@@ -61,12 +61,14 @@ module App
     end
 
   private
-    def initPry(output)
+    def initPry(application, output)
+      mainwindow = application.mainwindow
+      
       Pry.config.editor = "subl"
       Pry.config.pager = false
       return Pry.new(
         :output => output,
-        :target => TOPLEVEL_BINDING,
+        :target => binding,
         :commands => Pry.config.commands
       )
     end

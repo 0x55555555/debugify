@@ -10,6 +10,7 @@ NotifierExtensions.install([
   MarginClickNotifier,
   AboutToCloseNotifier,
   AboutToShowNotifier,
+  TypeNotifier,
 ])
 
 class Console < Qt::QWidget

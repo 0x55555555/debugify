@@ -30,6 +30,9 @@ class MainWindow < Qt::QMainWindow
   # UI::ToolBar MainWindow#addToolBar(QString n)
   # \brief 
 
+  # UI::EditorNotifier MainWindow#editorClosed()
+  # \brief 
+
   # UI::EditorNotifier MainWindow#editorOpened()
   # \brief 
 
@@ -47,6 +50,9 @@ class MainWindow < Qt::QMainWindow
   # \brief 
 
   # UI::Editor MainWindow#openFile(QString str, number line)
+  # \brief 
+
+  # UI::Editor MainWindow#openType(QString arg1)
   # \brief 
 
   # UI::OutputNotifier MainWindow#output()
@@ -76,6 +82,9 @@ class MainWindow < Qt::QMainWindow
 
   # QString MainWindow::trUtf8(string s)
   # QString MainWindow::trUtf8(string s, string c, number n)
+  # \brief 
+
+  # UI::TypeNotifier MainWindow#typeAdded()
   # \brief 
 end
 

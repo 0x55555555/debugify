@@ -32,6 +32,7 @@ TypeEditor::TypeEditor(TypeManager *types, const QString &path)
     connect(ui->members, SIGNAL(activated(QModelIndex)), this, SLOT(selectIndex(QModelIndex)));
 
     connect(ui->baseClasses, SIGNAL(activated(QModelIndex)), this, SLOT(selectIndex(QModelIndex)));
+    connect(ui->templateArguments, SIGNAL(activated(QModelIndex)), this, SLOT(selectIndex(QModelIndex)));
 
     connect(ui->goToLocation, &QPushButton::clicked, [this]()
       {

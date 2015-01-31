@@ -10,6 +10,11 @@
     "filename": "include/MainWindow.h",
     "derivable": true
   },
+  "::UI::TypeNotifier": {
+    "name": "TypeNotifier",
+    "parent": null,
+    "filename": "include/MainWindow.h"
+  },
   "::UI::AboutToCloseNotifier": {
     "name": "AboutToCloseNotifier",
     "parent": null,

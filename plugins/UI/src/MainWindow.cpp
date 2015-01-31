@@ -36,6 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
   addDockWidget(Qt::LeftDockWidgetArea, dock);
   connect(_moduleExplorer, SIGNAL(sourceFileActivated(Module::Pointer,QString)), this, SLOT(openFile(Module::Pointer,QString)));
   connect(_moduleExplorer, SIGNAL(dataTypeActivated(Module::Pointer,QString)), this, SLOT(openType(Module::Pointer,QString)));
+  connect(_types, SIGNAL(typeAdded(Module::Pointer,UI::CachedType::Pointer)), this, SLOT(typeAdded(Module::Pointer,UI::CachedType::Pointer)));
 
   connect(&_timer, SIGNAL(timeout()), this, SLOT(timerTick()));
   _timer.start(100);
@@ -177,6 +178,11 @@ void MainWindow::setProcess(const Process::Pointer &ptr)
   _process = ptr;
   }
 
+void MainWindow::typeAdded(const Module::Pointer &, const UI::CachedType::Pointer &type)
+  {
+  _typeAdded(type->path);
+  }
+
 void MainWindow::onError(const QString &str)
   {
   qWarning() << str;
@@ -189,8 +195,10 @@ void MainWindow::setStatusText(const QString &str)
 
 void MainWindow::closeFile(int tab)
   {
-  auto editor = ui->tabWidget->widget(tab);
-  auto key = _editors.key(static_cast<Editor*>(editor), QString());
+  auto editor = static_cast<Editor *>(ui->tabWidget->widget(tab));
+  _editorClosed(editor);
+
+  auto key = _editors.key(editor, QString());
   if (!key.isEmpty())
     {
     _editors.remove(key);
@@ -228,12 +236,12 @@ void MainWindow::openType(const Module::Pointer &, const QString &type)
   openType(type);
   }
 
-void MainWindow::openType(const QString &type)
+Editor *MainWindow::openType(const QString &type)
   {
   if (auto editor = _editors.value(TypeEditor::makeKey(type), nullptr))
     {
     focusEditor(editor);
-    return;
+    return editor;
     }
 
   try
@@ -243,11 +251,14 @@ void MainWindow::openType(const QString &type)
     connect(editor, SIGNAL(selectType(QString)), this, SLOT(openType(QString)));
     connect(editor, SIGNAL(selectFile(QString,int)), this, SLOT(openFile(QString,int)));
     addEditor(editor);
+    return editor;
     }
   catch (const NoSuchTypeException &)
     {
     // ignore and return
     }
+
+  return nullptr;
   }
 
 void MainWindow::onProcessOutput(const QString &str)

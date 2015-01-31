@@ -89,7 +89,7 @@ module App
         end
       end
 
-      if (handler.has_location(:exe) && brks.length)
+      if (handler.has_location(:exe))
         handler.set_value(:breakpoints, brks, :exe)
       end
     end
