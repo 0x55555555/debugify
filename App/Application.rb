@@ -32,8 +32,8 @@ module App
       @mainwindow.aboutToClose.listen do
         @project.set_value(:application_geometry, @mainwindow.geometry(), :user)
         @project.close()
+        @project = nil
       end
-
 
       @debugger = App::Debugger.new(@mainwindow, @log)
 
@@ -73,9 +73,19 @@ module App
       onTargetChanged(nil)
       onProcessChanged(nil)
 
+      val = @project.value(:disable_most_recent, false)
+      if (!val)
+        recents = @project.value(:recents, [])
+        if (recents.length > 0)
+          recent = recents[-1]
+          @log.log "Loading previous project #{shortPath(recent)}"
+          loadTarget(recent)
+        end
+      end
+
       @mainwindow.show()
       
-      puts "Debugger is up."
+      @log.log "Debugger is up."
       @application.execute()
     end
 
@@ -125,6 +135,13 @@ module App
       @currentThreadToolbar.hide()
     end
 
+    def shortPath(path)
+      if (path.length > 50)
+        path = "...#{path.chars.last(50).join}"
+      end
+      return path
+    end
+
     def buildMenus()
       menu = @mainwindow.addMenu("File")
 
@@ -140,10 +157,7 @@ module App
         targets.clear()
         recents = @project.value(:recents, [])
         recents.reverse_each do |r|
-          path = r
-          if (r.length > 50)
-            path = "...#{r.chars.last(50).join}"
-          end
+          path = shortPath(r)
 
           basename = File.basename(r)
           text = "#{basename} (#{path})"
