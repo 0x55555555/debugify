@@ -9,7 +9,7 @@ void foo(int *i)
   {
   if (!i)
     {
-    throw std::runtime_error("SHIT SHIT SHIT");
+    return;
     }
   *i = 0;
   auto test = std::make_unique<Pork>();
@@ -35,11 +35,12 @@ int main(int argc, char *argv[])
 
   for (int i = 0; i < 10; ++i)
     {
-    threads.push_back(std::make_unique<std::thread>([]()
+    threads.push_back(std::make_unique<std::thread>([i]()
       {
       while(true)
         {
-        foo(nullptr);
+        int j = 0;
+        foo(i % 2 == 0 ? &j : nullptr);
         usleep(100000);
         }
       }));
