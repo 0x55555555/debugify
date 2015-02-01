@@ -7,6 +7,10 @@
 
 void foo(int *i)
   {
+  if (!i)
+    {
+    throw std::runtime_error("SHIT SHIT SHIT");
+    }
   *i = 0;
   auto test = std::make_unique<Pork>();
 

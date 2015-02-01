@@ -36,9 +36,6 @@ class MainWindow < Qt::QMainWindow
   # UI::EditorNotifier MainWindow#editorOpened()
   # \brief 
 
-  # UI::OutputNotifier MainWindow#errors()
-  # \brief 
-
   # QString MainWindow#geometry()
   # \brief 
 
@@ -53,9 +50,6 @@ class MainWindow < Qt::QMainWindow
   # \brief 
 
   # UI::Editor MainWindow#openType(QString arg1)
-  # \brief 
-
-  # UI::OutputNotifier MainWindow#output()
   # \brief 
 
   # std::__1::shared_ptr MainWindow#process()

@@ -79,9 +79,6 @@ public:
 
   AboutToCloseNotifier *aboutToClose() { return &_aboutToClose; }
 
-  OutputNotifier *output() { return &_stdout; }
-  OutputNotifier *errors() { return &_stderr; }
-
   EditorNotifier *editorOpened() { return &_editorOpened; }
   EditorNotifier *editorClosed() { return &_editorClosed; }
 
@@ -99,9 +96,6 @@ private slots:
   void closeFile(int tab);
   void openFile(const Module::Pointer &ptr, const QString &);
   void openType(const Module::Pointer &ptr, const QString &);
-
-  void onProcessOutput(const QString &);
-  void onProcessError(const QString &);
 
   void timerTick();
 
@@ -124,9 +118,6 @@ private:
   Target::Pointer _target;
 
   Process::Pointer _process;
-
-  OutputNotifier _stdout;
-  OutputNotifier _stderr;
 
   EditorNotifier _editorOpened;
   EditorNotifier _editorClosed;

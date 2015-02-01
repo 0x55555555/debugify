@@ -14,8 +14,8 @@
     "parent": null,
     "filename": "include/Process.h"
   },
-  "::LldbDriver::ProcessEndedNotifier": {
-    "name": "ProcessEndedNotifier",
+  "::LldbDriver::NoArgNotifier": {
+    "name": "NoArgNotifier",
     "parent": null,
     "filename": "include/Process.h"
   },

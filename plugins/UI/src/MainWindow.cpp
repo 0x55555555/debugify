@@ -261,15 +261,6 @@ Editor *MainWindow::openType(const QString &type)
   return nullptr;
   }
 
-void MainWindow::onProcessOutput(const QString &str)
-  {
-  _stdout(str);
-  }
-
-void MainWindow::onProcessError(const QString &str)
-  {
-  _stderr(str);
-  }
 
 void MainWindow::timerTick()
   {
@@ -284,21 +275,6 @@ void MainWindow::timerTick()
     {
     return;
     }
-    
-  auto forwardOutput = [this](auto type, const auto &send)
-  {
-    std::array<char, 256> output;
-    while (size_t read = _process->getOutput(type, output.data(), output.size()-1))
-      {
-      xAssert(read <= (output.size()-1));
-      output[read] = '\0';
-      send(output.data());
-      }
-    };
-
-  forwardOutput(Process::OutputType::Output, [this](auto str) { onProcessOutput(str); });
-  forwardOutput(Process::OutputType::Error, [this](auto str) { onProcessError(str); });
-
   }
 
 void MainWindow::checkError(const Error &err)

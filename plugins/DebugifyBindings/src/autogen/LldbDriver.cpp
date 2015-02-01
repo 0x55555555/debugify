@@ -5,12 +5,12 @@
 #include "tuple"
 #include "TypeMember.h"
 #include "../../DebugifyBindings/ManualBindings/ManualBindings.h"
+#include "../../../Eks/EksCore/include/Containers/XStringSimple.h"
 #include "Process.h"
 #include "Thread.h"
 #include "FunctionMember.h"
 #include "Frame.h"
 #include "Breakpoint.h"
-#include "../../../Eks/EksCore/include/Containers/XStringSimple.h"
 #include "Value.h"
 #include "../../../Eks/EksCore/include/Utilities/XStringRef.h"
 #include "Type.h"
@@ -123,13 +123,24 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
 
 
 // Exposing class ::LldbDriver::Process
+std::tuple< Eks::String, Eks::String > LldbDriver_Process_getOutputs_overload0(::LldbDriver::Process & inputArg0)
+{
+  std::tuple< Eks::String, Eks::String > result;
+
+  inputArg0.getOutputs(std::get<0>(result), std::get<1>(result));
+  return result;
+}
+
 struct LldbDriver_Process_continueExecution_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::Error(::LldbDriver::Process::*)() >, &::LldbDriver::Process::continueExecution, bondage::FunctionCaller> { };
 struct LldbDriver_Process_currentState_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::ProcessState(::LldbDriver::Process::*)() const >, &::LldbDriver::Process::currentState, bondage::FunctionCaller> { };
-struct LldbDriver_Process_ended_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::ProcessEndedNotifier *(::LldbDriver::Process::*)() >, &::LldbDriver::Process::ended, bondage::FunctionCaller> { };
+struct LldbDriver_Process_ended_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::NoArgNotifier *(::LldbDriver::Process::*)() >, &::LldbDriver::Process::ended, bondage::FunctionCaller> { };
+struct LldbDriver_Process_errorAvailable_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::NoArgNotifier *(::LldbDriver::Process::*)() >, &::LldbDriver::Process::errorAvailable, bondage::FunctionCaller> { };
 struct LldbDriver_Process_exitDescription_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Eks::String(::LldbDriver::Process::*)() const >, &::LldbDriver::Process::exitDescription, bondage::FunctionCaller> { };
 struct LldbDriver_Process_exitStatus_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< int(::LldbDriver::Process::*)() const >, &::LldbDriver::Process::exitStatus, bondage::FunctionCaller> { };
+struct LldbDriver_Process_getOutputs_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< std::tuple< Eks::String, Eks::String >(*)(::LldbDriver::Process &) >, &LldbDriver_Process_getOutputs_overload0, Reflect::MethodInjectorBuilder<bondage::FunctionCaller>> { };
 struct LldbDriver_Process_getStateString_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Eks::String(*)(LldbDriver::ProcessState) >, &::LldbDriver::Process::getStateString, bondage::FunctionCaller> { };
 struct LldbDriver_Process_kill_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::Error(::LldbDriver::Process::*)() >, &::LldbDriver::Process::kill, bondage::FunctionCaller> { };
+struct LldbDriver_Process_outputAvailable_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::NoArgNotifier *(::LldbDriver::Process::*)() >, &::LldbDriver::Process::outputAvailable, bondage::FunctionCaller> { };
 struct LldbDriver_Process_pauseExecution_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::Error(::LldbDriver::Process::*)() >, &::LldbDriver::Process::pauseExecution, bondage::FunctionCaller> { };
 struct LldbDriver_Process_processEvents_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::LldbDriver::Process::*)() >, &::LldbDriver::Process::processEvents, bondage::FunctionCaller> { };
 struct LldbDriver_Process_processID_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< size_t(::LldbDriver::Process::*)() const >, &::LldbDriver::Process::processID, bondage::FunctionCaller> { };
@@ -151,17 +162,26 @@ const bondage::Function LldbDriver_Process_methods[] = {
     LldbDriver_Process_ended_overload0_t
     >("ended"),
   bondage::FunctionBuilder::build<
+    LldbDriver_Process_errorAvailable_overload0_t
+    >("errorAvailable"),
+  bondage::FunctionBuilder::build<
     LldbDriver_Process_exitDescription_overload0_t
     >("exitDescription"),
   bondage::FunctionBuilder::build<
     LldbDriver_Process_exitStatus_overload0_t
     >("exitStatus"),
   bondage::FunctionBuilder::build<
+    LldbDriver_Process_getOutputs_overload0_t
+    >("getOutputs"),
+  bondage::FunctionBuilder::build<
     LldbDriver_Process_getStateString_overload0_t
     >("getStateString"),
   bondage::FunctionBuilder::build<
     LldbDriver_Process_kill_overload0_t
     >("kill"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Process_outputAvailable_overload0_t
+    >("outputAvailable"),
   bondage::FunctionBuilder::build<
     LldbDriver_Process_pauseExecution_overload0_t
     >("pauseExecution"),
@@ -199,31 +219,31 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
   Process,
   void,
   LldbDriver_Process_methods,
-  16);
+  19);
 
 
 
-// Exposing class ::LldbDriver::ProcessEndedNotifier
-struct LldbDriver_ProcessEndedNotifier_listen_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< int(::LldbDriver::ProcessEndedNotifier::*)(std::function<void ()> &&) >, &::LldbDriver::ProcessEndedNotifier::listen, bondage::FunctionCaller> { };
-struct LldbDriver_ProcessEndedNotifier_remove_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::LldbDriver::ProcessEndedNotifier::*)(int) >, &::LldbDriver::ProcessEndedNotifier::remove, bondage::FunctionCaller> { };
+// Exposing class ::LldbDriver::NoArgNotifier
+struct LldbDriver_NoArgNotifier_listen_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< int(::LldbDriver::NoArgNotifier::*)(std::function<void ()> &&) >, &::LldbDriver::NoArgNotifier::listen, bondage::FunctionCaller> { };
+struct LldbDriver_NoArgNotifier_remove_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::LldbDriver::NoArgNotifier::*)(int) >, &::LldbDriver::NoArgNotifier::remove, bondage::FunctionCaller> { };
 
-const bondage::Function LldbDriver_ProcessEndedNotifier_methods[] = {
+const bondage::Function LldbDriver_NoArgNotifier_methods[] = {
   bondage::FunctionBuilder::build<
-    LldbDriver_ProcessEndedNotifier_listen_overload0_t
+    LldbDriver_NoArgNotifier_listen_overload0_t
     >("listen"),
   bondage::FunctionBuilder::build<
-    LldbDriver_ProcessEndedNotifier_remove_overload0_t
+    LldbDriver_NoArgNotifier_remove_overload0_t
     >("remove")
 };
 
 
 BONDAGE_IMPLEMENT_EXPOSED_CLASS(
-  LldbDriver_ProcessEndedNotifier,
+  LldbDriver_NoArgNotifier,
   g_bondage_library_LldbDriver,
   ::LldbDriver,
-  ProcessEndedNotifier,
+  NoArgNotifier,
   void,
-  LldbDriver_ProcessEndedNotifier_methods,
+  LldbDriver_NoArgNotifier_methods,
   2);
 
 

@@ -5,6 +5,7 @@
 #include "lldb/API/SBEvent.h"
 #include "lldb/API/SBStream.h"
 #include "lldb/API/SBDebugger.h"
+#include <array>
 
 namespace LldbDriver
 {
@@ -37,6 +38,33 @@ ProcessState Process::currentState() const
 Eks::String Process::getStateString(ProcessState s)
   {
   return lldb::SBDebugger::StateAsCString((lldb::StateType)s);
+  }
+
+NoArgNotifier *Process::outputAvailable()
+  {
+  return &_impl->outputAvailable;
+  }
+
+NoArgNotifier *Process::errorAvailable()
+  {
+  return &_impl->errorAvailable;
+  }
+
+void Process::getOutputs(Eks::String &out, Eks::String &err)
+  {
+  auto forwardOutput = [this](auto type, auto &send)
+  {
+    std::array<char, 256> output;
+    while (size_t read = getOutput(type, output.data(), output.size()-1))
+      {
+      xAssert(read <= (output.size()-1));
+      output[read] = '\0';
+      send += output.data();
+      }
+    };
+
+  forwardOutput(Process::OutputType::Output, out);
+  forwardOutput(Process::OutputType::Error, err);
   }
 
 size_t Process::getOutput(Process::OutputType type, char *data, size_t inputSize)
@@ -92,6 +120,15 @@ void Process::processEvents()
   lldb::SBEvent ev;
   while (_impl->listener.GetNextEvent(ev))
     {
+    if (ev.GetType() == lldb::SBProcess::eBroadcastBitSTDOUT)
+      {
+      _impl->outputAvailable();
+      }
+      if (ev.GetType() == lldb::SBProcess::eBroadcastBitSTDERR)
+        {
+        _impl->errorAvailable();
+        }
+
     if (lldb::SBProcess::EventIsProcessEvent(ev) &&
         lldb::SBProcess::GetStateFromEvent(ev) != _impl->processState)
       {
@@ -111,7 +148,7 @@ ProcessStateChangeNotifier *Process::stateChanged()
   return &_impl->stateChanged;
   }
 
-ProcessEndedNotifier *Process::ended()
+NoArgNotifier *Process::ended()
   {
   return &_impl->ended;
   }

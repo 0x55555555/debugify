@@ -60,9 +60,10 @@ module App
 
       if (@process)
         @processBegin.call(p)
-        @process.stateChanged.listen do |state|
-          processStateChanged(state)
-        end
+        @process.stateChanged.listen{ |state| processStateChanged(state) }
+
+        @process.outputAvailable.listen{ syncOutputs() }
+        @process.errorAvailable.listen{ syncOutputs() }
       else
         @processEnd.call(p)
       end
@@ -103,6 +104,13 @@ module App
         @exited.call(@process)
         setProcess(nil)
       end
+    end
+
+    def syncOutputs()
+      out, err = @process.getOutputs()
+
+      @log.log(err) if err.length > 0
+      @log.log(out) if out.length > 0
     end
   end
 

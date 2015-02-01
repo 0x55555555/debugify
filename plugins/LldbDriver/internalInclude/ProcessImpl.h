@@ -26,7 +26,9 @@ public:
   lldb::SBProcess process;
   lldb::StateType processState;
   ProcessStateChangeNotifier stateChanged;
-  ProcessEndedNotifier ended;
+  NoArgNotifier ended;
+  NoArgNotifier outputAvailable;
+  NoArgNotifier errorAvailable;
   lldb::SBListener listener;
 
   std::shared_ptr<LldbDriver::Thread> wrapThread(const lldb::SBThread &thr)

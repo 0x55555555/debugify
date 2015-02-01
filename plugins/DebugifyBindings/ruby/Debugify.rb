@@ -28,7 +28,7 @@ end
 
 NotifierExtensions.install([
   ProcessStateChangeNotifier,
-  ProcessEndedNotifier,
+  NoArgNotifier,
   BreakpointNotifier
 ])
 

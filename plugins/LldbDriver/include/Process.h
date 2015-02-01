@@ -33,13 +33,13 @@ enum class ProcessState
 X_DECLARE_NOTIFIER(ProcessStateChangeNotifier, std::function<void (ProcessState)>);
 
 /// \expose unmanaged
-X_DECLARE_NOTIFIER(ProcessEndedNotifier, std::function<void ()>);
+X_DECLARE_NOTIFIER(NoArgNotifier, std::function<void ()>);
 
 /// \expose sharedpointer
 class Process
   {
   SHARED_CLASS(Process);
-  PIMPL_CLASS(Process, sizeof(void*) * 26);
+  PIMPL_CLASS(Process, sizeof(void*) * 36);
 
 public:
   /// \noexpose
@@ -54,12 +54,20 @@ public:
 
   static Eks::String getStateString(ProcessState s);
 
+  NoArgNotifier *outputAvailable();
+  NoArgNotifier *errorAvailable();
+
   enum class OutputType
     {
     Output,
     Error
     };
+
   size_t getOutput(OutputType type, char *data, size_t inputSize);
+  /// Get the output from the process
+  /// \param[out] out
+  /// \param[out] err
+  void getOutputs(Eks::String &out, Eks::String &err);
 
   Error kill();
   Error pauseExecution();
@@ -77,7 +85,8 @@ public:
   void processEvents();
 
   ProcessStateChangeNotifier *stateChanged();
-  ProcessEndedNotifier *ended();
+  NoArgNotifier *ended();
+
 
   friend class Target;
   };
