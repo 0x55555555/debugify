@@ -170,6 +170,9 @@ void MainWindow::setTarget(const Target::Pointer &tar)
   _moduleExplorer->setTarget(tar);
   _types->setTarget(tar);
 
+  ui->tabWidget->clear();
+  _editors.clear();
+
   _target = tar;
   }
 
