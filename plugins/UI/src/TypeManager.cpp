@@ -16,20 +16,18 @@ TypeManager::TypeManager()
   {
   qRegisterMetaType<LldbDriver::Type*>();
   qRegisterMetaType<CachedType::Pointer>();
+  _workerThread = nullptr;
+  }
 
-  _worker = new TypeManagerWorker(this);
-  _workerThread = new QThread();
-  _worker->moveToThread(_workerThread);
-  _workerThread->start();
-
-  connect(this, SIGNAL(loadTypes(Module::Pointer)), _worker, SLOT(loadTypes(Module::Pointer)));
-
-  connect(_worker, SIGNAL(loadedType(Module::Pointer, UI::CachedType::Pointer)), this, SLOT(loadedType(Module::Pointer, UI::CachedType::Pointer)));
-  connect(_worker, SIGNAL(loadedTypeDeclaration(Module::Pointer,UI::CachedType::Pointer,const Type*)), this, SLOT(loadedTypeDeclaration(Module::Pointer, UI::CachedType::Pointer, const Type*)));
+TypeManager::~TypeManager()
+  {
+  endWorker();
   }
 
 void TypeManager::setTarget(const Target::Pointer &tar)
   {
+  endWorker();
+
   _target = tar;
   _types.clear();
 
@@ -38,10 +36,37 @@ void TypeManager::setTarget(const Target::Pointer &tar)
     return;
     }
 
+  startWorker();
+
   for(size_t i = 0; i < _target->moduleCount(); ++i)
     {
     auto module = _target->moduleAt(i);
     emit loadTypes(module);
+    }
+  }
+
+void TypeManager::startWorker()
+  {
+  endWorker();
+
+  auto worker = new TypeManagerWorker(this);
+  _workerThread = new QThread();
+  worker->moveToThread(_workerThread);
+  _workerThread->start();
+
+  connect(this, SIGNAL(loadTypes(Module::Pointer)), worker, SLOT(loadTypes(Module::Pointer)));
+
+  connect(worker, SIGNAL(loadedType(Module::Pointer, UI::CachedType::Pointer)), this, SLOT(loadedType(Module::Pointer, UI::CachedType::Pointer)));
+  connect(worker, SIGNAL(loadedTypeDeclaration(Module::Pointer,UI::CachedType::Pointer,const Type*)), this, SLOT(loadedTypeDeclaration(Module::Pointer, UI::CachedType::Pointer, const Type*)));
+  }
+
+void TypeManager::endWorker()
+  {
+  if (_workerThread)
+    {
+    _workerThread->exit();
+    _workerThread->wait();
+    _workerThread = nullptr;
     }
   }
 

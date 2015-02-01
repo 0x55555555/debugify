@@ -2,6 +2,7 @@ TODO
 ====
 
 - Value formatters/Values panel
-- Crash when changing project during existing project load
+- Better breakpoint ui (hit count, expressions)
+- Data breakpoints
 - UI fanciness
 - Simple types removes *

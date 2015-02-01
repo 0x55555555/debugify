@@ -167,6 +167,7 @@ Process::Pointer MainWindow::process() const
 
 void MainWindow::setTarget(const Target::Pointer &tar)
   {
+  _types->setTarget(nullptr);
   _moduleExplorer->setTarget(tar);
   _types->setTarget(tar);
 

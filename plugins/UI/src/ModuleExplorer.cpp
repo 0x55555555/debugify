@@ -234,8 +234,8 @@ void ModuleExplorer::typeAdded(const Module::Pointer &module, const CachedType::
   {
   auto &item = _moduleMap[module];
   if (!item.moduleItem)
-    {
-    xAssertFail();
+      {
+    // Possibly we could hit this if target changed rapidly.. probably not good.
     return;
     }
 
@@ -269,7 +269,7 @@ void ModuleExplorer::typeDeclarationAdded(const Module::Pointer &module, const C
   auto &moduleItem = _moduleMap[module];
   if (!moduleItem.moduleItem)
     {
-    xAssertFail();
+    // Possibly we could hit this if target changed rapidly.. probably not good.
     return;
     }
 
@@ -311,9 +311,17 @@ void ModuleExplorer::filterChanged(const QString &filter)
   _filter->setFilterRegExp(regExp);
   }
 
+void ModuleExplorer::clearTree()
+  {
+  _fileMap.clear();
+  _unownedTypeMap.clear();
+  _moduleMap.clear();
+  QStandardItemModel::clear();
+  }
+
 void ModuleExplorer::rebuildTree()
   {
-  QStandardItemModel::clear();
+  clearTree();
   if (!_target)
     {
     return;

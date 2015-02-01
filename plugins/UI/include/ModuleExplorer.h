@@ -55,6 +55,7 @@ private slots:
   void filterChanged(const QString &filter);
 
 private:
+  void clearTree();
   void rebuildTree();
   void buildModule(QStandardItem *module, const Module::Pointer &, bool &isSystem);
   bool isSystemModule(const QString &path, const Module::Pointer &);

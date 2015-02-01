@@ -33,6 +33,7 @@ class TypeManager : public QObject
 
 public:
   TypeManager();
+  ~TypeManager();
 
   void setTarget(const Target::Pointer &tar);
 
@@ -49,8 +50,10 @@ signals:
   void typeDeclarationAdded(const Module::Pointer &module, const UI::CachedType::Pointer &, const Type *t);
 
 private:
+  void endWorker();
+  void startWorker();
+
   QThread *_workerThread;
-  TypeManagerWorker *_worker;
   std::mutex _typeLock;
   QHash<QString, std::shared_ptr<CachedType>> _types;
   Target::Pointer _target;
