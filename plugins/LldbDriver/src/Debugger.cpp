@@ -29,7 +29,7 @@ Debugger::Debugger()
   {
   lldb::SBDebugger::Initialize();
 
-  _impl->debugger = lldb::SBDebugger::Create(false, log, nullptr);
+  _impl->debugger = lldb::SBDebugger::Create(true, log, nullptr);
   _impl->debugger.SetScriptLanguage(lldb::eScriptLanguageNone);
   }
 

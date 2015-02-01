@@ -45,6 +45,12 @@
     "filename": "include/Thread.h",
     "type": "enum"
   },
+  "::LldbDriver::Thread::ExceptionType": {
+    "name": "ExceptionType",
+    "parent": null,
+    "filename": "include/Thread.h",
+    "type": "enum"
+  },
   "::LldbDriver::Value": {
     "name": "Value",
     "parent": null,

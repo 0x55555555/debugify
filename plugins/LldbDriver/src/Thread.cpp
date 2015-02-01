@@ -3,6 +3,7 @@
 #include "lldb/API/SBStream.h"
 #include "Target.h"
 #include "Breakpoint.h"
+#include <regex>
 
 namespace LldbDriver
 {
@@ -83,6 +84,18 @@ void Thread::stepOut()
 Thread::StopReason Thread::stopReason() const
   {
   return (StopReason)_impl->thread.GetStopReason();
+  }
+
+Thread::ExceptionType Thread::stopException(Eks::String *desc) const
+  {
+  desc->clear();
+  if (stopReason() == StopReason::Exception)
+    {
+    desc->resize(2048, ' ');
+    desc->resize(_impl->thread.GetStopDescription(desc->data(), desc->size()), ' ');
+    }
+
+  return (ExceptionType)_impl->thread.GetStopReasonDataAtIndex(0);
   }
 
 /// \param[out] location

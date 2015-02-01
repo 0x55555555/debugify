@@ -10,10 +10,10 @@
 #include "FunctionMember.h"
 #include "Frame.h"
 #include "Breakpoint.h"
+#include "../../../Eks/EksCore/include/Containers/XStringSimple.h"
 #include "Value.h"
 #include "../../../Eks/EksCore/include/Utilities/XStringRef.h"
 #include "Type.h"
-#include "../../../Eks/EksCore/include/Containers/XStringSimple.h"
 #include "../../../Eks/EksCore/include/Containers/XVector.h"
 #include "../../../Eks/EksCore/include/Memory/XTypedAllocator.h"
 #include "Error.h"
@@ -377,6 +377,14 @@ std::tuple< LldbDriver::Breakpoint, LldbDriver::BreakpointLocation > LldbDriver_
   return result;
 }
 
+std::tuple< LldbDriver::Thread::ExceptionType, Eks::String > LldbDriver_Thread_stopException_overload0(::LldbDriver::Thread & inputArg0)
+{
+  std::tuple< LldbDriver::Thread::ExceptionType, Eks::String > result;
+
+  std::get<0>(result) = inputArg0.stopException(&std::get<1>(result));
+  return result;
+}
+
 struct LldbDriver_Thread_frameAt_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::Frame(::LldbDriver::Thread::*)(size_t) >, &::LldbDriver::Thread::frameAt, bondage::FunctionCaller> { };
 struct LldbDriver_Thread_frameCount_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< size_t(::LldbDriver::Thread::*)() const >, &::LldbDriver::Thread::frameCount, bondage::FunctionCaller> { };
 struct LldbDriver_Thread_id_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< size_t(::LldbDriver::Thread::*)() const >, &::LldbDriver::Thread::id, bondage::FunctionCaller> { };
@@ -389,6 +397,7 @@ struct LldbDriver_Thread_stepInto_overload0_t : Reflect::FunctionCall<Reflect::F
 struct LldbDriver_Thread_stepOut_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::LldbDriver::Thread::*)() >, &::LldbDriver::Thread::stepOut, bondage::FunctionCaller> { };
 struct LldbDriver_Thread_stepOver_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::LldbDriver::Thread::*)() >, &::LldbDriver::Thread::stepOver, bondage::FunctionCaller> { };
 struct LldbDriver_Thread_stopBreakpoint_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< std::tuple< LldbDriver::Breakpoint, LldbDriver::BreakpointLocation >(*)(::LldbDriver::Thread &) >, &LldbDriver_Thread_stopBreakpoint_overload0, Reflect::MethodInjectorBuilder<bondage::FunctionCaller>> { };
+struct LldbDriver_Thread_stopException_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< std::tuple< LldbDriver::Thread::ExceptionType, Eks::String >(*)(::LldbDriver::Thread &) >, &LldbDriver_Thread_stopException_overload0, Reflect::MethodInjectorBuilder<bondage::FunctionCaller>> { };
 struct LldbDriver_Thread_stopReason_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::Thread::StopReason(::LldbDriver::Thread::*)() const >, &::LldbDriver::Thread::stopReason, bondage::FunctionCaller> { };
 
 const bondage::Function LldbDriver_Thread_methods[] = {
@@ -429,6 +438,9 @@ const bondage::Function LldbDriver_Thread_methods[] = {
     LldbDriver_Thread_stopBreakpoint_overload0_t
     >("stopBreakpoint"),
   bondage::FunctionBuilder::build<
+    LldbDriver_Thread_stopException_overload0_t
+    >("stopException"),
+  bondage::FunctionBuilder::build<
     LldbDriver_Thread_stopReason_overload0_t
     >("stopReason")
 };
@@ -441,7 +453,7 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
   Thread,
   void,
   LldbDriver_Thread_methods,
-  13);
+  14);
 
 
 

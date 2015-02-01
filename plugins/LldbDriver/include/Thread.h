@@ -54,11 +54,27 @@ public:
       Instrumentation
   };
 
+  /// \expose
+  enum class ExceptionType
+    {
+    BadAccess = 1,
+    BadInstruction = 2,
+    Arithmetic = 3,
+    Emulation = 4,
+    Software = 5,
+    Breakpoint = 6,
+    Syscall = 7,
+    MachSyscall = 8,
+    RpcAlert = 9,
+    Crash = 10,
+    };
+
   StopReason stopReason() const;
 
   /// \param[out] location
   Breakpoint stopBreakpoint(BreakpointLocation *location) const;
-
+  /// \param[out] desc
+  ExceptionType stopException(Eks::String *desc) const;
 
   friend class Process;
   };

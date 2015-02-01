@@ -12,7 +12,7 @@ module App
       @pendingTypes = Set.new()
 
       mainwindow.editorOpened.listen { |editor| setupEditor(editor) }
-      mainwindow.editorClosed.listen { |editor| setupEditor(editor) }
+      mainwindow.editorClosed.listen { |editor| destroyEditor(editor) }
       mainwindow.typeAdded.listen { |t| typeDiscovered(t) }
       project.install_handler(:editors, self)
     end
@@ -70,46 +70,6 @@ module App
       end
     end
 
-  private
-    def typeDiscovered(type)
-      if (@pendingTypes.delete?(type) != nil)
-        raise "Failed to open #{type}" unless @mainwindow.openType(type)
-      end
-    end
-
-    def setupEditor(editor)
-      if (editor.class == UI::FileEditor)
-        setupFileEditor(editor)
-      end
-
-      @editors[editor.path] = editor
-    end
-
-    def destroyEditor(editor)
-      @editors.remove(editor.path)
-    end
-
-    def setupFileEditor(editor)
-      path = editor.path()
-      editor.marginClicked.listen do |line|
-        found, brk, loc = @mainwindow.target.findBreakpoint(path, line)
-        if (found)
-          @mainwindow.target.removeBreakpoint(brk)
-        else
-          @mainwindow.target.addBreakpoint(path, line)
-        end
-      end
-
-      highlightSources()
-      syncEditorBreakpoints()
-    end
-
-    def addEditorBreakpoint(file, line)
-      editor = @editors[file]
-
-      editor.addMarker(UI::FileEditor::MarkerType[:Breakpoint], line) if editor
-    end
-
     def loadCurrentSource(process)
       thread = process.selectedThread
       frame = thread.selectedFrame
@@ -154,6 +114,46 @@ module App
           end
         end
       end
+    end
+
+  private
+    def typeDiscovered(type)
+      if (@pendingTypes.delete?(type) != nil)
+        raise "Failed to open #{type}" unless @mainwindow.openType(type)
+      end
+    end
+
+    def setupEditor(editor)
+      if (editor.class == UI::FileEditor)
+        setupFileEditor(editor)
+      end
+
+      @editors[editor.path] = editor
+    end
+
+    def destroyEditor(editor)
+      @editors.delete(editor.path)
+    end
+
+    def setupFileEditor(editor)
+      path = editor.path()
+      editor.marginClicked.listen do |line|
+        found, brk, loc = @mainwindow.target.findBreakpoint(path, line)
+        if (found)
+          @mainwindow.target.removeBreakpoint(brk)
+        else
+          @mainwindow.target.addBreakpoint(path, line)
+        end
+      end
+
+      highlightSources()
+      syncEditorBreakpoints()
+    end
+
+    def addEditorBreakpoint(file, line)
+      editor = @editors[file]
+
+      editor.addMarker(UI::FileEditor::MarkerType[:Breakpoint], line) if editor
     end
   end
 

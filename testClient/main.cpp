@@ -5,14 +5,14 @@
 #include <QVector>
 #include "foo.h"
 
-void foo()
+void foo(int *i)
   {
-  int i = 0;
+  *i = 0;
   auto test = std::make_unique<Pork>();
 
-  i = 1 + 3;
+  *i = 1 + 3;
 
-  std::cout << i << std::endl;
+  std::cout << *i << std::endl;
   std::cerr << 5 << std::endl;
   }
 
@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
       {
       while(true)
         {
-        foo();
+        foo(nullptr);
         usleep(100000);
         }
       }));

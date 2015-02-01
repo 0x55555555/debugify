@@ -81,6 +81,9 @@ module App
               brkpt, location = t.stopBreakpoint()
 
               @log.log "  at #{brkpt.id}.#{location.id} #{File.basename(location.file)}, #{location.line}"
+            elsif (reason == :Exception)
+              reason, str = t.stopException()
+              @log.log "  #{str}"
             end
           end
         end
