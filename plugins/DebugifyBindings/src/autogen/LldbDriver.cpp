@@ -889,6 +889,7 @@ struct LldbDriver_Target_attach_overload0_t : Reflect::FunctionCall<Reflect::Fun
 struct LldbDriver_Target_breakpointAt_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::Breakpoint(::LldbDriver::Target::*)(size_t) >, &::LldbDriver::Target::breakpointAt, bondage::FunctionCaller> { };
 struct LldbDriver_Target_breakpointCount_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< size_t(::LldbDriver::Target::*)() >, &::LldbDriver::Target::breakpointCount, bondage::FunctionCaller> { };
 struct LldbDriver_Target_breakpointsChanged_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::BreakpointNotifier *(::LldbDriver::Target::*)() >, &::LldbDriver::Target::breakpointsChanged, bondage::FunctionCaller> { };
+struct LldbDriver_Target_connect_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< std::shared_ptr<Process>(::LldbDriver::Target::*)(const Eks::String &, LldbDriver::Error &) >, &::LldbDriver::Target::connect, bondage::FunctionCaller> { };
 struct LldbDriver_Target_findBreakpoint_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< std::tuple< bool, LldbDriver::Breakpoint, LldbDriver::BreakpointLocation >(*)(::LldbDriver::Target &, const Eks::String &, size_t) >, &LldbDriver_Target_findBreakpoint_overload0, Reflect::MethodInjectorBuilder<bondage::FunctionCaller>> { };
 struct LldbDriver_Target_launch_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< std::shared_ptr<Process>(::LldbDriver::Target::*)(const Eks::Vector<Eks::StringRef> &, const Eks::Vector<Eks::StringRef> &, LldbDriver::Error &) >, &::LldbDriver::Target::launch, bondage::FunctionCaller> { };
 struct LldbDriver_Target_moduleAt_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< std::shared_ptr<Module>(::LldbDriver::Target::*)(size_t) >, &::LldbDriver::Target::moduleAt, bondage::FunctionCaller> { };
@@ -912,6 +913,9 @@ const bondage::Function LldbDriver_Target_methods[] = {
   bondage::FunctionBuilder::build<
     LldbDriver_Target_breakpointsChanged_overload0_t
     >("breakpointsChanged"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Target_connect_overload0_t
+    >("connect"),
   bondage::FunctionBuilder::build<
     LldbDriver_Target_findBreakpoint_overload0_t
     >("findBreakpoint"),
@@ -940,7 +944,7 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
   Target,
   void,
   LldbDriver_Target_methods,
-  11);
+  12);
 
 
 

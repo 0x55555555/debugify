@@ -23,6 +23,9 @@ class Target
   # LldbDriver::BreakpointNotifier Target#breakpointsChanged()
   # \brief 
 
+  # std::__1::shared_ptr Target#connect(Eks::String url, LldbDriver::Error err)
+  # \brief 
+
   # boolean, LldbDriver::Breakpoint, LldbDriver::BreakpointLocation Target#findBreakpoint(Eks::String file, number line)
   # \brief the found breakpoint
   # \param[out] 1 outBrk the found breakpoint

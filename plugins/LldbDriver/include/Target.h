@@ -37,6 +37,9 @@ public:
   /// \expose
   std::shared_ptr<Process> attach(uint64_t pid, Error &err);
 
+  /// \expose
+  std::shared_ptr<Process> connect(const Eks::String &url, Error &err);
+
   size_t moduleCount();
   std::shared_ptr<Module> moduleAt(size_t index);
 

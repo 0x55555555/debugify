@@ -36,27 +36,19 @@ module App
     def launch(args = [], env = [])
       err = LldbDriver::Error.new()
       raise "No target to launch" unless @target
-      process = @target.launch(args, env, err)
-
-      if (err.hasError())
-        raise err.error()
-      end
-
-      setProcess(process)
-      return process
+      return setupProcess(@target.launch(args, env, err), err)
     end
 
     def attach(pid)
       err = LldbDriver::Error.new()
       raise "No target to launch" unless @target
-      process = @target.attach(pid, err)
+      return setupProcess(@target.attach(pid, err), err)
+    end
 
-      if (err.hasError())
-        raise err.error()
-      end
-
-      setProcess(process)
-      return process
+    def connect(url)
+      err = LldbDriver::Error.new()
+      raise "No target to launch" unless @target
+      return setupProcess(@target.connect(url, err), err)
     end
 
     def update()
@@ -67,6 +59,15 @@ module App
     end
 
   private
+    def setupProcess(process, err)
+      if (err.hasError())
+        raise err.error()
+      end
+
+      setProcess(process)
+      return process
+    end
+
     def setProcess(p)
       @mainwindow.setProcess(p)
       @process = p

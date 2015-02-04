@@ -98,6 +98,25 @@ std::shared_ptr<Process> Target::attach(uint64_t pid, Error &err)
   return process;
   }
 
+std::shared_ptr<Process> Target::connect(const Eks::String &url, Error &err)
+  {
+  lldb::SBError error;
+
+  auto process = std::make_shared<Process>();
+  process->_impl->myself = process;
+  process->_impl->target = _impl->myself.lock();
+  process->_impl->listener = lldb::SBListener("ProcessListener");
+
+  process->_impl->process = _impl->target.ConnectRemote(
+        process->_impl->listener,
+        url.data(),
+        nullptr,
+        error);
+
+  err = Error::Helper::makeError(error);
+  return process;
+  }
+
 size_t Target::moduleCount()
   {
   _impl->cacheModules();
