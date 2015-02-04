@@ -12,6 +12,7 @@ NotifierExtensions.install([
   AboutToShowNotifier,
   TypeNotifier,
   ChangedNotifier,
+  DebugNotifier,
 ])
 
 class Console < UI::Dockable

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>448</width>
-    <height>106</height>
+    <width>479</width>
+    <height>125</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -34,6 +34,9 @@
    </property>
    <item>
     <layout class="QFormLayout" name="formLayout">
+     <property name="fieldGrowthPolicy">
+      <enum>QFormLayout::FieldsStayAtSizeHint</enum>
+     </property>
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
@@ -84,10 +87,17 @@
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
+     <property name="centerButtons">
+      <bool>false</bool>
+     </property>
     </widget>
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>file</tabstop>
+  <tabstop>line</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -97,12 +107,12 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
+     <x>251</x>
+     <y>123</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
-     <y>274</y>
+     <y>105</y>
     </hint>
    </hints>
   </connection>
@@ -113,12 +123,12 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
+     <x>319</x>
+     <y>123</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
-     <y>274</y>
+     <y>105</y>
     </hint>
    </hints>
   </connection>

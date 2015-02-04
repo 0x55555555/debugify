@@ -56,6 +56,10 @@ module App
         $stdout.prompt
       end
 
+      application.mainwindow.debugOutput.listen do |op|
+        $stdout.write(op)
+      end
+
       ENV['TERM']='ansi'
       $stdout.prompt
     end

@@ -10,6 +10,11 @@
     "filename": "include/MainWindow.h",
     "derivable": true
   },
+  "::UI::DebugNotifier": {
+    "name": "DebugNotifier",
+    "parent": null,
+    "filename": "include/MainWindow.h"
+  },
   "::UI::TypeNotifier": {
     "name": "TypeNotifier",
     "parent": null,

@@ -5,6 +5,7 @@ require_relative '../BindingsInternal'
 
 require_relative 'AboutToShowNotifier'
 require_relative 'MainWindow'
+require_relative 'DebugNotifier'
 require_relative 'TypeNotifier'
 require_relative 'AboutToCloseNotifier'
 require_relative 'EditorNotifier'

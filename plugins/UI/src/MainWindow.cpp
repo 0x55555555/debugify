@@ -17,10 +17,14 @@
 namespace UI
 {
 
+static MainWindow *g_mw = 0;
+
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
   ui(new Ui::MainWindow)
   {
+  xAssert(g_mw == 0);
+  g_mw = this;
   ui->setupUi(this);
   connect(ui->tabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(closeFile(int)));
     
@@ -40,11 +44,18 @@ MainWindow::MainWindow(QWidget *parent) :
 
   connect(&_timer, SIGNAL(timeout()), this, SLOT(timerTick()));
   _timer.start(100);
+
+  _oldHandler = qInstallMessageHandler(log);
   }
 
 MainWindow::~MainWindow()
   {
   delete ui;
+  auto x = qInstallMessageHandler(_oldHandler);
+  xAssert(x == log);
+
+  xAssert(g_mw == this);
+  g_mw = nullptr;
   }
 
 QString MainWindow::geometry() const
@@ -303,5 +314,15 @@ void MainWindow::closeEvent(QCloseEvent *event)
   _aboutToClose();
 
   event->accept();
+  }
+
+void MainWindow::log(QtMsgType t, const QMessageLogContext &c, const QString &m)
+  {
+  if (g_mw)
+    {
+    g_mw->_oldHandler(t, c, m);
+
+    (*g_mw->debugOutput())(m);
+    }
   }
 }

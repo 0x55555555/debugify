@@ -101,6 +101,7 @@ struct UI_MainWindow_addEditor_overload0_t : Reflect::FunctionCall<Reflect::Func
 struct UI_MainWindow_addMenu_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::Menu *(::UI::MainWindow::*)(const QString &) >, &::UI::MainWindow::addMenu, bondage::FunctionCaller> { };
 struct UI_MainWindow_addTerminal_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::Terminal *(::UI::MainWindow::*)(const QString &, bool) >, &::UI::MainWindow::addTerminal, bondage::FunctionCaller> { };
 struct UI_MainWindow_addToolBar_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::ToolBar *(::UI::MainWindow::*)(const QString &) >, &::UI::MainWindow::addToolBar, bondage::FunctionCaller> { };
+struct UI_MainWindow_debugOutput_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::DebugNotifier *(::UI::MainWindow::*)() >, &::UI::MainWindow::debugOutput, bondage::FunctionCaller> { };
 struct UI_MainWindow_editorClosed_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::EditorNotifier *(::UI::MainWindow::*)() >, &::UI::MainWindow::editorClosed, bondage::FunctionCaller> { };
 struct UI_MainWindow_editorOpened_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::EditorNotifier *(::UI::MainWindow::*)() >, &::UI::MainWindow::editorOpened, bondage::FunctionCaller> { };
 struct UI_MainWindow_geometry_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(::UI::MainWindow::*)() const >, &::UI::MainWindow::geometry, bondage::FunctionCaller> { };
@@ -172,6 +173,9 @@ const bondage::Function UI_MainWindow_methods[] = {
     UI_MainWindow_addToolBar_overload0_t
     >("addToolBar"),
   bondage::FunctionBuilder::build<
+    UI_MainWindow_debugOutput_overload0_t
+    >("debugOutput"),
+  bondage::FunctionBuilder::build<
     UI_MainWindow_editorClosed_overload0_t
     >("editorClosed"),
   bondage::FunctionBuilder::build<
@@ -223,7 +227,32 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
   MainWindow,
   ::QMainWindow,
   UI_MainWindow_methods,
-  23);
+  24);
+
+
+
+// Exposing class ::UI::DebugNotifier
+struct UI_DebugNotifier_listen_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< int(::UI::DebugNotifier::*)(std::function<void (QString)> &&) >, &::UI::DebugNotifier::listen, bondage::FunctionCaller> { };
+struct UI_DebugNotifier_remove_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::DebugNotifier::*)(int) >, &::UI::DebugNotifier::remove, bondage::FunctionCaller> { };
+
+const bondage::Function UI_DebugNotifier_methods[] = {
+  bondage::FunctionBuilder::build<
+    UI_DebugNotifier_listen_overload0_t
+    >("listen"),
+  bondage::FunctionBuilder::build<
+    UI_DebugNotifier_remove_overload0_t
+    >("remove")
+};
+
+
+BONDAGE_IMPLEMENT_EXPOSED_CLASS(
+  UI_DebugNotifier,
+  g_bondage_library_UI,
+  ::UI,
+  DebugNotifier,
+  void,
+  UI_DebugNotifier_methods,
+  2);
 
 
 

@@ -21,6 +21,9 @@ module App
       end
 
       dlg.exec()
+      if (UI::Dialog::Result[dlg.result()] != :Accepted)
+        return nil
+      end
 
       val = dlg.value("pid")
       return val.to_i

@@ -67,6 +67,9 @@
        <property name="text">
         <string>Cancel</string>
        </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
       </widget>
      </item>
      <item>
@@ -74,12 +77,20 @@
        <property name="text">
         <string>Connect</string>
        </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
     </layout>
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>url</tabstop>
+  <tabstop>cancel</tabstop>
+  <tabstop>connect</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

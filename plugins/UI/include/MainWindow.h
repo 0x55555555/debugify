@@ -42,6 +42,9 @@ X_DECLARE_NOTIFIER(AboutToCloseNotifier, std::function<void ()>);
 /// \expose unmanaged
 X_DECLARE_NOTIFIER(TypeNotifier, std::function<void (QString)>);
 
+/// \expose unmanaged
+X_DECLARE_NOTIFIER(DebugNotifier, std::function<void (QString)>);
+
 /// \expose managed
 class MainWindow : public QMainWindow
   {
@@ -80,6 +83,8 @@ public:
 
   TypeNotifier *typeAdded() { return &_typeAdded; }
 
+  DebugNotifier *debugOutput() { return &_debugOutput; }
+
 public slots:
   Editor *openFile(const QString &str, int line = -1);
   Editor *openType(const QString &);
@@ -98,16 +103,17 @@ private slots:
 private:
   void checkError(const Error &err);
 
-
   void addEditor(Editor *editor);
   void focusEditor(Editor *editor);
 
   void closeEvent(QCloseEvent *event) X_OVERRIDE;
 
+  static void log(QtMsgType, const QMessageLogContext &, const QString &);
+  QtMessageHandler _oldHandler;
+
   Ui::MainWindow *ui;
 
   QHash<QString, Editor *> _editors;
-;
   TypeManager *_types;
   ModuleExplorer *_moduleExplorer;
 
@@ -119,6 +125,8 @@ private:
   EditorNotifier _editorClosed;
 
   TypeNotifier _typeAdded;
+
+  DebugNotifier _debugOutput;
 
   AboutToCloseNotifier _aboutToClose;
 

@@ -30,6 +30,9 @@ class MainWindow < Qt::QMainWindow
   # UI::ToolBar MainWindow#addToolBar(QString n)
   # \brief 
 
+  # UI::DebugNotifier MainWindow#debugOutput()
+  # \brief 
+
   # UI::EditorNotifier MainWindow#editorClosed()
   # \brief 
 
