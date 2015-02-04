@@ -1,9 +1,9 @@
 #pragma once
-#include <QWidget>
 #include <QPlainTextEdit>
 #include "Utilities/XNotifier.h"
 #include "Containers/XStringSimple.h"
 #include "Containers/XStringBuffer.h"
+#include "Dockable.h"
 
 class QPlainTextEdit;
 
@@ -29,20 +29,19 @@ signals:
   };
 
 /// \expose
-class Console : public QWidget
+class Console : public Dockable
   {
   Q_OBJECT
 
 public:
   /// \noexpose
-  explicit Console(QWidget *parent = 0);
+  explicit Console(bool toolbar);
   ~Console();
 
   void append(QString str);
   void clear();
 
   InputNotifier *input() { return &_onInput; }
-
 
   const QString &currentSubmit() const { return _submit; }
   void setSubmit(const QString &str);

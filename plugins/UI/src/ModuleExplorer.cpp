@@ -234,7 +234,7 @@ void ModuleExplorer::typeAdded(const Module::Pointer &module, const CachedType::
   {
   auto &item = _moduleMap[module];
   if (!item.moduleItem)
-      {
+    {
     // Possibly we could hit this if target changed rapidly.. probably not good.
     return;
     }

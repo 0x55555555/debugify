@@ -14,12 +14,14 @@ class Menu : public QMenu
   Q_OBJECT
 
 public:
-  Menu();
+  Menu(QWidget *owner);
   ~Menu();
 
   void clear();
   Menu *addMenu(const QString &str);
   QAction *addAction(const QString &str, const std::function<void()> &clicked);
+
+  void exec();
 
   AboutToShowNotifier *aboutToShow() { return &_aboutToShow; }
 

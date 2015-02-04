@@ -74,40 +74,34 @@ bool MainWindow::setGeometry(const QString &g)
   return res1 && res2;
   }
 
-Terminal *MainWindow::addTerminal(const QString &name)
+Terminal *MainWindow::addTerminal(const QString &name, bool toolbar)
   {
-  auto terminal = new Terminal();
-  auto dock = new QDockWidget();
+  auto dock = new Terminal(toolbar);
   dock->setObjectName(name);
   dock->setWindowTitle(name);
-  dock->setWidget(terminal);
   addDockWidget(Qt::BottomDockWidgetArea, dock);
 
-  return terminal;
+  return dock;
   }
 
-Console *MainWindow::addConsole(const QString &name)
+Console *MainWindow::addConsole(const QString &name, bool toolbar)
   {
-  auto console = new Console();
-  auto dock = new QDockWidget();
+  auto dock = new Console(toolbar);
   dock->setObjectName(name);
   dock->setWindowTitle(name);
-  dock->setWidget(console);
   addDockWidget(Qt::BottomDockWidgetArea, dock);
 
-  return console;
+  return dock;
   }
 
-EditableTextWindow *MainWindow::addEditor(const QString &name)
+EditableTextWindow *MainWindow::addEditor(const QString &name, bool toolbar)
   {
-  auto editor = new EditableTextWindow();
-  auto dock = new QDockWidget();
+  auto dock = new EditableTextWindow(toolbar);
   dock->setObjectName(name);
   dock->setWindowTitle(name);
-  dock->setWidget(editor);
   addDockWidget(Qt::LeftDockWidgetArea, dock);
 
-  return editor;
+  return dock;
   }
 
 ToolBar *MainWindow::addToolBar(const QString &n)
@@ -126,33 +120,33 @@ QString MainWindow::getOpenFilename(const QString &caption, const QString &filte
 
 Menu *MainWindow::addMenu(const QString &name)
   {
-  auto menu = new Menu;
+  auto menu = new Menu(this);
   menu->setTitle(name);
 
   ui->menubar->addMenu(menu);
   return menu;
   }
 
-void MainWindow::showDock(QWidget *w)
+void MainWindow::showDock(Dockable *dock)
   {
-  if (auto dock = qobject_cast<QDockWidget *>(w->parent()))
+  if (dock)
     {
     dock->show();
     return;
     }
 
-  qWarning() << "Invalid dock widget passed to show " << w;
+  qWarning() << "Invalid dock widget passed to show " << dock;
   }
 
-void MainWindow::hideDock(QWidget *w)
+void MainWindow::hideDock(Dockable *dock)
   {
-  if (auto dock = qobject_cast<QDockWidget *>(w->parent()))
+  if (dock)
     {
     dock->hide();
     return;
     }
 
-  qWarning() << "Invalid dock widget passed to hide " << w;
+  qWarning() << "Invalid dock widget passed to hide " << dock;
   }
 
 Target::Pointer MainWindow::target() const

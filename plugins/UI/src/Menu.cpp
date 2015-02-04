@@ -1,10 +1,12 @@
 #include "Menu.h"
 #include "QAction"
+#include "QDebug"
 
 namespace UI
 {
 
-Menu::Menu()
+Menu::Menu(QWidget *owner)
+    : QMenu(owner)
   {
   connect(this, &QMenu::aboutToShow, this, &Menu::onAboutToShow);
   }
@@ -20,7 +22,7 @@ void Menu::clear()
 
 Menu *Menu::addMenu(const QString &str)
   {
-  Menu *a = new Menu();
+  Menu *a = new Menu(this);
   a->setTitle(str);
   QMenu::addMenu(a);
 
@@ -31,9 +33,24 @@ QAction *Menu::addAction(const QString &str, const std::function<void()> &clicke
   {
   QAction *a = QMenu::addAction(str);
 
-  connect(a, &QAction::triggered, clicked);
+  connect(a, &QAction::triggered, [clicked]()
+    {
+    try
+      {
+      clicked();
+      }
+    catch(const std::exception &e)
+      {
+      qWarning() << e.what();
+      }
+    });
 
   return a;
+  }
+
+void Menu::exec()
+  {
+  QMenu::exec(QCursor::pos());
   }
 
 void Menu::onAboutToShow()

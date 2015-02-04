@@ -15,16 +15,16 @@ class MainWindow < Qt::QMainWindow
   # UI::AboutToCloseNotifier MainWindow#aboutToClose()
   # \brief 
 
-  # UI::Console MainWindow#addConsole(QString n)
+  # UI::Console MainWindow#addConsole(QString n, boolean toolbar)
   # \brief 
 
-  # UI::EditableTextWindow MainWindow#addEditor(QString n)
+  # UI::EditableTextWindow MainWindow#addEditor(QString n, boolean toolbar)
   # \brief 
 
   # UI::Menu MainWindow#addMenu(QString name)
   # \brief 
 
-  # UI::Terminal MainWindow#addTerminal(QString n)
+  # UI::Terminal MainWindow#addTerminal(QString n, boolean toolbar)
   # \brief 
 
   # UI::ToolBar MainWindow#addToolBar(QString n)
@@ -43,7 +43,7 @@ class MainWindow < Qt::QMainWindow
   # QString MainWindow#getOpenFilename(QString caption, QString filter)
   # \brief 
 
-  # nil MainWindow#hideDock(QWidget w)
+  # nil MainWindow#hideDock(UI::Dockable w)
   # \brief 
 
   # UI::Editor MainWindow#openFile(QString str, number line)
@@ -64,7 +64,7 @@ class MainWindow < Qt::QMainWindow
   # nil MainWindow#setTarget(std::__1::shared_ptr tar)
   # \brief 
 
-  # nil MainWindow#showDock(QWidget w)
+  # nil MainWindow#showDock(UI::Dockable w)
   # \brief 
 
   # std::__1::shared_ptr MainWindow#target()

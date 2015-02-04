@@ -993,6 +993,10 @@
 		080CB49B1A7D29EB0011FE7A /* TimeSpecTimeout.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TimeSpecTimeout.cpp; sourceTree = "<group>"; };
 		080CB49C1A7D29EB0011FE7A /* TimeSpecTimeout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TimeSpecTimeout.h; sourceTree = "<group>"; };
 		080CB49D1A7D29EB0011FE7A /* UuidCompatibility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UuidCompatibility.h; sourceTree = "<group>"; };
+		080CB4A51A7E88DF0011FE7A /* Dialog.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Dialog.cpp; sourceTree = "<group>"; };
+		080CB4A61A7E88DF0011FE7A /* Dockable.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Dockable.cpp; sourceTree = "<group>"; };
+		080CB4A91A7E88E80011FE7A /* Dialog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Dialog.h; sourceTree = "<group>"; };
+		080CB4AA1A7E88E80011FE7A /* Dockable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Dockable.h; sourceTree = "<group>"; };
 		0866AA081A5C90EC003FAAB8 /* Console.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Console.h; sourceTree = "<group>"; };
 		0866AA091A5C90EC003FAAB8 /* EditableTextWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditableTextWindow.h; sourceTree = "<group>"; };
 		0866AA0D1A5C90F5003FAAB8 /* Console.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Console.cpp; sourceTree = "<group>"; };
@@ -5966,6 +5970,8 @@
 		08D140781A55864500436C54 /* include */ = {
 			isa = PBXGroup;
 			children = (
+				080CB4A91A7E88E80011FE7A /* Dialog.h */,
+				080CB4AA1A7E88E80011FE7A /* Dockable.h */,
 				0866AA1E1A745A51003FAAB8 /* Menu.h */,
 				0866AA1F1A745A51003FAAB8 /* ToolBar.h */,
 				0866AA081A5C90EC003FAAB8 /* Console.h */,
@@ -5985,6 +5991,8 @@
 		08D140831A55864500436C54 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				080CB4A51A7E88DF0011FE7A /* Dialog.cpp */,
+				080CB4A61A7E88DF0011FE7A /* Dockable.cpp */,
 				0866AA201A745A5A003FAAB8 /* Menu.cpp */,
 				0866AA211A745A5A003FAAB8 /* Toolbar.cpp */,
 				0866AA0D1A5C90F5003FAAB8 /* Console.cpp */,

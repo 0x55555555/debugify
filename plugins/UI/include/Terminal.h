@@ -1,5 +1,5 @@
 #pragma once
-#include <Console.h>
+#include "Console.h"
 
 namespace UI
 {
@@ -11,7 +11,7 @@ class Terminal : public Console
 
 public:
   /// \noexpose
-  explicit Terminal(QWidget *parent = 0);
+  explicit Terminal(bool toolbar);
   ~Terminal();
 
   void onInput(int chr, const QString &str) X_OVERRIDE;

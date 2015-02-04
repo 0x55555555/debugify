@@ -4,16 +4,37 @@
 
 namespace UI
 {
-
-EditableTextWindow::EditableTextWindow()
+EditableTextEdit::EditableTextEdit(EditableTextWindow *window)
+    : _window(window)
   {
+  xAssert(_window);
   QFont font("Courier New");
   font.setStyleHint(QFont::Monospace);
   setFont(font);
 
   document()->setDocumentMargin(0.0);
-
   document()->setDefaultStyleSheet("a { color: black; text-decoration: none; }");
+  }
+
+void EditableTextEdit::mouseDoubleClickEvent(QMouseEvent *ev)
+  {
+  auto anchor = anchorAt(ev->pos());
+
+  (*_window->clicked())(anchor, ev->pos().x(), ev->pos().y());
+  }
+
+void EditableTextEdit::contextMenuEvent(QContextMenuEvent *ev)
+  {
+  auto anchor = anchorAt(ev->pos());
+
+  (*_window->contextMenu())(anchor, ev->pos().x(), ev->pos().y());
+  }
+
+EditableTextWindow::EditableTextWindow(bool toolbar)
+    : Dockable(toolbar),
+      _edit(new EditableTextEdit(this))
+  {
+  setWidget(_edit);
   }
 
 EditableTextWindow::~EditableTextWindow()
@@ -22,17 +43,7 @@ EditableTextWindow::~EditableTextWindow()
 
 void EditableTextWindow::setContents(const QString &html)
   {
-  setHtml(html);
-  }
-
-void EditableTextWindow::mouseDoubleClickEvent(QMouseEvent *e)
-  {
-  auto anchor = anchorAt(e->pos());
-
-  if (anchor.length())
-    {
-    _clicked(anchor);
-    }
+  _edit->setHtml(html);
   }
 
 }

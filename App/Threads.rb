@@ -9,9 +9,9 @@ module App
     
     def initialize(mainWindow, debugger)
       @debugger = debugger
-      @widget = mainWindow.addEditor("Threads")
+      @widget = mainWindow.addEditor("Threads", false)
 
-      @widget.clicked.listen do |p|
+      @widget.clicked.listen do |p, x, y|
         threadList = mainWindow.process.threads
         selected = threadList.find do |t| 
           next t.id == p.to_i

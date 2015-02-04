@@ -11,12 +11,15 @@ NotifierExtensions.install([
   AboutToCloseNotifier,
   AboutToShowNotifier,
   TypeNotifier,
+  ChangedNotifier,
 ])
 
-class Console < Qt::QWidget
+class Console < UI::Dockable
   def puts(s)
     append("#{s}\n")
   end
 end
+
+UIC_PATH = File.dirname(__FILE__) + "/../../../App/ui/"
 
 end

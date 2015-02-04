@@ -8,9 +8,9 @@ module App
     attr_reader :widget
     
     def initialize(mainWindow, debugger)
-      @widget = mainWindow.addEditor("Call Stack")
+      @widget = mainWindow.addEditor("Call Stack", false)
 
-      @widget.clicked.listen do |f|
+      @widget.clicked.listen do |f, x, y|
         thread = mainWindow.process.selectedThread
 
         newFrame = thread.frames[f.to_i]

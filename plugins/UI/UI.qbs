@@ -10,6 +10,7 @@ Eks.Library {
   Depends { name: "Qt.core" }
   Depends { name: "Qt.gui" }
   Depends { name: "Qt.widgets" }
+  Depends { name: "Qt.uitools" }
 
   Depends { name: "LldbDriver" }
 

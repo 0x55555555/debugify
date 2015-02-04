@@ -43,7 +43,7 @@ module App
     end
 
     def initialize(application)
-      @widget = application.mainwindow.addTerminal("Debugify Debug Console")
+      @widget = application.mainwindow.addTerminal("Debugify Debug Console", false)
 
       $stdout = IOWrapper.new(@widget, $stdout)
       $stderr = IOWrapper.new(@widget, $stderr)

@@ -36,12 +36,6 @@
     "filename": "include/Menu.h",
     "derivable": true
   },
-  "::UI::ToolBar": {
-    "name": "ToolBar",
-    "parent": "::QToolBar",
-    "filename": "include/ToolBar.h",
-    "derivable": true
-  },
   "::UI::MarginClickNotifier": {
     "name": "MarginClickNotifier",
     "parent": null,
@@ -79,10 +73,11 @@
     "filename": "include/FileEditor.h",
     "type": "enum"
   },
-  "::UI::EditableTextWindow": {
-    "name": "EditableTextWindow",
+  "::UI::EditableTextEdit": {
+    "name": "EditableTextEdit",
     "parent": "::QTextEdit",
     "filename": "include/EditableTextWindow.h",
+    "partial": true,
     "derivable": true
   },
   "::UI::ClickNotifier": {
@@ -90,9 +85,43 @@
     "parent": null,
     "filename": "include/EditableTextWindow.h"
   },
+  "::UI::Dialog": {
+    "name": "Dialog",
+    "parent": "::QDialog",
+    "filename": "include/Dialog.h",
+    "derivable": true
+  },
+  "::UI::Dialog::Result": {
+    "name": "Result",
+    "parent": null,
+    "filename": "include/Dialog.h",
+    "type": "enum"
+  },
+  "::UI::ChangedNotifier": {
+    "name": "ChangedNotifier",
+    "parent": null,
+    "filename": "include/Dialog.h"
+  },
+  "::UI::InputNotifier": {
+    "name": "InputNotifier",
+    "parent": null,
+    "filename": "include/Console.h"
+  },
+  "::UI::Dockable": {
+    "name": "Dockable",
+    "parent": "::QDockWidget",
+    "filename": "include/Dockable.h",
+    "derivable": true
+  },
+  "::UI::EditableTextWindow": {
+    "name": "EditableTextWindow",
+    "parent": "::UI::Dockable",
+    "filename": "include/EditableTextWindow.h",
+    "derivable": true
+  },
   "::UI::Console": {
     "name": "Console",
-    "parent": "::QWidget",
+    "parent": "::UI::Dockable",
     "filename": "include/Console.h",
     "derivable": true
   },
@@ -102,10 +131,11 @@
     "filename": "include/Terminal.h",
     "derivable": true
   },
-  "::UI::InputNotifier": {
-    "name": "InputNotifier",
-    "parent": null,
-    "filename": "include/Console.h"
+  "::UI::ToolBar": {
+    "name": "ToolBar",
+    "parent": "::QToolBar",
+    "filename": "include/ToolBar.h",
+    "derivable": true
   },
   "::UI::Application": {
     "name": "Application",

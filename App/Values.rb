@@ -8,7 +8,7 @@ module App
     attr_reader :widget
     
     def initialize(mainWindow, debugger)
-      @widget = mainWindow.addEditor("Values")
+      @widget = mainWindow.addEditor("Values", false)
 
       debugger.ready.listen do |process|
         thread = mainWindow.process.selectedThread

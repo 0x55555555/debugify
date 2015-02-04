@@ -48,15 +48,12 @@ void ConsoleWidget::keyPressEvent(QKeyEvent *e)
     }
 }
 
-Console::Console(QWidget *parent)
-    : QWidget(parent),
+Console:: Console(bool toolbar)
+    : Dockable(toolbar),
       _pos(0)
   {
-  auto layout = new QVBoxLayout(this);
-  layout->setContentsMargins(4, 4, 4, 4);
-
   _edit = new ConsoleWidget(this);
-  layout->addWidget(_edit);
+  setWidget(_edit);
 
   QFont font("Courier New");
   font.setStyleHint(QFont::Monospace);
@@ -66,7 +63,6 @@ Console::Console(QWidget *parent)
   connect(_edit, SIGNAL(deleteBack()), this, SLOT(deleteBack()));
   connect(_edit, SIGNAL(moveHorizontal(int)), this, SLOT(moveHorizontal(int)));
   connect(_edit, SIGNAL(moveVertical(int)), this, SLOT(moveVertical(int)));
-
   }
 
 Console::~Console()

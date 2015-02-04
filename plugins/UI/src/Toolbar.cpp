@@ -1,5 +1,6 @@
 #include "ToolBar.h"
 #include "QAction"
+#include "QDebug"
 
 namespace UI
 {
@@ -16,7 +17,17 @@ QAction *ToolBar::addAction(const QString &str, const std::function<void()> &cli
   {
   QAction *a = QToolBar::addAction(str);
 
-  connect(a, &QAction::triggered, clicked);
+  connect(a, &QAction::triggered, [clicked]()
+    {
+    try
+      {
+      clicked();
+      }
+    catch (const std::exception &e)
+      {
+      qWarning() << e.what();
+      }
+    });
 
   return a;
   }

@@ -5,6 +5,7 @@ Eks.SubModule {
   toRoot: "."
 
   references: [
+    "App/App.qbs",
     "Eks/EksAll.qbs",
     "plugins/BindingGenerator/Bondage.qbs",
     "plugins/LldbDriver/LldbDriver.qbs",

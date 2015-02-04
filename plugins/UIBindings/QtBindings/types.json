@@ -5,6 +5,18 @@
     "filename": "QtWidgets.h",
     "derivable": true
   },
+  "::QDialog": {
+    "name": "QDialog",
+    "parent": "::QWidget",
+    "filename": "QtWidgets.h",
+    "derivable": true
+  },
+  "::QDockWidget": {
+    "name": "QDockWidget",
+    "parent": "::QWidget",
+    "filename": "QtWidgets.h",
+    "derivable": true
+  },
   "::QAction": {
     "name": "QAction",
     "parent": null,
@@ -55,6 +67,11 @@
   },
   "::QString": {
     "name": "QString",
+    "parent": null,
+    "filename": "QtWidgets.h"
+  },
+  "::QVariant": {
+    "name": "QVariant",
     "parent": null,
     "filename": "QtWidgets.h"
   }

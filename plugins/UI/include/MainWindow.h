@@ -28,6 +28,7 @@ class ProcessToolbar;
 class ModuleExplorer;
 class ToolBar;
 class Menu;
+class Dockable;
 
 /// \expose unmanaged
 X_DECLARE_NOTIFIER(OutputNotifier, std::function<void (QString)>);
@@ -47,20 +48,15 @@ class MainWindow : public QMainWindow
   Q_OBJECT
 
 public:
-  enum
-    {
-    MaxRecentFiles = 10
-    };
-
   explicit MainWindow(QWidget *parent = 0);
   ~MainWindow();
 
   QString geometry() const;
   bool setGeometry(const QString &g);
 
-  Terminal *addTerminal(const QString &n);
-  Console *addConsole(const QString &n);
-  EditableTextWindow *addEditor(const QString &n);
+  Terminal *addTerminal(const QString &n, bool toolbar);
+  Console *addConsole(const QString &n, bool toolbar);
+  EditableTextWindow *addEditor(const QString &n, bool toolbar);
 
   ToolBar *addToolBar(const QString &n);
 
@@ -68,8 +64,8 @@ public:
 
   Menu *addMenu(const QString &name);
 
-  void showDock(QWidget *w);
-  void hideDock(QWidget *w);
+  void showDock(Dockable *w);
+  void hideDock(Dockable *w);
 
   void setTarget(const Target::Pointer &tar);
   Target::Pointer target() const;

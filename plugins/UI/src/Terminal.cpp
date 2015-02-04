@@ -5,8 +5,8 @@
 namespace UI
 {
 
-Terminal::Terminal(QWidget *parent)
-    : Console(parent),
+Terminal::Terminal(bool toolbar)
+    : Console(toolbar),
       _historyPos(0)
   {
   }

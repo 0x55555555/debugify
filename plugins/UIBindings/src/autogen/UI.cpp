@@ -5,6 +5,7 @@
 #include "tuple"
 #include "../../DebugifyBindings/ManualBindings/ManualBindings.h"
 #include "../../UIBindings/QtBindings/QtWidgets.h"
+#include "Dockable.h"
 #include "../../LldbDriver/include/Process.h"
 #include "../../LldbDriver/include/Target.h"
 #include "FileEditor.h"
@@ -95,10 +96,10 @@ struct MainWindow_MainWindow_overload : Reflect::FunctionArgumentCountSelector<
     MainWindow_MainWindow_overload_1
     > { };
 struct UI_MainWindow_aboutToClose_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::AboutToCloseNotifier *(::UI::MainWindow::*)() >, &::UI::MainWindow::aboutToClose, bondage::FunctionCaller> { };
-struct UI_MainWindow_addConsole_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::Console *(::UI::MainWindow::*)(const QString &) >, &::UI::MainWindow::addConsole, bondage::FunctionCaller> { };
-struct UI_MainWindow_addEditor_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::EditableTextWindow *(::UI::MainWindow::*)(const QString &) >, &::UI::MainWindow::addEditor, bondage::FunctionCaller> { };
+struct UI_MainWindow_addConsole_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::Console *(::UI::MainWindow::*)(const QString &, bool) >, &::UI::MainWindow::addConsole, bondage::FunctionCaller> { };
+struct UI_MainWindow_addEditor_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::EditableTextWindow *(::UI::MainWindow::*)(const QString &, bool) >, &::UI::MainWindow::addEditor, bondage::FunctionCaller> { };
 struct UI_MainWindow_addMenu_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::Menu *(::UI::MainWindow::*)(const QString &) >, &::UI::MainWindow::addMenu, bondage::FunctionCaller> { };
-struct UI_MainWindow_addTerminal_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::Terminal *(::UI::MainWindow::*)(const QString &) >, &::UI::MainWindow::addTerminal, bondage::FunctionCaller> { };
+struct UI_MainWindow_addTerminal_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::Terminal *(::UI::MainWindow::*)(const QString &, bool) >, &::UI::MainWindow::addTerminal, bondage::FunctionCaller> { };
 struct UI_MainWindow_addToolBar_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::ToolBar *(::UI::MainWindow::*)(const QString &) >, &::UI::MainWindow::addToolBar, bondage::FunctionCaller> { };
 struct UI_MainWindow_editorClosed_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::EditorNotifier *(::UI::MainWindow::*)() >, &::UI::MainWindow::editorClosed, bondage::FunctionCaller> { };
 struct UI_MainWindow_editorOpened_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::EditorNotifier *(::UI::MainWindow::*)() >, &::UI::MainWindow::editorOpened, bondage::FunctionCaller> { };
@@ -115,14 +116,14 @@ struct MainWindow_getOpenFilename_overload : Reflect::FunctionArgumentCountSelec
     MainWindow_getOpenFilename_overload_2,
     MainWindow_getOpenFilename_overload_3
     > { };
-struct UI_MainWindow_hideDock_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::MainWindow::*)(QWidget *) >, &::UI::MainWindow::hideDock, bondage::FunctionCaller> { };
+struct UI_MainWindow_hideDock_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::MainWindow::*)(UI::Dockable *) >, &::UI::MainWindow::hideDock, bondage::FunctionCaller> { };
 struct UI_MainWindow_openFile_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::Editor *(::UI::MainWindow::*)(const QString &, int) >, &::UI::MainWindow::openFile, bondage::FunctionCaller> { };
 struct UI_MainWindow_openType_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::Editor *(::UI::MainWindow::*)(const QString &) >, &::UI::MainWindow::openType, bondage::FunctionCaller> { };
 struct UI_MainWindow_process_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Process::Pointer(::UI::MainWindow::*)() const >, &::UI::MainWindow::process, bondage::FunctionCaller> { };
 struct UI_MainWindow_setGeometry_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< bool(::UI::MainWindow::*)(const QString &) >, &::UI::MainWindow::setGeometry, bondage::FunctionCaller> { };
 struct UI_MainWindow_setProcess_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::MainWindow::*)(const Process::Pointer &) >, &::UI::MainWindow::setProcess, bondage::FunctionCaller> { };
 struct UI_MainWindow_setTarget_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::MainWindow::*)(const Target::Pointer &) >, &::UI::MainWindow::setTarget, bondage::FunctionCaller> { };
-struct UI_MainWindow_showDock_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::MainWindow::*)(QWidget *) >, &::UI::MainWindow::showDock, bondage::FunctionCaller> { };
+struct UI_MainWindow_showDock_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::MainWindow::*)(UI::Dockable *) >, &::UI::MainWindow::showDock, bondage::FunctionCaller> { };
 struct UI_MainWindow_target_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< Target::Pointer(::UI::MainWindow::*)() const >, &::UI::MainWindow::target, bondage::FunctionCaller> { };
 struct UI_MainWindow_tr_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *) >, &UI_MainWindow_tr_overload0, bondage::FunctionCaller> { };
 struct UI_MainWindow_tr_overload1_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *, const char *, int) >, &::UI::MainWindow::tr, bondage::FunctionCaller> { };
@@ -327,9 +328,9 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
 
 
 // Exposing class ::UI::Menu
-::UI::Menu * UI_Menu_Menu_overload0()
+::UI::Menu * UI_Menu_Menu_overload0(QWidget * inputArg0)
 {
-  auto result = bondage::WrappedClassHelper< ::UI::Menu >::create();
+  auto result = bondage::WrappedClassHelper< ::UI::Menu >::create(std::forward<QWidget *>(inputArg0));
   return result;
 }
 
@@ -345,11 +346,12 @@ QString UI_Menu_trUtf8_overload0(const char * inputArg0)
   return result;
 }
 
-struct UI_Menu_Menu_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< ::UI::Menu *(*)() >, &UI_Menu_Menu_overload0, bondage::FunctionCaller> { };
+struct UI_Menu_Menu_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< ::UI::Menu *(*)(QWidget *) >, &UI_Menu_Menu_overload0, bondage::FunctionCaller> { };
 struct UI_Menu_aboutToShow_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::AboutToShowNotifier *(::UI::Menu::*)() >, &::UI::Menu::aboutToShow, bondage::FunctionCaller> { };
 struct UI_Menu_addAction_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< QAction *(::UI::Menu::*)(const QString &, const std::function<void ()> &) >, &::UI::Menu::addAction, bondage::FunctionCaller> { };
 struct UI_Menu_addMenu_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::Menu *(::UI::Menu::*)(const QString &) >, &::UI::Menu::addMenu, bondage::FunctionCaller> { };
 struct UI_Menu_clear_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::Menu::*)() >, &::UI::Menu::clear, bondage::FunctionCaller> { };
+struct UI_Menu_exec_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::Menu::*)() >, &::UI::Menu::exec, bondage::FunctionCaller> { };
 struct UI_Menu_tr_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *) >, &UI_Menu_tr_overload0, bondage::FunctionCaller> { };
 struct UI_Menu_tr_overload1_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *, const char *, int) >, &::UI::Menu::tr, bondage::FunctionCaller> { };
 struct Menu_tr_overload_1 : Reflect::FunctionArgCountSelectorBlock<1,
@@ -391,6 +393,9 @@ const bondage::Function UI_Menu_methods[] = {
   bondage::FunctionBuilder::build<
     UI_Menu_clear_overload0_t
     >("clear"),
+  bondage::FunctionBuilder::build<
+    UI_Menu_exec_overload0_t
+    >("exec"),
   bondage::FunctionBuilder::buildOverload< Menu_tr_overload >("tr"),
   bondage::FunctionBuilder::buildOverload< Menu_trUtf8_overload >("trUtf8")
 };
@@ -403,76 +408,7 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
   Menu,
   ::QMenu,
   UI_Menu_methods,
-  7);
-
-
-
-// Exposing class ::UI::ToolBar
-::UI::ToolBar * UI_ToolBar_ToolBar_overload0()
-{
-  auto result = bondage::WrappedClassHelper< ::UI::ToolBar >::create();
-  return result;
-}
-
-QString UI_ToolBar_tr_overload0(const char * inputArg0)
-{
-  auto result = ::UI::ToolBar::tr(std::forward<const char *>(inputArg0));
-  return result;
-}
-
-QString UI_ToolBar_trUtf8_overload0(const char * inputArg0)
-{
-  auto result = ::UI::ToolBar::trUtf8(std::forward<const char *>(inputArg0));
-  return result;
-}
-
-struct UI_ToolBar_ToolBar_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< ::UI::ToolBar *(*)() >, &UI_ToolBar_ToolBar_overload0, bondage::FunctionCaller> { };
-struct UI_ToolBar_addAction_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< QAction *(::UI::ToolBar::*)(const QString &, const std::function<void ()> &) >, &::UI::ToolBar::addAction, bondage::FunctionCaller> { };
-struct UI_ToolBar_tr_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *) >, &UI_ToolBar_tr_overload0, bondage::FunctionCaller> { };
-struct UI_ToolBar_tr_overload1_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *, const char *, int) >, &::UI::ToolBar::tr, bondage::FunctionCaller> { };
-struct ToolBar_tr_overload_1 : Reflect::FunctionArgCountSelectorBlock<1,
-      UI_ToolBar_tr_overload0_t
-      > { };
-struct ToolBar_tr_overload_3 : Reflect::FunctionArgCountSelectorBlock<3,
-      UI_ToolBar_tr_overload1_t
-      > { };
-struct ToolBar_tr_overload : Reflect::FunctionArgumentCountSelector<
-    ToolBar_tr_overload_1,
-    ToolBar_tr_overload_3
-    > { };
-struct UI_ToolBar_trUtf8_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *) >, &UI_ToolBar_trUtf8_overload0, bondage::FunctionCaller> { };
-struct UI_ToolBar_trUtf8_overload1_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *, const char *, int) >, &::UI::ToolBar::trUtf8, bondage::FunctionCaller> { };
-struct ToolBar_trUtf8_overload_1 : Reflect::FunctionArgCountSelectorBlock<1,
-      UI_ToolBar_trUtf8_overload0_t
-      > { };
-struct ToolBar_trUtf8_overload_3 : Reflect::FunctionArgCountSelectorBlock<3,
-      UI_ToolBar_trUtf8_overload1_t
-      > { };
-struct ToolBar_trUtf8_overload : Reflect::FunctionArgumentCountSelector<
-    ToolBar_trUtf8_overload_1,
-    ToolBar_trUtf8_overload_3
-    > { };
-
-const bondage::Function UI_ToolBar_methods[] = {
-  bondage::FunctionBuilder::build<
-    UI_ToolBar_ToolBar_overload0_t
-    >("ToolBar"),
-  bondage::FunctionBuilder::build<
-    UI_ToolBar_addAction_overload0_t
-    >("addAction"),
-  bondage::FunctionBuilder::buildOverload< ToolBar_tr_overload >("tr"),
-  bondage::FunctionBuilder::buildOverload< ToolBar_trUtf8_overload >("trUtf8")
-};
-
-
-BONDAGE_IMPLEMENT_EXPOSED_CLASS(
-  UI_ToolBar,
-  g_bondage_library_UI,
-  ::UI,
-  ToolBar,
-  ::QToolBar,
-  UI_ToolBar_methods,
-  4);
+  8);
 
 
 
@@ -653,10 +589,246 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
 
 
 
-// Exposing class ::UI::EditableTextWindow
-::UI::EditableTextWindow * UI_EditableTextWindow_EditableTextWindow_overload0()
+
+
+
+// Exposing class ::UI::ClickNotifier
+struct UI_ClickNotifier_listen_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< int(::UI::ClickNotifier::*)(std::function<void (QString, int, int)> &&) >, &::UI::ClickNotifier::listen, bondage::FunctionCaller> { };
+struct UI_ClickNotifier_remove_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::ClickNotifier::*)(int) >, &::UI::ClickNotifier::remove, bondage::FunctionCaller> { };
+
+const bondage::Function UI_ClickNotifier_methods[] = {
+  bondage::FunctionBuilder::build<
+    UI_ClickNotifier_listen_overload0_t
+    >("listen"),
+  bondage::FunctionBuilder::build<
+    UI_ClickNotifier_remove_overload0_t
+    >("remove")
+};
+
+
+BONDAGE_IMPLEMENT_EXPOSED_CLASS(
+  UI_ClickNotifier,
+  g_bondage_library_UI,
+  ::UI,
+  ClickNotifier,
+  void,
+  UI_ClickNotifier_methods,
+  2);
+
+
+
+// Exposing class ::UI::Dialog
+::UI::Dialog * UI_Dialog_Dialog_overload0(const QString & inputArg0)
 {
-  auto result = bondage::WrappedClassHelper< ::UI::EditableTextWindow >::create();
+  auto result = bondage::WrappedClassHelper< ::UI::Dialog >::create(std::forward<const QString &>(inputArg0));
+  return result;
+}
+
+QString UI_Dialog_tr_overload0(const char * inputArg0)
+{
+  auto result = ::UI::Dialog::tr(std::forward<const char *>(inputArg0));
+  return result;
+}
+
+QString UI_Dialog_trUtf8_overload0(const char * inputArg0)
+{
+  auto result = ::UI::Dialog::trUtf8(std::forward<const char *>(inputArg0));
+  return result;
+}
+
+struct UI_Dialog_Dialog_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< ::UI::Dialog *(*)(const QString &) >, &UI_Dialog_Dialog_overload0, bondage::FunctionCaller> { };
+struct UI_Dialog_changed_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::ChangedNotifier *(::UI::Dialog::*)() >, &::UI::Dialog::changed, bondage::FunctionCaller> { };
+struct UI_Dialog_clicked_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::ChangedNotifier *(::UI::Dialog::*)() >, &::UI::Dialog::clicked, bondage::FunctionCaller> { };
+struct UI_Dialog_result_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::Dialog::Result(::UI::Dialog::*)() const >, &::UI::Dialog::result, bondage::FunctionCaller> { };
+struct UI_Dialog_setValue_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::Dialog::*)(const QString &, const QVariant &) >, &::UI::Dialog::setValue, bondage::FunctionCaller> { };
+struct UI_Dialog_tr_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *) >, &UI_Dialog_tr_overload0, bondage::FunctionCaller> { };
+struct UI_Dialog_tr_overload1_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *, const char *, int) >, &::UI::Dialog::tr, bondage::FunctionCaller> { };
+struct Dialog_tr_overload_1 : Reflect::FunctionArgCountSelectorBlock<1,
+      UI_Dialog_tr_overload0_t
+      > { };
+struct Dialog_tr_overload_3 : Reflect::FunctionArgCountSelectorBlock<3,
+      UI_Dialog_tr_overload1_t
+      > { };
+struct Dialog_tr_overload : Reflect::FunctionArgumentCountSelector<
+    Dialog_tr_overload_1,
+    Dialog_tr_overload_3
+    > { };
+struct UI_Dialog_trUtf8_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *) >, &UI_Dialog_trUtf8_overload0, bondage::FunctionCaller> { };
+struct UI_Dialog_trUtf8_overload1_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *, const char *, int) >, &::UI::Dialog::trUtf8, bondage::FunctionCaller> { };
+struct Dialog_trUtf8_overload_1 : Reflect::FunctionArgCountSelectorBlock<1,
+      UI_Dialog_trUtf8_overload0_t
+      > { };
+struct Dialog_trUtf8_overload_3 : Reflect::FunctionArgCountSelectorBlock<3,
+      UI_Dialog_trUtf8_overload1_t
+      > { };
+struct Dialog_trUtf8_overload : Reflect::FunctionArgumentCountSelector<
+    Dialog_trUtf8_overload_1,
+    Dialog_trUtf8_overload_3
+    > { };
+struct UI_Dialog_value_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< QVariant(::UI::Dialog::*)(const QString &) >, &::UI::Dialog::value, bondage::FunctionCaller> { };
+
+const bondage::Function UI_Dialog_methods[] = {
+  bondage::FunctionBuilder::build<
+    UI_Dialog_Dialog_overload0_t
+    >("Dialog"),
+  bondage::FunctionBuilder::build<
+    UI_Dialog_changed_overload0_t
+    >("changed"),
+  bondage::FunctionBuilder::build<
+    UI_Dialog_clicked_overload0_t
+    >("clicked"),
+  bondage::FunctionBuilder::build<
+    UI_Dialog_result_overload0_t
+    >("result"),
+  bondage::FunctionBuilder::build<
+    UI_Dialog_setValue_overload0_t
+    >("setValue"),
+  bondage::FunctionBuilder::buildOverload< Dialog_tr_overload >("tr"),
+  bondage::FunctionBuilder::buildOverload< Dialog_trUtf8_overload >("trUtf8"),
+  bondage::FunctionBuilder::build<
+    UI_Dialog_value_overload0_t
+    >("value")
+};
+
+
+BONDAGE_IMPLEMENT_EXPOSED_CLASS(
+  UI_Dialog,
+  g_bondage_library_UI,
+  ::UI,
+  Dialog,
+  ::QDialog,
+  UI_Dialog_methods,
+  8);
+
+
+
+// Exposing class ::UI::ChangedNotifier
+struct UI_ChangedNotifier_listen_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< int(::UI::ChangedNotifier::*)(std::function<void (QString)> &&) >, &::UI::ChangedNotifier::listen, bondage::FunctionCaller> { };
+struct UI_ChangedNotifier_remove_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::ChangedNotifier::*)(int) >, &::UI::ChangedNotifier::remove, bondage::FunctionCaller> { };
+
+const bondage::Function UI_ChangedNotifier_methods[] = {
+  bondage::FunctionBuilder::build<
+    UI_ChangedNotifier_listen_overload0_t
+    >("listen"),
+  bondage::FunctionBuilder::build<
+    UI_ChangedNotifier_remove_overload0_t
+    >("remove")
+};
+
+
+BONDAGE_IMPLEMENT_EXPOSED_CLASS(
+  UI_ChangedNotifier,
+  g_bondage_library_UI,
+  ::UI,
+  ChangedNotifier,
+  void,
+  UI_ChangedNotifier_methods,
+  2);
+
+
+
+// Exposing class ::UI::InputNotifier
+struct UI_InputNotifier_listen_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< int(::UI::InputNotifier::*)(std::function<void (Eks::String)> &&) >, &::UI::InputNotifier::listen, bondage::FunctionCaller> { };
+struct UI_InputNotifier_remove_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::InputNotifier::*)(int) >, &::UI::InputNotifier::remove, bondage::FunctionCaller> { };
+
+const bondage::Function UI_InputNotifier_methods[] = {
+  bondage::FunctionBuilder::build<
+    UI_InputNotifier_listen_overload0_t
+    >("listen"),
+  bondage::FunctionBuilder::build<
+    UI_InputNotifier_remove_overload0_t
+    >("remove")
+};
+
+
+BONDAGE_IMPLEMENT_EXPOSED_CLASS(
+  UI_InputNotifier,
+  g_bondage_library_UI,
+  ::UI,
+  InputNotifier,
+  void,
+  UI_InputNotifier_methods,
+  2);
+
+
+
+// Exposing class ::UI::Dockable
+::UI::Dockable * UI_Dockable_Dockable_overload0(bool inputArg0)
+{
+  auto result = bondage::WrappedClassHelper< ::UI::Dockable >::create(std::forward<bool>(inputArg0));
+  return result;
+}
+
+QString UI_Dockable_tr_overload0(const char * inputArg0)
+{
+  auto result = ::UI::Dockable::tr(std::forward<const char *>(inputArg0));
+  return result;
+}
+
+QString UI_Dockable_trUtf8_overload0(const char * inputArg0)
+{
+  auto result = ::UI::Dockable::trUtf8(std::forward<const char *>(inputArg0));
+  return result;
+}
+
+struct UI_Dockable_Dockable_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< ::UI::Dockable *(*)(bool) >, &UI_Dockable_Dockable_overload0, bondage::FunctionCaller> { };
+struct UI_Dockable_setWidget_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::Dockable::*)(QWidget *) >, &::UI::Dockable::setWidget, bondage::FunctionCaller> { };
+struct UI_Dockable_toolBar_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::ToolBar *(::UI::Dockable::*)() >, &::UI::Dockable::toolBar, bondage::FunctionCaller> { };
+struct UI_Dockable_tr_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *) >, &UI_Dockable_tr_overload0, bondage::FunctionCaller> { };
+struct UI_Dockable_tr_overload1_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *, const char *, int) >, &::UI::Dockable::tr, bondage::FunctionCaller> { };
+struct Dockable_tr_overload_1 : Reflect::FunctionArgCountSelectorBlock<1,
+      UI_Dockable_tr_overload0_t
+      > { };
+struct Dockable_tr_overload_3 : Reflect::FunctionArgCountSelectorBlock<3,
+      UI_Dockable_tr_overload1_t
+      > { };
+struct Dockable_tr_overload : Reflect::FunctionArgumentCountSelector<
+    Dockable_tr_overload_1,
+    Dockable_tr_overload_3
+    > { };
+struct UI_Dockable_trUtf8_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *) >, &UI_Dockable_trUtf8_overload0, bondage::FunctionCaller> { };
+struct UI_Dockable_trUtf8_overload1_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *, const char *, int) >, &::UI::Dockable::trUtf8, bondage::FunctionCaller> { };
+struct Dockable_trUtf8_overload_1 : Reflect::FunctionArgCountSelectorBlock<1,
+      UI_Dockable_trUtf8_overload0_t
+      > { };
+struct Dockable_trUtf8_overload_3 : Reflect::FunctionArgCountSelectorBlock<3,
+      UI_Dockable_trUtf8_overload1_t
+      > { };
+struct Dockable_trUtf8_overload : Reflect::FunctionArgumentCountSelector<
+    Dockable_trUtf8_overload_1,
+    Dockable_trUtf8_overload_3
+    > { };
+
+const bondage::Function UI_Dockable_methods[] = {
+  bondage::FunctionBuilder::build<
+    UI_Dockable_Dockable_overload0_t
+    >("Dockable"),
+  bondage::FunctionBuilder::build<
+    UI_Dockable_setWidget_overload0_t
+    >("setWidget"),
+  bondage::FunctionBuilder::build<
+    UI_Dockable_toolBar_overload0_t
+    >("toolBar"),
+  bondage::FunctionBuilder::buildOverload< Dockable_tr_overload >("tr"),
+  bondage::FunctionBuilder::buildOverload< Dockable_trUtf8_overload >("trUtf8")
+};
+
+
+BONDAGE_IMPLEMENT_EXPOSED_CLASS(
+  UI_Dockable,
+  g_bondage_library_UI,
+  ::UI,
+  Dockable,
+  ::QDockWidget,
+  UI_Dockable_methods,
+  5);
+
+
+
+// Exposing class ::UI::EditableTextWindow
+::UI::EditableTextWindow * UI_EditableTextWindow_EditableTextWindow_overload0(bool inputArg0)
+{
+  auto result = bondage::WrappedClassHelper< ::UI::EditableTextWindow >::create(std::forward<bool>(inputArg0));
   return result;
 }
 
@@ -672,8 +844,9 @@ QString UI_EditableTextWindow_trUtf8_overload0(const char * inputArg0)
   return result;
 }
 
-struct UI_EditableTextWindow_EditableTextWindow_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< ::UI::EditableTextWindow *(*)() >, &UI_EditableTextWindow_EditableTextWindow_overload0, bondage::FunctionCaller> { };
+struct UI_EditableTextWindow_EditableTextWindow_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< ::UI::EditableTextWindow *(*)(bool) >, &UI_EditableTextWindow_EditableTextWindow_overload0, bondage::FunctionCaller> { };
 struct UI_EditableTextWindow_clicked_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::ClickNotifier *(::UI::EditableTextWindow::*)() >, &::UI::EditableTextWindow::clicked, bondage::FunctionCaller> { };
+struct UI_EditableTextWindow_contextMenu_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::ClickNotifier *(::UI::EditableTextWindow::*)() >, &::UI::EditableTextWindow::contextMenu, bondage::FunctionCaller> { };
 struct UI_EditableTextWindow_setContents_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::EditableTextWindow::*)(const QString &) >, &::UI::EditableTextWindow::setContents, bondage::FunctionCaller> { };
 struct UI_EditableTextWindow_tr_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *) >, &UI_EditableTextWindow_tr_overload0, bondage::FunctionCaller> { };
 struct UI_EditableTextWindow_tr_overload1_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *, const char *, int) >, &::UI::EditableTextWindow::tr, bondage::FunctionCaller> { };
@@ -708,6 +881,9 @@ const bondage::Function UI_EditableTextWindow_methods[] = {
     UI_EditableTextWindow_clicked_overload0_t
     >("clicked"),
   bondage::FunctionBuilder::build<
+    UI_EditableTextWindow_contextMenu_overload0_t
+    >("contextMenu"),
+  bondage::FunctionBuilder::build<
     UI_EditableTextWindow_setContents_overload0_t
     >("setContents"),
   bondage::FunctionBuilder::buildOverload< EditableTextWindow_tr_overload >("tr"),
@@ -720,34 +896,9 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
   g_bondage_library_UI,
   ::UI,
   EditableTextWindow,
-  ::QTextEdit,
+  ::UI::Dockable,
   UI_EditableTextWindow_methods,
-  5);
-
-
-
-// Exposing class ::UI::ClickNotifier
-struct UI_ClickNotifier_listen_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< int(::UI::ClickNotifier::*)(std::function<void (QString)> &&) >, &::UI::ClickNotifier::listen, bondage::FunctionCaller> { };
-struct UI_ClickNotifier_remove_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::ClickNotifier::*)(int) >, &::UI::ClickNotifier::remove, bondage::FunctionCaller> { };
-
-const bondage::Function UI_ClickNotifier_methods[] = {
-  bondage::FunctionBuilder::build<
-    UI_ClickNotifier_listen_overload0_t
-    >("listen"),
-  bondage::FunctionBuilder::build<
-    UI_ClickNotifier_remove_overload0_t
-    >("remove")
-};
-
-
-BONDAGE_IMPLEMENT_EXPOSED_CLASS(
-  UI_ClickNotifier,
-  g_bondage_library_UI,
-  ::UI,
-  ClickNotifier,
-  void,
-  UI_ClickNotifier_methods,
-  2);
+  6);
 
 
 
@@ -840,7 +991,7 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
   g_bondage_library_UI,
   ::UI,
   Console,
-  ::QWidget,
+  ::UI::Dockable,
   UI_Console_methods,
   12);
 
@@ -901,28 +1052,72 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
 
 
 
-// Exposing class ::UI::InputNotifier
-struct UI_InputNotifier_listen_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< int(::UI::InputNotifier::*)(std::function<void (Eks::String)> &&) >, &::UI::InputNotifier::listen, bondage::FunctionCaller> { };
-struct UI_InputNotifier_remove_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::InputNotifier::*)(int) >, &::UI::InputNotifier::remove, bondage::FunctionCaller> { };
+// Exposing class ::UI::ToolBar
+::UI::ToolBar * UI_ToolBar_ToolBar_overload0()
+{
+  auto result = bondage::WrappedClassHelper< ::UI::ToolBar >::create();
+  return result;
+}
 
-const bondage::Function UI_InputNotifier_methods[] = {
+QString UI_ToolBar_tr_overload0(const char * inputArg0)
+{
+  auto result = ::UI::ToolBar::tr(std::forward<const char *>(inputArg0));
+  return result;
+}
+
+QString UI_ToolBar_trUtf8_overload0(const char * inputArg0)
+{
+  auto result = ::UI::ToolBar::trUtf8(std::forward<const char *>(inputArg0));
+  return result;
+}
+
+struct UI_ToolBar_ToolBar_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< ::UI::ToolBar *(*)() >, &UI_ToolBar_ToolBar_overload0, bondage::FunctionCaller> { };
+struct UI_ToolBar_addAction_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< QAction *(::UI::ToolBar::*)(const QString &, const std::function<void ()> &) >, &::UI::ToolBar::addAction, bondage::FunctionCaller> { };
+struct UI_ToolBar_tr_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *) >, &UI_ToolBar_tr_overload0, bondage::FunctionCaller> { };
+struct UI_ToolBar_tr_overload1_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *, const char *, int) >, &::UI::ToolBar::tr, bondage::FunctionCaller> { };
+struct ToolBar_tr_overload_1 : Reflect::FunctionArgCountSelectorBlock<1,
+      UI_ToolBar_tr_overload0_t
+      > { };
+struct ToolBar_tr_overload_3 : Reflect::FunctionArgCountSelectorBlock<3,
+      UI_ToolBar_tr_overload1_t
+      > { };
+struct ToolBar_tr_overload : Reflect::FunctionArgumentCountSelector<
+    ToolBar_tr_overload_1,
+    ToolBar_tr_overload_3
+    > { };
+struct UI_ToolBar_trUtf8_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *) >, &UI_ToolBar_trUtf8_overload0, bondage::FunctionCaller> { };
+struct UI_ToolBar_trUtf8_overload1_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *, const char *, int) >, &::UI::ToolBar::trUtf8, bondage::FunctionCaller> { };
+struct ToolBar_trUtf8_overload_1 : Reflect::FunctionArgCountSelectorBlock<1,
+      UI_ToolBar_trUtf8_overload0_t
+      > { };
+struct ToolBar_trUtf8_overload_3 : Reflect::FunctionArgCountSelectorBlock<3,
+      UI_ToolBar_trUtf8_overload1_t
+      > { };
+struct ToolBar_trUtf8_overload : Reflect::FunctionArgumentCountSelector<
+    ToolBar_trUtf8_overload_1,
+    ToolBar_trUtf8_overload_3
+    > { };
+
+const bondage::Function UI_ToolBar_methods[] = {
   bondage::FunctionBuilder::build<
-    UI_InputNotifier_listen_overload0_t
-    >("listen"),
+    UI_ToolBar_ToolBar_overload0_t
+    >("ToolBar"),
   bondage::FunctionBuilder::build<
-    UI_InputNotifier_remove_overload0_t
-    >("remove")
+    UI_ToolBar_addAction_overload0_t
+    >("addAction"),
+  bondage::FunctionBuilder::buildOverload< ToolBar_tr_overload >("tr"),
+  bondage::FunctionBuilder::buildOverload< ToolBar_trUtf8_overload >("trUtf8")
 };
 
 
 BONDAGE_IMPLEMENT_EXPOSED_CLASS(
-  UI_InputNotifier,
+  UI_ToolBar,
   g_bondage_library_UI,
   ::UI,
-  InputNotifier,
-  void,
-  UI_InputNotifier_methods,
-  2);
+  ToolBar,
+  ::QToolBar,
+  UI_ToolBar_methods,
+  4);
 
 
 
@@ -958,33 +1153,41 @@ const bondage::WrappedClass *UI_QWidget_caster(const void *vPtr)
 {
   auto ptr = static_cast<const ::QWidget*>(vPtr);
 
-  if (Crate::CastHelper< ::QWidget, ::UI::EditableTextWindow >::canCast(ptr))
-  {
-    return &UI_EditableTextWindow;
-  }
   if (Crate::CastHelper< ::QWidget, ::UI::Terminal >::canCast(ptr))
   {
     return &UI_Terminal;
   }
-  if (Crate::CastHelper< ::QWidget, ::UI::Menu >::canCast(ptr))
+  if (Crate::CastHelper< ::QWidget, ::UI::EditableTextWindow >::canCast(ptr))
   {
-    return &UI_Menu;
+    return &UI_EditableTextWindow;
+  }
+  if (Crate::CastHelper< ::QWidget, ::UI::Console >::canCast(ptr))
+  {
+    return &UI_Console;
   }
   if (Crate::CastHelper< ::QWidget, ::UI::ToolBar >::canCast(ptr))
   {
     return &UI_ToolBar;
   }
-  if (Crate::CastHelper< ::QWidget, ::UI::MainWindow >::canCast(ptr))
+  if (Crate::CastHelper< ::QWidget, ::UI::Menu >::canCast(ptr))
   {
-    return &UI_MainWindow;
+    return &UI_Menu;
+  }
+  if (Crate::CastHelper< ::QWidget, ::UI::Dialog >::canCast(ptr))
+  {
+    return &UI_Dialog;
   }
   if (Crate::CastHelper< ::QWidget, ::UI::FileEditor >::canCast(ptr))
   {
     return &UI_FileEditor;
   }
-  if (Crate::CastHelper< ::QWidget, ::UI::Console >::canCast(ptr))
+  if (Crate::CastHelper< ::QWidget, ::UI::MainWindow >::canCast(ptr))
   {
-    return &UI_Console;
+    return &UI_MainWindow;
+  }
+  if (Crate::CastHelper< ::QWidget, ::UI::Dockable >::canCast(ptr))
+  {
+    return &UI_Dockable;
   }
   if (Crate::CastHelper< ::QWidget, ::UI::Editor >::canCast(ptr))
   {
