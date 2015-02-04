@@ -5,6 +5,7 @@
 #include "QLineEdit"
 #include "QAbstractButton"
 #include "QSpinBox"
+#include "QListWidget"
 
 namespace UI
 {
@@ -14,6 +15,7 @@ class Dialog::Wrapper
 public:
   virtual void setValue(const QVariant &) { }
   virtual QVariant value() const { return QVariant(); }
+  virtual void setAvailableValues(const QVariant &) { }
   };
 
 template <typename T> class GenericTextWrapper : public Dialog::Wrapper
@@ -82,6 +84,54 @@ public:
     }
   };
 
+template <typename T> class ListWrapper : public Dialog::Wrapper
+  {
+public:
+  ListWrapper(T *t, ChangedNotifier *n)
+      : _t(t)
+    {
+    QObject::connect(t, &T::itemSelectionChanged, [n, this]()
+      {
+      (*n)(_t->objectName());
+      });
+    }
+
+  void setAvailableValues(const QVariant & t) override
+    {
+    QStringList strs = t.toStringList();
+
+    _t->clear();
+    for (auto s : strs)
+      {
+      _t->addItem(s);
+      }
+    }
+
+  void setValue(const QVariant & t) override
+    {
+    auto found = _t->findItems(t.toString(), Qt::MatchExactly);
+    if (found.isEmpty())
+      {
+      _t->setCurrentItem(nullptr);
+      return;
+      }
+    _t->setCurrentItem(found[0]);
+    }
+
+  QVariant value() const override
+    {
+    auto current = _t->currentItem();
+    if (!current)
+      {
+      return "";
+      }
+    return current->text();
+    }
+
+protected:
+  T *_t;
+  };
+
 
 Dialog::Dialog(const QString &str)
   {
@@ -127,6 +177,17 @@ Dialog::~Dialog()
   {
   }
 
+void Dialog::setAvailableValues(const QString &str, const QVariant &val)
+  {
+  auto &w = _elements[str];
+  if (!w)
+    {
+    return;
+    }
+
+  w->setAvailableValues(val);
+  }
+
 void Dialog::setValue(const QString &str, const QVariant &val)
   {
   auto &w = _elements[str];
@@ -168,6 +229,10 @@ std::shared_ptr<Dialog::Wrapper> Dialog::makeWrapper(QObject *w)
   if (auto l = qobject_cast<QAbstractButton*>(w))
     {
     return std::make_shared<GenericButtonWrapper<QAbstractButton>>(l, &_clicked);
+    }
+  if (auto l = qobject_cast<QListWidget*>(w))
+    {
+    return std::make_shared<ListWrapper<QListWidget>>(l, &_changed);
     }
 
   return nullptr;

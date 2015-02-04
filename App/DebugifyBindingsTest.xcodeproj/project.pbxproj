@@ -997,6 +997,12 @@
 		080CB4A61A7E88DF0011FE7A /* Dockable.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Dockable.cpp; sourceTree = "<group>"; };
 		080CB4A91A7E88E80011FE7A /* Dialog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Dialog.h; sourceTree = "<group>"; };
 		080CB4AA1A7E88E80011FE7A /* Dockable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Dockable.h; sourceTree = "<group>"; };
+		080CB4B81A82BB7B0011FE7A /* CastHelper.QApplication.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CastHelper.QApplication.h; sourceTree = "<group>"; };
+		080CB4B91A82BB7B0011FE7A /* CastHelper.QWidget.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CastHelper.QWidget.h; sourceTree = "<group>"; };
+		080CB4BA1A82BB7B0011FE7A /* Qt.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Qt.cpp; sourceTree = "<group>"; };
+		080CB4BB1A82BB7B0011FE7A /* Qt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Qt.h; sourceTree = "<group>"; };
+		080CB4BC1A82BB7B0011FE7A /* QtWidgets.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QtWidgets.h; sourceTree = "<group>"; };
+		080CB4BD1A82BB7B0011FE7A /* types.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = types.json; sourceTree = "<group>"; };
 		0866AA081A5C90EC003FAAB8 /* Console.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Console.h; sourceTree = "<group>"; };
 		0866AA091A5C90EC003FAAB8 /* EditableTextWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditableTextWindow.h; sourceTree = "<group>"; };
 		0866AA0D1A5C90F5003FAAB8 /* Console.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Console.cpp; sourceTree = "<group>"; };
@@ -3630,6 +3636,19 @@
 			path = Utility;
 			sourceTree = "<group>";
 		};
+		080CB4B71A82BB7B0011FE7A /* QtBindings */ = {
+			isa = PBXGroup;
+			children = (
+				080CB4B81A82BB7B0011FE7A /* CastHelper.QApplication.h */,
+				080CB4B91A82BB7B0011FE7A /* CastHelper.QWidget.h */,
+				080CB4BA1A82BB7B0011FE7A /* Qt.cpp */,
+				080CB4BB1A82BB7B0011FE7A /* Qt.h */,
+				080CB4BC1A82BB7B0011FE7A /* QtWidgets.h */,
+				080CB4BD1A82BB7B0011FE7A /* types.json */,
+			);
+			path = QtBindings;
+			sourceTree = "<group>";
+		};
 		08D13C451A50500800436C54 = {
 			isa = PBXGroup;
 			children = (
@@ -6010,6 +6029,7 @@
 		08D1408D1A55864500436C54 /* UIBindings */ = {
 			isa = PBXGroup;
 			children = (
+				080CB4B71A82BB7B0011FE7A /* QtBindings */,
 				08D1408E1A55864500436C54 /* include */,
 				08D140901A55864500436C54 /* ruby */,
 				08D140971A55864500436C54 /* src */,

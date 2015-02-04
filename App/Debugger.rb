@@ -46,6 +46,19 @@ module App
       return process
     end
 
+    def attach(pid)
+      err = LldbDriver::Error.new()
+      raise "No target to launch" unless @target
+      process = @target.attach(pid, err)
+
+      if (err.hasError())
+        raise err.error()
+      end
+
+      setProcess(process)
+      return process
+    end
+
     def update()
       if (@process)
         @process.processEvents()

@@ -21,6 +21,7 @@ public:
   Dialog(const QString &uicLocation);
   ~Dialog();
 
+  void setAvailableValues(const QString &str, const QVariant &val);
   void setValue(const QString &str, const QVariant &val);
   QVariant value(const QString &str);
 

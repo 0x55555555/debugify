@@ -11,6 +11,9 @@ class Target
   # LldbDriver::Breakpoint Target#addBreakpoint(Eks::String file, number line)
   # \brief 
 
+  # std::__1::shared_ptr Target#attach(number pid, LldbDriver::Error err)
+  # \brief 
+
   # LldbDriver::Breakpoint Target#breakpointAt(number index)
   # \brief 
 

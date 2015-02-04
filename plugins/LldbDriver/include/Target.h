@@ -34,6 +34,9 @@ public:
     const Eks::Vector<Eks::StringRef> &env,
     Error &err);
 
+  /// \expose
+  std::shared_ptr<Process> attach(uint64_t pid, Error &err);
+
   size_t moduleCount();
   std::shared_ptr<Module> moduleAt(size_t index);
 

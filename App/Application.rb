@@ -9,12 +9,80 @@ require_relative 'Editors'
 
 module App
 
+  def self.shortPath(path)
+    if (path.length > 50)
+      path = "...#{path.chars.last(50).join}"
+    end
+    return path
+  end
+
   class Logger
 
     attr_writer :console
 
     def log(s)
       @console.append(s)
+    end
+  end
+
+  class ProcessSelector
+    def self.show(proc = nil)
+      procs, closest = self.processes(proc)
+
+      dlg = UI::Dialog.new(UI::UIC_PATH + "processselector.ui")
+
+      dlg.changed.listen do |p|
+        if (p == "processes")
+          val = dlg.value(p)
+          dlg.setValue("pid", procs.key(val))
+        end
+      end
+
+      dlg.setAvailableValues("processes", procs.values)
+      if (closest)
+        dlg.setValue("processes", procs[closest])
+        dlg.setValue("pid", closest)
+      end
+
+      dlg.exec()
+
+      val = dlg.value("pid")
+      return val.to_i
+    end
+
+    def self.processes(search)
+      processes = (`ps -x -o pid -o comm`).split("\n")
+      processes.shift
+
+      elements = processes.map do |x| 
+        y = x.split
+        
+        next [ y[0], y[1..(y.length-1)].join(" ") ].flatten
+      end
+
+      closest = nil
+      strings = { }
+      elements.each do |e| 
+        bn = File.basename(e[1])
+        short = App.shortPath(e[1])
+        if (short == bn)
+          short = ""
+        else
+          short = " (#{short})"
+        end
+
+        id = e[0].to_i
+        if (bn == search && !closest)
+          closest = id
+        end
+
+        strings[id] = "#{id} #{bn}#{short}" 
+      end
+
+      strings = strings.sort.reverse
+      strings.shift
+
+      return strings.to_h, closest
     end
   end
 
@@ -73,7 +141,7 @@ module App
         recents = @project.value(:recents, [])
         if (recents.length > 0)
           recent = recents[-1]
-          @log.log "Loading previous project #{shortPath(recent)}"
+          @log.log "Loading previous project #{App.shortPath(recent)}"
           loadTarget(recent)
         end
       end
@@ -103,6 +171,10 @@ module App
       @targetToolbar.addAction("Run", Proc.new {
         @debugger.launch()
       })
+      @targetToolbar.addAction("Attach", Proc.new {
+        pid = ProcessSelector.show(File.basename(@debugger.target.path))
+        @debugger.attach(pid) unless pid == nil
+      })
 
       @processToolbar = @mainwindow.addToolBar("Process")
       @processToolbar.addAction("Kill", Proc.new {
@@ -130,13 +202,6 @@ module App
       @currentThreadToolbar.hide()
     end
 
-    def shortPath(path)
-      if (path.length > 50)
-        path = "...#{path.chars.last(50).join}"
-      end
-      return path
-    end
-
     def buildMenus()
       menu = @mainwindow.addMenu("File")
 
@@ -152,7 +217,7 @@ module App
         targets.clear()
         recents = @project.value(:recents, [])
         recents.reverse_each do |r|
-          path = shortPath(r)
+          path = App.shortPath(r)
 
           basename = File.basename(r)
           text = "#{basename} (#{path})"

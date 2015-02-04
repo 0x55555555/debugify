@@ -640,6 +640,7 @@ struct UI_Dialog_Dialog_overload0_t : Reflect::FunctionCall<Reflect::FunctionSig
 struct UI_Dialog_changed_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::ChangedNotifier *(::UI::Dialog::*)() >, &::UI::Dialog::changed, bondage::FunctionCaller> { };
 struct UI_Dialog_clicked_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::ChangedNotifier *(::UI::Dialog::*)() >, &::UI::Dialog::clicked, bondage::FunctionCaller> { };
 struct UI_Dialog_result_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::Dialog::Result(::UI::Dialog::*)() const >, &::UI::Dialog::result, bondage::FunctionCaller> { };
+struct UI_Dialog_setAvailableValues_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::Dialog::*)(const QString &, const QVariant &) >, &::UI::Dialog::setAvailableValues, bondage::FunctionCaller> { };
 struct UI_Dialog_setValue_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::Dialog::*)(const QString &, const QVariant &) >, &::UI::Dialog::setValue, bondage::FunctionCaller> { };
 struct UI_Dialog_tr_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *) >, &UI_Dialog_tr_overload0, bondage::FunctionCaller> { };
 struct UI_Dialog_tr_overload1_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *, const char *, int) >, &::UI::Dialog::tr, bondage::FunctionCaller> { };
@@ -681,6 +682,9 @@ const bondage::Function UI_Dialog_methods[] = {
     UI_Dialog_result_overload0_t
     >("result"),
   bondage::FunctionBuilder::build<
+    UI_Dialog_setAvailableValues_overload0_t
+    >("setAvailableValues"),
+  bondage::FunctionBuilder::build<
     UI_Dialog_setValue_overload0_t
     >("setValue"),
   bondage::FunctionBuilder::buildOverload< Dialog_tr_overload >("tr"),
@@ -698,7 +702,7 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
   Dialog,
   ::QDialog,
   UI_Dialog_methods,
-  8);
+  9);
 
 
 

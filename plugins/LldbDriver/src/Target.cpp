@@ -26,7 +26,6 @@ Eks::String Target::path() const
   return sb;
   }
 
-
 Process::Pointer Target::launch(
     const Eks::Vector<Eks::StringRef> &args,
     const Eks::Vector<Eks::StringRef> &env,
@@ -76,6 +75,24 @@ Process::Pointer Target::launch(
         false,
         error);
   process->_impl->processState = process->_impl->process.GetState();
+
+  err = Error::Helper::makeError(error);
+  return process;
+  }
+
+std::shared_ptr<Process> Target::attach(uint64_t pid, Error &err)
+  {
+  lldb::SBError error;
+
+  auto process = std::make_shared<Process>();
+  process->_impl->myself = process;
+  process->_impl->target = _impl->myself.lock();
+  process->_impl->listener = lldb::SBListener("ProcessListener");
+
+  process->_impl->process = _impl->target.AttachToProcessWithID(
+        process->_impl->listener,
+        pid,
+        error);
 
   err = Error::Helper::makeError(error);
   return process;
