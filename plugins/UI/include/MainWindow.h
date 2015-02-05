@@ -60,6 +60,7 @@ public:
   Terminal *addTerminal(const QString &n, bool toolbar);
   Console *addConsole(const QString &n, bool toolbar);
   EditableTextWindow *addEditor(const QString &n, bool toolbar);
+  Dockable *addModuleExplorer(const QString &n, bool toolbar);
 
   ToolBar *addToolBar(const QString &n);
 
@@ -115,7 +116,6 @@ private:
 
   QHash<QString, Editor *> _editors;
   TypeManager *_types;
-  ModuleExplorer *_moduleExplorer;
 
   Target::Pointer _target;
 

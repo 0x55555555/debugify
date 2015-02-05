@@ -118,6 +118,12 @@
     "filename": "include/Dockable.h",
     "derivable": true
   },
+  "::UI::ModuleExplorerDock": {
+    "name": "ModuleExplorerDock",
+    "parent": "::UI::Dockable",
+    "filename": "include/ModuleExplorer.h",
+    "derivable": true
+  },
   "::UI::EditableTextWindow": {
     "name": "EditableTextWindow",
     "parent": "::UI::Dockable",

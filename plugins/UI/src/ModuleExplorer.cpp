@@ -373,4 +373,16 @@ void ModuleExplorer::buildModule(QStandardItem *item, const Module::Pointer &mod
   emit loadFiles(item, module);
   }
 
+ModuleExplorerDock::ModuleExplorerDock(TypeManager *types, bool toolbar)
+    : Dockable(toolbar)
+  {
+  _explorer = new ModuleExplorer(types);
+  setWidget(_explorer->widget());
+  }
+
+void ModuleExplorerDock::setTarget(const Target::Pointer &ptr)
+  {
+  _explorer->setTarget(ptr);
+  }
+
 }

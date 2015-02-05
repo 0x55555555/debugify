@@ -7,6 +7,7 @@ require_relative 'Project'
 require_relative 'Values'
 require_relative 'Editors'
 require_relative 'ProcessSelector'
+require_relative 'ModuleExplorer'
 require_relative 'Utils'
 
 module App
@@ -34,6 +35,7 @@ module App
 
       @debugger = App::Debugger.new(@mainwindow, @log)
       @editors = Editors.new(@mainwindow, @debugger, @project)
+      @moduleExplorer = App::ModuleExplorer.new(@mainwindow, @debugger)
       @callStack = App::CallStack.new(@mainwindow, @debugger)
       @threads = App::Threads.new(@mainwindow, @debugger)
       @values = App::Values.new(@mainwindow, @debugger)

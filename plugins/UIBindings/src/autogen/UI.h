@@ -10,6 +10,7 @@
 #include "Dialog.h"
 #include "Console.h"
 #include "Dockable.h"
+#include "ModuleExplorer.h"
 #include "Terminal.h"
 #include "ToolBar.h"
 #include "Application.h"
@@ -44,6 +45,7 @@ BONDAGE_EXPOSED_ENUM(EXPORT_DEBUGIFY, ::UI::Dialog::Result)
 BONDAGE_EXPOSED_CLASS_UNMANAGED(EXPORT_DEBUGIFY, ::UI::ChangedNotifier)
 BONDAGE_EXPOSED_CLASS_UNMANAGED(EXPORT_DEBUGIFY, ::UI::InputNotifier)
 BONDAGE_EXPOSED_CLASS_DERIVED_UNMANAGED(EXPORT_DEBUGIFY, ::UI::Dockable, ::QDockWidget, ::QWidget)
+BONDAGE_EXPOSED_CLASS_DERIVED_MANAGED(EXPORT_DEBUGIFY, ::UI::ModuleExplorerDock, ::UI::Dockable, ::QWidget)
 BONDAGE_EXPOSED_CLASS_DERIVED_MANAGED(EXPORT_DEBUGIFY, ::UI::EditableTextWindow, ::UI::Dockable, ::QWidget)
 BONDAGE_EXPOSED_CLASS_DERIVED_MANAGED(EXPORT_DEBUGIFY, ::UI::Console, ::UI::Dockable, ::QWidget)
 BONDAGE_EXPOSED_CLASS_DERIVED_MANAGED(EXPORT_DEBUGIFY, ::UI::Terminal, ::UI::Console, ::QWidget)

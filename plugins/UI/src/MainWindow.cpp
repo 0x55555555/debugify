@@ -31,15 +31,6 @@ MainWindow::MainWindow(QWidget *parent) :
   qRegisterMetaType<Module::Pointer>();
 
   _types = new TypeManager();
-
-  auto dock = new QDockWidget();
-  dock->setObjectName("ModuleExplorer");
-  dock->setWindowTitle("Modules");
-  _moduleExplorer = new ModuleExplorer(_types);
-  dock->setWidget(_moduleExplorer->widget());
-  addDockWidget(Qt::LeftDockWidgetArea, dock);
-  connect(_moduleExplorer, SIGNAL(sourceFileActivated(Module::Pointer,QString)), this, SLOT(openFile(Module::Pointer,QString)));
-  connect(_moduleExplorer, SIGNAL(dataTypeActivated(Module::Pointer,QString)), this, SLOT(openType(Module::Pointer,QString)));
   connect(_types, SIGNAL(typeAdded(Module::Pointer,UI::CachedType::Pointer)), this, SLOT(typeAdded(Module::Pointer,UI::CachedType::Pointer)));
 
   connect(&_timer, SIGNAL(timeout()), this, SLOT(timerTick()));
@@ -115,6 +106,20 @@ EditableTextWindow *MainWindow::addEditor(const QString &name, bool toolbar)
   return dock;
   }
 
+Dockable *MainWindow::addModuleExplorer(const QString &n, bool toolbar)
+  {
+  auto dock = new ModuleExplorerDock(_types, toolbar);
+  dock->setObjectName(n);
+  dock->setWindowTitle(n);
+
+  addDockWidget(Qt::LeftDockWidgetArea, dock);
+
+  connect(dock->explorer(), SIGNAL(sourceFileActivated(Module::Pointer,QString)), this, SLOT(openFile(Module::Pointer,QString)));
+  connect(dock->explorer(), SIGNAL(dataTypeActivated(Module::Pointer,QString)), this, SLOT(openType(Module::Pointer,QString)));
+
+  return dock;
+  }
+
 ToolBar *MainWindow::addToolBar(const QString &n)
   {
   auto toolbar = new ToolBar;
@@ -173,7 +178,6 @@ Process::Pointer MainWindow::process() const
 void MainWindow::setTarget(const Target::Pointer &tar)
   {
   _types->setTarget(nullptr);
-  _moduleExplorer->setTarget(tar);
   _types->setTarget(tar);
 
   ui->tabWidget->clear();

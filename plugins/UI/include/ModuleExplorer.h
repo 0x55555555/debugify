@@ -2,6 +2,7 @@
 #include "UiGlobal.h"
 #include "Target.h"
 #include "Module.h"
+#include "Dockable.h"
 #include "TypeManager.h"
 #include "QtWidgets/QTreeView"
 #include "QtCore/QSortFilterProxyModel"
@@ -82,6 +83,21 @@ private:
   QThread *_workerThread;
   ModuleWorker *_worker;
   TypeManager *_types;
+  };
+
+/// \expose
+class ModuleExplorerDock : public Dockable
+  {
+  Q_OBJECT
+public:
+  ModuleExplorerDock(TypeManager *types, bool toolbar);
+
+  void setTarget(const Target::Pointer &ptr);
+
+  ModuleExplorer *explorer() { return _explorer; }
+
+private:
+  ModuleExplorer *_explorer;
   };
 
 class ModuleWorker : public QObject

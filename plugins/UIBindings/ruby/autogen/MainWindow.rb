@@ -24,6 +24,9 @@ class MainWindow < Qt::QMainWindow
   # UI::Menu MainWindow#addMenu(QString name)
   # \brief 
 
+  # UI::Dockable MainWindow#addModuleExplorer(QString n, boolean toolbar)
+  # \brief 
+
   # UI::Terminal MainWindow#addTerminal(QString n, boolean toolbar)
   # \brief 
 

@@ -99,6 +99,7 @@ struct UI_MainWindow_aboutToClose_overload0_t : Reflect::FunctionCall<Reflect::F
 struct UI_MainWindow_addConsole_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::Console *(::UI::MainWindow::*)(const QString &, bool) >, &::UI::MainWindow::addConsole, bondage::FunctionCaller> { };
 struct UI_MainWindow_addEditor_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::EditableTextWindow *(::UI::MainWindow::*)(const QString &, bool) >, &::UI::MainWindow::addEditor, bondage::FunctionCaller> { };
 struct UI_MainWindow_addMenu_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::Menu *(::UI::MainWindow::*)(const QString &) >, &::UI::MainWindow::addMenu, bondage::FunctionCaller> { };
+struct UI_MainWindow_addModuleExplorer_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::Dockable *(::UI::MainWindow::*)(const QString &, bool) >, &::UI::MainWindow::addModuleExplorer, bondage::FunctionCaller> { };
 struct UI_MainWindow_addTerminal_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::Terminal *(::UI::MainWindow::*)(const QString &, bool) >, &::UI::MainWindow::addTerminal, bondage::FunctionCaller> { };
 struct UI_MainWindow_addToolBar_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::ToolBar *(::UI::MainWindow::*)(const QString &) >, &::UI::MainWindow::addToolBar, bondage::FunctionCaller> { };
 struct UI_MainWindow_debugOutput_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< UI::DebugNotifier *(::UI::MainWindow::*)() >, &::UI::MainWindow::debugOutput, bondage::FunctionCaller> { };
@@ -167,6 +168,9 @@ const bondage::Function UI_MainWindow_methods[] = {
     UI_MainWindow_addMenu_overload0_t
     >("addMenu"),
   bondage::FunctionBuilder::build<
+    UI_MainWindow_addModuleExplorer_overload0_t
+    >("addModuleExplorer"),
+  bondage::FunctionBuilder::build<
     UI_MainWindow_addTerminal_overload0_t
     >("addTerminal"),
   bondage::FunctionBuilder::build<
@@ -227,7 +231,7 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
   MainWindow,
   ::QMainWindow,
   UI_MainWindow_methods,
-  24);
+  25);
 
 
 
@@ -858,6 +862,27 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
 
 
 
+// Exposing class ::UI::ModuleExplorerDock
+struct UI_ModuleExplorerDock_setTarget_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::ModuleExplorerDock::*)(const Target::Pointer &) >, &::UI::ModuleExplorerDock::setTarget, bondage::FunctionCaller> { };
+
+const bondage::Function UI_ModuleExplorerDock_methods[] = {
+  bondage::FunctionBuilder::build<
+    UI_ModuleExplorerDock_setTarget_overload0_t
+    >("setTarget")
+};
+
+
+BONDAGE_IMPLEMENT_EXPOSED_CLASS(
+  UI_ModuleExplorerDock,
+  g_bondage_library_UI,
+  ::UI,
+  ModuleExplorerDock,
+  ::UI::Dockable,
+  UI_ModuleExplorerDock_methods,
+  1);
+
+
+
 // Exposing class ::UI::EditableTextWindow
 ::UI::EditableTextWindow * UI_EditableTextWindow_EditableTextWindow_overload0(bool inputArg0)
 {
@@ -1190,13 +1215,17 @@ const bondage::WrappedClass *UI_QWidget_caster(const void *vPtr)
   {
     return &UI_Terminal;
   }
-  if (Crate::CastHelper< ::QWidget, ::UI::EditableTextWindow >::canCast(ptr))
+  if (Crate::CastHelper< ::QWidget, ::UI::ModuleExplorerDock >::canCast(ptr))
   {
-    return &UI_EditableTextWindow;
+    return &UI_ModuleExplorerDock;
   }
   if (Crate::CastHelper< ::QWidget, ::UI::Console >::canCast(ptr))
   {
     return &UI_Console;
+  }
+  if (Crate::CastHelper< ::QWidget, ::UI::EditableTextWindow >::canCast(ptr))
+  {
+    return &UI_EditableTextWindow;
   }
   if (Crate::CastHelper< ::QWidget, ::UI::ToolBar >::canCast(ptr))
   {
