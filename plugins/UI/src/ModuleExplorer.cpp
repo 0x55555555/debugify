@@ -130,7 +130,6 @@ void ModuleExplorer::setTarget(const Target::Pointer &tar)
   {
   _target = tar;
 
-  qDebug() << "Rebuild modules tree";
   rebuildTree();
   }
 
@@ -180,7 +179,6 @@ QString ModuleExplorer::makeFileTooltip(const QString file, const QFileInfo &inf
 
 void ModuleExplorer::loadedFiles(const Module::Pointer &module, const QStringList &files)
   {
-  qDebug() << "Files loaded";
   if (!files.size())
     {
     return;

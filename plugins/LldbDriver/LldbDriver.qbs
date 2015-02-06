@@ -2,7 +2,7 @@ import "../../Eks/EksBuild" as Eks;
 
 Eks.Library {
   property path llvmPath: "../../../llvm/"
-  property string llvmBuildType: "Debug+Asserts"
+  property string llvmBuildType: buildtools.debug ? "Debug+Asserts" : "Release+Asserts"
   property path llvmBuildPath: "../../../llvm-build/" + llvmBuildType + "/"
   property path lldbPath: llvmPath + "tools/lldb/"
 

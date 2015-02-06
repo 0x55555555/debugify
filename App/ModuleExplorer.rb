@@ -33,7 +33,6 @@ module App
     end
 
     def refreshModules(target, acts)
-      puts "Refresh modules"
       @widget.setTarget(target)
       acts.each{ |a| a.setEnabled(target != nil) }
     end

@@ -1,12 +1,13 @@
 require 'fileutils'
 require 'date'
 
+DEBUG = false
 THIS_DIR = File.dirname(__FILE__)
 
 SOURCE_ROOT = "#{THIS_DIR}/../"
 EXE_NAME = 'Debugify'
 BUILD_ROOT = "#{THIS_DIR}/../../"
-QT_FRAMEWORK_LOCATION = "/Applications/Qt/5.4/5.4/clang_64/"
+QT_FRAMEWORK_LOCATION = "/Applications/Qt/5.4_deployment/"
 RUBY_URL = "https://github.com/jorj1988/traveling-ruby/releases/download/2.2.0_dylib_osx/traveling-ruby-20141224-j-2.2.0-osx.zip"
 
 class BundleBuilder
@@ -150,7 +151,9 @@ end
 
 BUILD_ID = "Desktop_Qt_5_4_0_clang_64bit"
 BUILD_VARIANT = "qtc_#{BUILD_ID}"
-DEBUGGER_BUILD_ROOT = "#{BUILD_ROOT}/build-debugger-#{BUILD_ID}-Debug/#{BUILD_VARIANT}-debug/"
+DEBUGGER_BUILD_ROOT = DEBUG ? 
+  "#{BUILD_ROOT}/build-debugger-#{BUILD_ID}-Debug/#{BUILD_VARIANT}-debug/" : 
+  "#{BUILD_ROOT}/build-debugger-#{BUILD_ID}-Release/#{BUILD_VARIANT}-release/"
 
 def ensureRubyExists()
   rubyDir = "#{SOURCE_ROOT}/build/Resources/"
@@ -173,7 +176,7 @@ def makeDebugifyBundle(version, options = {})
   ensureRubyExists()
 
   llvmVariant = options[:llvm_variant]
-  llvmVariant ||= "Debug+Asserts"
+  llvmVariant ||= DEBUG ? "Debug+Asserts" : "Release+Asserts"
   llvmBuildRoot = "#{BUILD_ROOT}/llvm-build/#{llvmVariant}/"
 
   versionStr = version.to_safe_s
@@ -261,18 +264,30 @@ export DYLD_FRAMEWORK_PATH=$DIR/../Frameworks:$DYLD_FRAMEWORK_PATH
     sources[path] = "#{QT_FRAMEWORK_LOCATION}lib/#{l}.framework/Versions/5/#{l}"
   end
 
+  changes = Hash.new { |h, k| h[k] = [] }
   root = Pathname.new(bundle.path(""))
   exeFiles.each do |f|
     relPath = Pathname.new(f).relative_path_from(root)
       
     newPath = "#{exeToRoot}/#{relPath}"
     source = Pathname.new(sources[f]).cleanpath.to_s
-    puts "Patching #{relPath}"
-    `install_name_tool -id #{newPath} #{f}`
+    changes[relPath] << "install_name_tool -id #{newPath} #{f}"
 
     exeFiles.each do |file|
       if (file != f)
-        `install_name_tool -change #{source} #{newPath} #{file}`
+        relFilePath = Pathname.new(file).relative_path_from(root)
+        changes[relFilePath] << "install_name_tool -change #{source} #{newPath} #{file}"
+      end
+    end
+
+    changes[relPath] << "strip #{f} &> /dev/null"
+  end
+
+  changes.each do |relPath, procs|
+    fork do 
+      puts "Patching #{relPath}"
+      procs.each do |cmd|
+        `#{cmd}`
       end
     end
   end
@@ -321,6 +336,7 @@ def makeDebugifyDmg(version, options = {})
   bundleOptions[:path] = location
   makeDebugifyBundle(version, bundleOptions)
 
+  puts "Creating app dmg #{output}"
   dmgSize = `du -sm #{path}`.split[0].to_i + 10
   puts `hdiutil create -volname #{EXE_NAME} -srcfolder #{path} -size #{dmgSize}m #{output} -ov`
 

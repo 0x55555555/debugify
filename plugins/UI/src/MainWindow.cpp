@@ -43,6 +43,7 @@ MainWindow::~MainWindow()
   {
   delete ui;
   auto x = qInstallMessageHandler(_oldHandler);
+  (void)x;
   xAssert(x == log);
 
   xAssert(g_mw == this);
