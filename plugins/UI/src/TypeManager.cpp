@@ -28,6 +28,8 @@ void TypeManager::setTarget(const Target::Pointer &tar)
   {
   endWorker();
 
+  qDebug() << "Beginning type load";
+
   _target = tar;
   _types.clear();
 

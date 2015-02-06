@@ -46,10 +46,10 @@ signals:
   void sourceFileActivated(const Module::Pointer &, QString file);
   void dataTypeActivated(const Module::Pointer &, QString file);
 
-  void loadFiles(const QStandardItem* , const Module::Pointer &);
+  void loadFiles(const Module::Pointer &);
 
 private slots:
-  void loadedFiles(const QStandardItem *module, const Module::Pointer &, const QStringList &str);
+  void loadedFiles(const Module::Pointer &, const QStringList &str);
   void itemDoubleClicked(const QModelIndex &);
   void typeAdded(const Module::Pointer &module, const UI::CachedType::Pointer &);
   void typeDeclarationAdded(const Module::Pointer &module, const UI::CachedType::Pointer &, const Type *t);
@@ -105,10 +105,10 @@ class ModuleWorker : public QObject
   Q_OBJECT
 
 public slots:
-  void loadFiles(const QStandardItem *item, const Module::Pointer &);
+  void loadFiles(const Module::Pointer &);
 
 signals:
-  void loadedFiles(const QStandardItem *item, const Module::Pointer &, const QStringList &str);
+  void loadedFiles(const Module::Pointer &, const QStringList &str);
   void loadedType(const Module::Pointer &, const Type &str);
   };
 

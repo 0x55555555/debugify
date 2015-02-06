@@ -19,8 +19,10 @@ class DebuggerProject
   end
 
   def close()
-    @project.write()
-    @project = nil
+    if (@project)
+      @project.write()
+      @project = nil
+    end
   end
 
   def reset(appPath)

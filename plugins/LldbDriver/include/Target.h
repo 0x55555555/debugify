@@ -28,18 +28,14 @@ public:
 
   Eks::String path() const;
 
-  /// \expose
   std::shared_ptr<Process> launch(
     const Eks::Vector<Eks::StringRef> &args,
     const Eks::Vector<Eks::StringRef> &env,
     Error &err);
-
-  /// \expose
   std::shared_ptr<Process> attach(uint64_t pid, Error &err);
-
-  /// \expose
   std::shared_ptr<Process> connect(const Eks::String &url, Error &err);
 
+  bool addModule(const Eks::String &str);
   size_t moduleCount();
   std::shared_ptr<Module> moduleAt(size_t index);
 

@@ -62,7 +62,7 @@ public:
     }
   };
 
-void ModuleWorker::loadFiles(const QStandardItem *item, const Module::Pointer &ptr)
+void ModuleWorker::loadFiles(const Module::Pointer &ptr)
   {
   auto vec = ptr->files();
 
@@ -74,7 +74,7 @@ void ModuleWorker::loadFiles(const QStandardItem *item, const Module::Pointer &p
 
   qSort(result);
 
-  emit loadedFiles(item, ptr, result);
+  emit loadedFiles(ptr, result);
   }
 
 ModuleExplorer::ModuleExplorer(TypeManager *types)
@@ -108,8 +108,8 @@ ModuleExplorer::ModuleExplorer(TypeManager *types)
   _worker->moveToThread(_workerThread);
   _workerThread->start();
 
-  connect(this, SIGNAL(loadFiles(const QStandardItem*,Module::Pointer)), _worker, SLOT(loadFiles(const QStandardItem*,Module::Pointer)));
-  connect(_worker, SIGNAL(loadedFiles(const QStandardItem*,Module::Pointer,QStringList)), this, SLOT(loadedFiles(const QStandardItem*,Module::Pointer,QStringList)));
+  connect(this, SIGNAL(loadFiles(Module::Pointer)), _worker, SLOT(loadFiles(Module::Pointer)));
+  connect(_worker, SIGNAL(loadedFiles(Module::Pointer,QStringList)), this, SLOT(loadedFiles(Module::Pointer,QStringList)));
 
   connect(_tree, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(itemDoubleClicked(QModelIndex)));
 
@@ -130,6 +130,7 @@ void ModuleExplorer::setTarget(const Target::Pointer &tar)
   {
   _target = tar;
 
+  qDebug() << "Rebuild modules tree";
   rebuildTree();
   }
 
@@ -177,19 +178,24 @@ QString ModuleExplorer::makeFileTooltip(const QString file, const QFileInfo &inf
       .arg(lastModified.toString());
   }
 
-void ModuleExplorer::loadedFiles(const QStandardItem *constItem, const Module::Pointer &module, const QStringList &files)
+void ModuleExplorer::loadedFiles(const Module::Pointer &module, const QStringList &files)
   {
-  auto item = const_cast<QStandardItem *>(constItem);
-
+  qDebug() << "Files loaded";
   if (!files.size())
     {
     return;
     }
 
-  auto moduleData = _moduleMap[module];
+  auto foundModule = _moduleMap.find(module);
+  if (foundModule == _moduleMap.end())
+    {
+    return;
+    }
+
+  auto &moduleData = foundModule->second;
 
   moduleData.filesItem = new QStandardItem("Files");
-  item->appendRow(moduleData.filesItem);
+  moduleData.moduleItem->appendRow(moduleData.filesItem);
 
   xForeach(auto file, files)
     {
@@ -370,7 +376,7 @@ void ModuleExplorer::buildModule(QStandardItem *item, const Module::Pointer &mod
 
   isSystem = isSystemModule(path, module);
 
-  emit loadFiles(item, module);
+  emit loadFiles(module);
   }
 
 ModuleExplorerDock::ModuleExplorerDock(TypeManager *types, bool toolbar)

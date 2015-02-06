@@ -3,6 +3,7 @@
 
 require_relative '../BindingsInternal'
 
+require_relative 'MessageBox'
 require_relative 'AboutToShowNotifier'
 require_relative 'MainWindow'
 require_relative 'DebugNotifier'

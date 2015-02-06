@@ -177,7 +177,6 @@ Process::Pointer MainWindow::process() const
 
 void MainWindow::setTarget(const Target::Pointer &tar)
   {
-  _types->setTarget(nullptr);
   _types->setTarget(tar);
 
   ui->tabWidget->clear();
@@ -326,7 +325,7 @@ void MainWindow::log(QtMsgType t, const QMessageLogContext &c, const QString &m)
     {
     g_mw->_oldHandler(t, c, m);
 
-    (*g_mw->debugOutput())(m);
+    (*g_mw->debugOutput())(m + "\n");
     }
   }
 }

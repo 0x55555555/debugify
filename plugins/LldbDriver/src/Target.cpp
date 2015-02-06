@@ -5,6 +5,7 @@
 #include "ErrorImpl.h"
 #include <iostream>
 #include "lldb/API/SBBreakpointLocation.h"
+#include "lldb/API/SBModuleSpec.h"
 #include "Utils.h"
 
 namespace LldbDriver
@@ -115,6 +116,22 @@ std::shared_ptr<Process> Target::connect(const Eks::String &url, Error &err)
 
   err = Error::Helper::makeError(error);
   return process;
+  }
+
+bool Target::addModule(const Eks::String &str)
+  {
+  lldb::SBFileSpec fileSpec(str.data(), false);
+  lldb::SBModuleSpec spec;
+  spec.SetFileSpec(fileSpec);
+  auto m = _impl->target.AddModule(spec);
+  if (!m.IsValid())
+    {
+    return false;
+    }
+
+  _impl->modulesCached = false;
+  _impl->cacheModules();
+  return true;
   }
 
 size_t Target::moduleCount()

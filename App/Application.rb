@@ -33,7 +33,7 @@ module App
         @debugTerminal = App::DebuggerTerminal.new(self)
       end
 
-      @debugger = App::Debugger.new(@mainwindow, @log)
+      @debugger = App::Debugger.new(@mainwindow, @log, @project)
       @editors = Editors.new(@mainwindow, @debugger, @project)
       @moduleExplorer = App::ModuleExplorer.new(@mainwindow, @debugger)
       @callStack = App::CallStack.new(@mainwindow, @debugger)
@@ -114,6 +114,7 @@ module App
       @processToolbar.addAction("Kill", Proc.new {
         @mainwindow.process.kill()
       })
+      
       @actions = { }
       @actions[:pause_continue] = @processToolbar.addAction("", Proc.new {
         if (@mainwindow.process.currentState == LldbDriver::ProcessState[:Stopped])
@@ -167,10 +168,8 @@ module App
       if (t != nil)
         t.breakpointsChanged.listen { |_| @editors.syncEditorBreakpoints() }
         @targetToolbar.show()
-        @project.reset(t.path)
       else
         @targetToolbar.hide()
-        @project.reset(nil)
       end
     end
 

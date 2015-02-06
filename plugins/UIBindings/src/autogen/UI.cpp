@@ -3,8 +3,8 @@
 #include "bondage/RuntimeHelpersImpl.h"
 #include "utility"
 #include "tuple"
-#include "../../DebugifyBindings/ManualBindings/ManualBindings.h"
 #include "../../UIBindings/QtBindings/QtWidgets.h"
+#include "../../DebugifyBindings/ManualBindings/ManualBindings.h"
 #include "Dockable.h"
 #include "../../LldbDriver/include/Process.h"
 #include "../../LldbDriver/include/Target.h"
@@ -25,6 +25,27 @@ const bondage::Library &bindings()
   return g_bondage_library_UI;
 }
 }
+
+
+// Exposing class ::UI::MessageBox
+struct UI_MessageBox_question_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< int(*)(QString, QString, int) >, &::UI::MessageBox::question, bondage::FunctionCaller> { };
+
+const bondage::Function UI_MessageBox_methods[] = {
+  bondage::FunctionBuilder::build<
+    UI_MessageBox_question_overload0_t
+    >("question")
+};
+
+
+BONDAGE_IMPLEMENT_EXPOSED_CLASS(
+  UI_MessageBox,
+  g_bondage_library_UI,
+  ::UI,
+  MessageBox,
+  void,
+  UI_MessageBox_methods,
+  1);
+
 
 
 // Exposing class ::UI::AboutToShowNotifier
@@ -863,12 +884,50 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
 
 
 // Exposing class ::UI::ModuleExplorerDock
+QString UI_ModuleExplorerDock_tr_overload0(const char * inputArg0)
+{
+  auto result = ::UI::ModuleExplorerDock::tr(std::forward<const char *>(inputArg0));
+  return result;
+}
+
+QString UI_ModuleExplorerDock_trUtf8_overload0(const char * inputArg0)
+{
+  auto result = ::UI::ModuleExplorerDock::trUtf8(std::forward<const char *>(inputArg0));
+  return result;
+}
+
 struct UI_ModuleExplorerDock_setTarget_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< void(::UI::ModuleExplorerDock::*)(const Target::Pointer &) >, &::UI::ModuleExplorerDock::setTarget, bondage::FunctionCaller> { };
+struct UI_ModuleExplorerDock_tr_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *) >, &UI_ModuleExplorerDock_tr_overload0, bondage::FunctionCaller> { };
+struct UI_ModuleExplorerDock_tr_overload1_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *, const char *, int) >, &::UI::ModuleExplorerDock::tr, bondage::FunctionCaller> { };
+struct ModuleExplorerDock_tr_overload_1 : Reflect::FunctionArgCountSelectorBlock<1,
+      UI_ModuleExplorerDock_tr_overload0_t
+      > { };
+struct ModuleExplorerDock_tr_overload_3 : Reflect::FunctionArgCountSelectorBlock<3,
+      UI_ModuleExplorerDock_tr_overload1_t
+      > { };
+struct ModuleExplorerDock_tr_overload : Reflect::FunctionArgumentCountSelector<
+    ModuleExplorerDock_tr_overload_1,
+    ModuleExplorerDock_tr_overload_3
+    > { };
+struct UI_ModuleExplorerDock_trUtf8_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *) >, &UI_ModuleExplorerDock_trUtf8_overload0, bondage::FunctionCaller> { };
+struct UI_ModuleExplorerDock_trUtf8_overload1_t : Reflect::FunctionCall<Reflect::FunctionSignature< QString(*)(const char *, const char *, int) >, &::UI::ModuleExplorerDock::trUtf8, bondage::FunctionCaller> { };
+struct ModuleExplorerDock_trUtf8_overload_1 : Reflect::FunctionArgCountSelectorBlock<1,
+      UI_ModuleExplorerDock_trUtf8_overload0_t
+      > { };
+struct ModuleExplorerDock_trUtf8_overload_3 : Reflect::FunctionArgCountSelectorBlock<3,
+      UI_ModuleExplorerDock_trUtf8_overload1_t
+      > { };
+struct ModuleExplorerDock_trUtf8_overload : Reflect::FunctionArgumentCountSelector<
+    ModuleExplorerDock_trUtf8_overload_1,
+    ModuleExplorerDock_trUtf8_overload_3
+    > { };
 
 const bondage::Function UI_ModuleExplorerDock_methods[] = {
   bondage::FunctionBuilder::build<
     UI_ModuleExplorerDock_setTarget_overload0_t
-    >("setTarget")
+    >("setTarget"),
+  bondage::FunctionBuilder::buildOverload< ModuleExplorerDock_tr_overload >("tr"),
+  bondage::FunctionBuilder::buildOverload< ModuleExplorerDock_trUtf8_overload >("trUtf8")
 };
 
 
@@ -879,7 +938,7 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
   ModuleExplorerDock,
   ::UI::Dockable,
   UI_ModuleExplorerDock_methods,
-  1);
+  3);
 
 
 

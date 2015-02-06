@@ -20,6 +20,7 @@ public:
       return;
       }
 
+    modules.clear();
     for (size_t i = 0; i < target.GetNumModules(); ++i)
       {
       auto module = std::make_shared<Module>();

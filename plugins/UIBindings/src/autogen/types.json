@@ -1,4 +1,15 @@
 {
+  "::UI::MessageBox": {
+    "name": "MessageBox",
+    "parent": null,
+    "filename": "include/MessageBox.h"
+  },
+  "::UI::MessageBox::StandardButton": {
+    "name": "StandardButton",
+    "parent": null,
+    "filename": "include/MessageBox.h",
+    "type": "enum"
+  },
   "::UI::AboutToShowNotifier": {
     "name": "AboutToShowNotifier",
     "parent": null,

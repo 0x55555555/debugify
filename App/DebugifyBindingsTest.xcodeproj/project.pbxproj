@@ -1003,6 +1003,8 @@
 		080CB4BB1A82BB7B0011FE7A /* Qt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Qt.h; sourceTree = "<group>"; };
 		080CB4BC1A82BB7B0011FE7A /* QtWidgets.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QtWidgets.h; sourceTree = "<group>"; };
 		080CB4BD1A82BB7B0011FE7A /* types.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = types.json; sourceTree = "<group>"; };
+		080CB4BE1A841E910011FE7A /* MessageBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageBox.h; sourceTree = "<group>"; };
+		080CB4BF1A841E990011FE7A /* MessageBox.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MessageBox.cpp; sourceTree = "<group>"; };
 		0866AA081A5C90EC003FAAB8 /* Console.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Console.h; sourceTree = "<group>"; };
 		0866AA091A5C90EC003FAAB8 /* EditableTextWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditableTextWindow.h; sourceTree = "<group>"; };
 		0866AA0D1A5C90F5003FAAB8 /* Console.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Console.cpp; sourceTree = "<group>"; };
@@ -5989,6 +5991,7 @@
 		08D140781A55864500436C54 /* include */ = {
 			isa = PBXGroup;
 			children = (
+				080CB4BE1A841E910011FE7A /* MessageBox.h */,
 				080CB4A91A7E88E80011FE7A /* Dialog.h */,
 				080CB4AA1A7E88E80011FE7A /* Dockable.h */,
 				0866AA1E1A745A51003FAAB8 /* Menu.h */,
@@ -6010,6 +6013,7 @@
 		08D140831A55864500436C54 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				080CB4BF1A841E990011FE7A /* MessageBox.cpp */,
 				080CB4A51A7E88DF0011FE7A /* Dialog.cpp */,
 				080CB4A61A7E88DF0011FE7A /* Dockable.cpp */,
 				0866AA201A745A5A003FAAB8 /* Menu.cpp */,

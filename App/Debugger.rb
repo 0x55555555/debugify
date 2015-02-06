@@ -3,7 +3,7 @@ require_relative 'RubyNotifier'
 module App
 
   class Debugger
-    def initialize(mw, log)
+    def initialize(mw, log, project)
       @debugger = LldbDriver::Debugger.create()
 
       @log = log
@@ -15,9 +15,14 @@ module App
       @processBegin = RubyNotifier.new
       @processEnd = RubyNotifier.new
       @targetChanged = RubyNotifier.new
+      @targetModulesChanged = RubyNotifier.new
 
       @mainwindow = mw
       @process = nil
+
+      @project = project
+      @project.install_handler(:modules, self)
+      @extraModules = Set.new()
     end
 
     attr_reader :ready, :running, :exited, :processBegin, :processEnd, :targetChanged
@@ -27,9 +32,35 @@ module App
       return running()
     end
 
+    def unload()
+      if (!tryKill())
+        return
+      end
+      @project.close()
+      @extraModules = Set.new()
+    end
+
     def load(t)
+      unload()
+
       @target = @debugger.loadTarget(t)
+      @targetChanged.call(@target)
+      @project.reset(@target.path())
+      # Set mainwindows target after the project is loaded so all modules are in place
       @mainwindow.setTarget(@target)
+    end
+
+    def addModule(mod)
+      if (@extraModules.include?(mod))
+        @log.log("Module already loaded")
+      end
+
+      if (!tryKill())
+        return
+      end
+
+      @target.addModule(mod)
+      @extraModules << mod
       @targetChanged.call(@target)
     end
 
@@ -56,6 +87,51 @@ module App
         @process.processEvents()
       end
       @ready.call(@mainwindow.process)
+    end
+
+    def tryKill()
+      if (@process == nil)
+        return true
+      end
+
+      res = UI::MessageBox.question(
+        "Process Running",
+        "Do you want to kill the running process?",
+        UI::MessageBox::StandardButton[:Yes] | UI::MessageBox::StandardButton[:No]
+      )
+
+      if (res == UI::MessageBox::StandardButton[:No])
+        return false
+      end
+
+      kill()
+      return true
+    end
+
+    def kill()
+      if (@process)
+        @process.kill()
+      end
+    end
+
+    # Methods for module serialisation
+    def owns_value(key)
+      return key == :modules
+    end
+
+    def deserialise(handler)
+      if (handler.has_value(:modules))
+        mods = handler.value(:modules)
+        mods.each do |m|
+          addModule(m)
+        end
+      end
+    end
+
+    def serialise(handler)
+      if (handler.has_location(:exe))
+        handler.set_value(:modules, @extraModules.to_a, :exe)
+      end
     end
 
   private

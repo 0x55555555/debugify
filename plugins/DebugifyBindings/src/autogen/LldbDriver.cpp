@@ -885,6 +885,7 @@ std::tuple< bool, LldbDriver::Breakpoint, LldbDriver::BreakpointLocation > LldbD
 }
 
 struct LldbDriver_Target_addBreakpoint_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::Breakpoint(::LldbDriver::Target::*)(const Eks::String &, size_t) >, &::LldbDriver::Target::addBreakpoint, bondage::FunctionCaller> { };
+struct LldbDriver_Target_addModule_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< bool(::LldbDriver::Target::*)(const Eks::String &) >, &::LldbDriver::Target::addModule, bondage::FunctionCaller> { };
 struct LldbDriver_Target_attach_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< std::shared_ptr<Process>(::LldbDriver::Target::*)(uint64_t, LldbDriver::Error &) >, &::LldbDriver::Target::attach, bondage::FunctionCaller> { };
 struct LldbDriver_Target_breakpointAt_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< LldbDriver::Breakpoint(::LldbDriver::Target::*)(size_t) >, &::LldbDriver::Target::breakpointAt, bondage::FunctionCaller> { };
 struct LldbDriver_Target_breakpointCount_overload0_t : Reflect::FunctionCall<Reflect::FunctionSignature< size_t(::LldbDriver::Target::*)() >, &::LldbDriver::Target::breakpointCount, bondage::FunctionCaller> { };
@@ -901,6 +902,9 @@ const bondage::Function LldbDriver_Target_methods[] = {
   bondage::FunctionBuilder::build<
     LldbDriver_Target_addBreakpoint_overload0_t
     >("addBreakpoint"),
+  bondage::FunctionBuilder::build<
+    LldbDriver_Target_addModule_overload0_t
+    >("addModule"),
   bondage::FunctionBuilder::build<
     LldbDriver_Target_attach_overload0_t
     >("attach"),
@@ -944,7 +948,7 @@ BONDAGE_IMPLEMENT_EXPOSED_CLASS(
   Target,
   void,
   LldbDriver_Target_methods,
-  12);
+  13);
 
 
 
