@@ -27,7 +27,19 @@ public:
 
   Type type() const;
 
+  bool isPointerType() const;
+  Value address() const;
+  Value dereference() const;
+
+  bool mightHaveChildren() const;
+  size_t childCount() const;
+  Value childAt(size_t i) const;
+
+  Value evaluate(const char *name, const char *) const;
+  Value evaluateChild(const char *) const;
+
   friend class Frame;
+  friend class Thread;
   };
 
 }

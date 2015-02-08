@@ -47,6 +47,7 @@ addEnumerator(Target, :breakpoints, :breakpointCount, :breakpointAt)
 addEnumerator(Process, :threads, :threadCount, :threadAt)
 addEnumerator(Thread, :frames, :frameCount, :frameAt)
 addEnumerator(Breakpoint, :locations, :locationCount, :locationAt)
+addEnumerator(Value, :children, :childCount, :childAt)
 
 end
 

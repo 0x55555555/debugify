@@ -61,6 +61,11 @@ size_t Frame::lineNumber() const
   return _impl->frame.GetLineEntry().GetLine();
   }
 
+bool Frame::inlined() const
+  {
+  return _impl->frame.IsInlined();
+  }
+
 bool Frame::isCurrent() const
   {
   return _impl->frame == _impl->thread->selectedFrame()._impl->frame;
@@ -94,5 +99,10 @@ Eks::Vector<Value> Frame::locals() const
     }
 
   return result;
+  }
+
+Value Frame::evaluate(const char *e) const
+  {
+  return Value::Impl::make(_impl->frame.EvaluateExpression(e, lldb::eNoDynamicValues, true));
   }
 }

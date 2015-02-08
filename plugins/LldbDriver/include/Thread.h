@@ -8,6 +8,7 @@ class Process;
 class Frame;
 class Breakpoint;
 class BreakpointLocation;
+class Value;
 
 /// \expose sharedpointer
 class Thread
@@ -75,6 +76,8 @@ public:
   Breakpoint stopBreakpoint(BreakpointLocation *location) const;
   /// \param[out] desc
   ExceptionType stopException(Eks::String *desc) const;
+
+  Value stopReturnValue() const;
 
   friend class Process;
   };

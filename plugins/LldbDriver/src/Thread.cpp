@@ -1,5 +1,6 @@
 #include "Thread.h"
 #include "ThreadImpl.h"
+#include "ValueImpl.h"
 #include "lldb/API/SBStream.h"
 #include "Target.h"
 #include "Breakpoint.h"
@@ -86,19 +87,6 @@ Thread::StopReason Thread::stopReason() const
   return (StopReason)_impl->thread.GetStopReason();
   }
 
-Thread::ExceptionType Thread::stopException(Eks::String *desc) const
-  {
-  desc->clear();
-  if (stopReason() == StopReason::Exception)
-    {
-    desc->resize(2048, ' ');
-    desc->resize(_impl->thread.GetStopDescription(desc->data(), desc->size()), ' ');
-    }
-
-  return (ExceptionType)_impl->thread.GetStopReasonDataAtIndex(0);
-  }
-
-/// \param[out] location
 Breakpoint Thread::stopBreakpoint(BreakpointLocation *location) const
   {
   auto t = _impl->process->target();
@@ -133,4 +121,23 @@ Breakpoint Thread::stopBreakpoint(BreakpointLocation *location) const
     }
   return result;
   }
+
+
+Thread::ExceptionType Thread::stopException(Eks::String *desc) const
+  {
+  desc->clear();
+  if (stopReason() == StopReason::Exception)
+    {
+    desc->resize(2048, ' ');
+    desc->resize(_impl->thread.GetStopDescription(desc->data(), desc->size()), ' ');
+    }
+
+  return (ExceptionType)_impl->thread.GetStopReasonDataAtIndex(0);
+  }
+
+Value Thread::stopReturnValue() const
+  {
+  return Value::Impl::make(_impl->thread.GetStopReturnValue());
+  }
+
 }

@@ -61,4 +61,45 @@ Type Value::type() const
 
   return Type::Impl::make(nullptr, t);
   }
+
+bool Value::isPointerType() const
+  {
+  return _impl->value.TypeIsPointerType();
+  }
+
+Value Value::address() const
+  {
+  return Value::Impl::make(_impl->value.AddressOf());
+  }
+
+Value Value::dereference() const
+  {
+  return Value::Impl::make(_impl->value.Dereference());
+  }
+
+bool Value::mightHaveChildren() const
+  {
+  return _impl->value.MightHaveChildren();
+  }
+
+size_t Value::childCount() const
+  {
+  return _impl->value.GetNumChildren();
+  }
+
+Value Value::childAt(size_t i) const
+  {
+  return Value::Impl::make(_impl->value.GetChildAtIndex(i, lldb::eNoDynamicValues, false));
+  }
+
+Value Value::evaluate(const char *name, const char *exp) const
+  {
+  return Value::Impl::make(_impl->value.CreateValueFromExpression(name, exp));
+  }
+
+Value Value::evaluateChild(const char *path) const
+  {
+  return Value::Impl::make(_impl->value.GetValueForExpressionPath(path));
+  }
+
 }

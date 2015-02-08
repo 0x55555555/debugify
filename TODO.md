@@ -6,4 +6,3 @@ TODO
 - Data breakpoints
 - UI fanciness
 - Simple types removes *
-- Adding modules to loaded targets (and storing)

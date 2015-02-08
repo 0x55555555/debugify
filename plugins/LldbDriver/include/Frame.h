@@ -29,11 +29,14 @@ public:
   Eks::String filename() const;
   bool hasLineNumber() const;
   size_t lineNumber() const;
+  bool inlined() const;
 
   bool isCurrent() const;
 
   Eks::Vector<Value> arguments() const;
   Eks::Vector<Value> locals() const;
+
+  Value evaluate(const char *e) const;
 
   friend class Thread;
   };
