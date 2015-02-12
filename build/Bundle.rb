@@ -283,14 +283,17 @@ export DYLD_FRAMEWORK_PATH=$DIR/../Frameworks:$DYLD_FRAMEWORK_PATH
     changes[relPath] << "strip #{f} &> /dev/null"
   end
 
+  forks = []
   changes.each do |relPath, procs|
-    fork do 
+    forks << fork do 
       puts "Patching #{relPath}"
       procs.each do |cmd|
         `#{cmd}`
       end
     end
   end
+  puts "Waiting for patch to complete..."
+  forks.each{ |p| Process.waitpid(p) }
 
   extraChanges = [
     {

@@ -75,12 +75,12 @@ Eks::Vector<Value> Frame::arguments() const
   {
   Eks::Vector<Value> result(Eks::Core::defaultAllocator());
 
-  auto var = _impl->frame.GetVariables(true, false, false, false, lldb::eDynamicCanRunTarget);
+  auto var = _impl->frame.GetVariables(true, false, false, false, lldb::eDynamicDontRunTarget);
   result.resize(var.GetSize());
 
   for (size_t i = 0; i < var.GetSize(); ++i)
     {
-    result[i] = Value::Impl::make(var.GetValueAtIndex(i));
+    result[i] = Value::Impl::make(var.GetValueAtIndex(i).GetNonSyntheticValue());
     }
 
   return result;
@@ -90,12 +90,12 @@ Eks::Vector<Value> Frame::locals() const
   {
   Eks::Vector<Value> result(Eks::Core::defaultAllocator());
 
-  auto var = _impl->frame.GetVariables(false, true, false, false, lldb::eDynamicCanRunTarget);
+  auto var = _impl->frame.GetVariables(false, true, false, false, lldb::eDynamicDontRunTarget);
   result.resize(var.GetSize());
 
   for (size_t i = 0; i < var.GetSize(); ++i)
     {
-    result[i] = Value::Impl::make(var.GetValueAtIndex(i));
+    result[i] = Value::Impl::make(var.GetValueAtIndex(i).GetNonSyntheticValue());
     }
 
   return result;

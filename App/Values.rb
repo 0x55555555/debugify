@@ -26,15 +26,28 @@ module App
     end
 
     def updateValues(frame)
-      args = frame.arguments().map { |v| formatValue(:argument, v) }
-      locals = frame.locals().map { |v| formatValue(:local, v) }
+      values = []
 
-      @widget.setContents(alternatingColourList(args.concat(locals)))
+      frame.arguments().map { |v| formatValue(:argument, v, values) }
+      frame.locals().map { |v| formatValue(:local, v, values) }
+
+      @widget.setContents(alternatingColourList(values))
     end
 
-    def formatValue(type, v)
-      tStr = type == :argument ? "A" : "L"
-      "#{tStr} #{v.name} #{v.type.name}(#{v.value})"
+    Types = { :argument => "A", :local => "L", :child => " "}
+
+    def formatValue(type, v, values, depth = 0)
+      tStr = Types[type]
+      children = v.mightHaveChildren
+      start = children ? "+" : " "
+      
+      values << "#{'&nbsp;' * 2 * depth}#{start} #{tStr} #{v.name} #{v.type.name}(#{v.value})"
+
+      if (children)
+        v.children.each do |c|
+          formatValue(:child, c, values, depth + 1)
+        end
+      end
     end
   end
 end

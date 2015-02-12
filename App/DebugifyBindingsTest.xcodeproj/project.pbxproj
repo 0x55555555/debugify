@@ -1921,6 +1921,9 @@
 		08D1409D1A55864500436C54 /* UIBindings.qbs */ = {isa = PBXFileReference; lastKnownFileType = text; path = UIBindings.qbs; sourceTree = "<group>"; };
 		08D140A51A5744DA00436C54 /* Terminal.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Terminal.cpp; path = ../plugins/UI/src/Terminal.cpp; sourceTree = "<group>"; };
 		08D140A81A5744E600436C54 /* Terminal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Terminal.h; path = ../plugins/UI/include/Terminal.h; sourceTree = "<group>"; };
+		08F3EECB1A8D5B7700970A98 /* Value.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Value.cpp; sourceTree = "<group>"; };
+		08F3EECE1A8D5B7F00970A98 /* Value.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Value.h; sourceTree = "<group>"; };
+		08F3EECF1A8D5B8500970A98 /* ValueImpl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ValueImpl.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -5912,6 +5915,7 @@
 		08D140501A55864500436C54 /* include */ = {
 			isa = PBXGroup;
 			children = (
+				08F3EECE1A8D5B7F00970A98 /* Value.h */,
 				0866AA141A67173F003FAAB8 /* Breakpoint.h */,
 				0866AA151A67173F003FAAB8 /* Frame.h */,
 				0866AA161A67173F003FAAB8 /* Thread.h */,
@@ -5932,6 +5936,7 @@
 		08D1405F1A55864500436C54 /* internalInclude */ = {
 			isa = PBXGroup;
 			children = (
+				08F3EECF1A8D5B8500970A98 /* ValueImpl.h */,
 				0866AA1A1A671750003FAAB8 /* BreakpointImpl.h */,
 				0866AA1B1A671750003FAAB8 /* FrameImpl.h */,
 				0866AA1C1A671750003FAAB8 /* ThreadImpl.h */,
@@ -5952,6 +5957,7 @@
 		08D1406A1A55864500436C54 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				08F3EECB1A8D5B7700970A98 /* Value.cpp */,
 				0866AA171A671747003FAAB8 /* Breakpoint.cpp */,
 				0866AA181A671747003FAAB8 /* Frame.cpp */,
 				0866AA191A671747003FAAB8 /* Thread.cpp */,

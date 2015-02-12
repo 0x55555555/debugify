@@ -2,21 +2,27 @@
 #include <iostream>
 #include <unistd.h>
 #include <future>
+#include <array>
 #include <QVector>
 #include "foo.h"
 
-void foo(int *i)
+void foo()
   {
-  if (!i)
-    {
-    return;
-    }
-  *i = 0;
-  auto test = std::make_unique<Pork>();
+  //auto test = std::make_unique<Pork>();
 
-  *i = 1 + 3;
+  auto vec = std::vector<float>({1, 2, 3, 4, 5});
 
-  std::cout << *i << std::endl;
+  //std::map<int, float> f;
+  //f[1] = 1.0f;
+  //f[3] = 2.0f;
+  //f[2] = 5.0f;
+
+  //std::array<double, 10> arr;
+  //arr[0] = 4;
+
+  //*i = 1 + 3;
+
+  //std::cout << *i << std::endl;
   std::cerr << 5 << std::endl;
   }
 
@@ -39,8 +45,7 @@ int main(int argc, char *argv[])
       {
       while(true)
         {
-        int j = 0;
-        foo(i % 2 == 0 ? &j : nullptr);
+        foo();
         usleep(100000);
         }
       }));
